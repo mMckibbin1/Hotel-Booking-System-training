@@ -13,12 +13,22 @@ class Wedding(Events.BaseEvent.BaseEventobj):
                          costPerHead=0)
 
         self.bandName = bandName
-        self.costPerHead = 15.0
+        self.costPerHead = 30.0
         self.noBedroomsReserved = noBedroomsReserved
         self.bandPrice = Events.BaseEvent.CalbandPrice(bandName)
 
+    def guestsCost(self):
+        return self.costPerHead * self.noGuests
+
+    def VAT(self):
+        return self.grosstotal() / 5
+
     def grosstotal(self):
         return float (self.costPerHead * self.noGuests) + self.bandPrice
+
+    def netTotal(self):
+        return self.grosstotal() + self.VAT()
+
 
 # method to take data from form and add additional required data in order to create object to save to database
 def createwedding(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, BandName, bedRoomsRes):

@@ -19,10 +19,6 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
 
         # defines options for dropdown boxes
 
-
-        DefaultRoomNo = StringVar(master)
-        DefaultRoomNo.set(RoomOption[0])  # default value
-
         # Labels for Conference booking form
         self.lblSubheading.config(text="Please fill in the details for the Conference event you are booking")
 

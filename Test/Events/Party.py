@@ -16,11 +16,17 @@ class Party(Events.BaseEvent.BaseEventobj):
 
         self.bandPrice = Events.BaseEvent.CalbandPrice(bandName)
 
-    def CalTotal(self):
-        return self.noGuests * self.costPerHead
+    def guestsCost(self):
+        return self.costPerHead * self.noGuests
 
-    def Totalvat(self):
-        return
+    def VAT(self):
+        return self.grosstotal() / 5
+
+    def grosstotal(self):
+        return float (self.costPerHead * self.noGuests) + self.bandPrice
+
+    def netTotal(self):
+        return self.grosstotal() + self.VAT()
 
 # method to take data from form and add additional required data in order to create object to save to database
 def createParty(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, BandName):

@@ -188,4 +188,13 @@
       </map>
     </option>
   </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="self._last_child_ids" />
+        <watch expression="__py_debug_temp_var_1932334717" />
+        <watch expression="__py_debug_temp_var_1932334717" />
+      </configuration>
+    </watches-manager>
+  </component>
 </project>

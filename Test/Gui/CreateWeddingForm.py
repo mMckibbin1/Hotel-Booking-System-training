@@ -17,7 +17,7 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
         #defines options for dropdown boxes
         BandNames = ["Lil' Febrezey", "Prawn Mendes", "AB/CD"]
         DefaultBandName = StringVar(master)
-        DefaultBandName.set(BandNames[0])  # default value
+        DefaultBandName.set("Please Select a Band")  # default value
 
 
         #Labels for Wedding booking form

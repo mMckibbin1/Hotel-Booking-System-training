@@ -2,21 +2,11 @@ from tkinter import *
 import tkinter as Tkinter
 import tkinter.ttk as ttk
 from Database import dbHelper
-
-
-eventlist = [['wedding', 'Holly'], ['party', 'Tom'], ['conference', 'Bob'], ['']]
-
-
-def loadData():
-    datalist = dbHelper.read_all_from_db()
-
-    for list in datalist:
-        for object in list:
-            print(object.noGusets)
-        #frmViewBooking.insert_data(frmViewBooking,object)
-
+from Events import Wedding, Party, Conference
 
 class frmViewBooking(Tkinter.Frame):
+    #datalist = None
+    master2 = None
 
     def __init__(self, master):
         '''
@@ -25,11 +15,11 @@ class frmViewBooking(Tkinter.Frame):
         # self.root = Tkinter.Tk()
         Tkinter.Frame.__init__(self, master)
         self.parent = master
-        self.initialize_user_interface()
+        #self.initialize_user_interface()
 
-        loadData()
+        master.resizable(0, 0)
 
-    def initialize_user_interface(self):
+    #def initialize_user_interface(self):
         """Draw a user interface allowing the user to type
         items and insert them into the treeview
         """
@@ -41,17 +31,37 @@ class frmViewBooking(Tkinter.Frame):
         def selectItem(a):
 
             listofevents = []
+            listofdb = dbHelper.read_all_from_db()
+            #try:
+            curItem = self.tree.focus()
 
-            try:
-                curItem = self.tree.focus()
+            RowID = self.tree.item(curItem)['text']
 
-                for value in self.tree.item(curItem)['values']:
-                    listofevents.append(value)
 
-                    type = listofevents[0]
-                    return DetailsLabelChange(self, type)
-            except:
-                print('Select a row!!!!')
+            for value in self.tree.item(curItem)['values']:
+                listofevents.append(value)
+
+                types = listofevents[0]
+
+            for list in listofdb:
+                for object in list:
+                    if types == "Wedding":
+                        if type(object) == Wedding.Wedding:
+                            if object.ID == RowID:
+                                return DetailsLabelChange(self, types, object)
+                    elif types == "Party":
+                        if type(object) == Party.Party:
+                            if object.ID == RowID:
+                                return DetailsLabelChange(self, types, object)
+                    elif types == "Conference":
+                        if type(object) == Conference.Conference:
+                            if object.ID == RowID:
+                                return DetailsLabelChange(self, types, object)
+
+
+
+            #except:
+                #print('Select a row!!!!')
 
         # functions to allow the labels to change in the additional info labelframe
         # removes all labels stored within labelframe
@@ -78,7 +88,7 @@ class frmViewBooking(Tkinter.Frame):
             self.lblDisNoOfBedsReserved.grid_remove()
 
         # adds the labels that are consistent throughout all event types
-        def addBaseLables(self):
+        def addBaseLables(self, object):
             self.lblNoofGuests.grid()
             self.lblDisNoofGuests.grid()
             self.lblAddress.grid()
@@ -88,9 +98,14 @@ class frmViewBooking(Tkinter.Frame):
             self.lblCostPerHead.grid()
             self.lblDisCostPerHead.grid()
 
+            self.lblDisNoofGuests.config(text=object.noGuests)
+            self.lblDisAddress.config(text=object.address)
+            self.lblDisDateofBooking.config(text=object.dateOfBooking)
+            self.lblDisCostPerHead.config(text=object.costPerHead)
+
         # adds the labels that are used for weddings
-        def addWeddingLabels(self):
-            addBaseLables(self)
+        def addWeddingLabels(self, object):
+            addBaseLables(self, object)
             self.lblBandName.grid()
             self.lblDisBandName.grid()
             self.lblBandPrice.grid()
@@ -98,17 +113,24 @@ class frmViewBooking(Tkinter.Frame):
             self.lblNoOfBedsReserved.grid()
             self.lblDisNoOfBedsReserved.grid()
 
+            self.lblDisBandName.config(text=object.bandName)
+            self.lblDisBandPrice.config(text=object.bandPrice)
+            self.lblDisNoOfBedsReserved.config(text=object.noBedroomsReserved)
+
         # adds the labels that are used for parties
-        def addPartyLabels(self):
-            addBaseLables(self)
+        def addPartyLabels(self,object):
+            addBaseLables(self, object)
             self.lblBandName.grid()
             self.lblDisBandName.grid()
             self.lblBandPrice.grid()
             self.lblDisBandPrice.grid()
 
+            self.lblDisBandName.config(text=object.bandName)
+            self.lblDisBandPrice.config(text=object.bandPrice)
+
         # adds the labels that are used for conferences
-        def addConferenceLables(self):
-            addBaseLables(self)
+        def addConferenceLables(self, object):
+            addBaseLables(self, object)
             self.lblCompanyName.grid()
             self.lblDisCompanyName.grid()
             self.lblNumberofDays.grid()
@@ -116,20 +138,41 @@ class frmViewBooking(Tkinter.Frame):
             self.lblProjectorRequired.grid()
             self.lblDisProjectorRequired.grid()
 
+            self.lblDisCompanyName.config(text=object.companyName)
+            self.lblDisNumberofDays.config(text=object.noOfDays)
+            self.lblDisProjectorRequired.config(text=object.projectorRequired)
+
+        def updatePriceBreakdown(self, object):
+            self.lblDisGuestPrice.config(text= object.guestsCost())
+
+            if type(object) == Conference.Conference:
+                self.lblBandCost.config(text="Cost Per Day:")
+                self.lblDisBandCost.config(text=str(object.guestsCost()) + '   ( * ' + str(object.noOfDays) + " days)")
+            else:
+                self.lblBandCost.config(text="Band Price")
+                self.lblDisBandCost.config(text=object.bandPrice)
+
+            self.lblDisSubTotal.config(text=object.grosstotal())
+            self.lblDisVat.config(text=object.VAT())
+            self.lblDisTotal.config(text=object.netTotal())
+
         # function to change the labels shown, depending on the event type selected in the treeview
-        def DetailsLabelChange(self, eventType):
+        def DetailsLabelChange(self, eventType, object):
 
-            if eventType == 'wedding':
+            if eventType == 'Wedding':
                 removeAllLabels(self)
-                addWeddingLabels(self)
+                addWeddingLabels(self, object)
+                updatePriceBreakdown(self, object)
 
-            elif eventType == 'party':
+            elif eventType == 'Party':
                 removeAllLabels(self)
-                addPartyLabels(self)
+                addPartyLabels(self, object)
+                updatePriceBreakdown(self, object)
 
-            elif eventType == 'conference':
+            elif eventType == 'Conference':
                 removeAllLabels(self)
-                addConferenceLables(self)
+                addConferenceLables(self, object)
+                updatePriceBreakdown(self, object)
 
             else:
                 removeAllLabels(self)
@@ -255,7 +298,7 @@ class frmViewBooking(Tkinter.Frame):
             btnSearchDate['background'] = "snow"
 
         # button search
-        btnSearchDate = Button(self.Selectlabelframe, text="Search", command=lambda: hideme(self.lblNoofGuests),
+        btnSearchDate = Button(self.Selectlabelframe, text="Search",
                                width=13, height=2, background="snow", font=("arial", 10))
         btnSearchDate.grid(row=3, column=8, pady=(0, 20), padx=(8, 15))
         btnSearchDate.bind("<Enter>", on_enterSearch)
@@ -400,19 +443,31 @@ class frmViewBooking(Tkinter.Frame):
         self.Totallabelframe.grid_columnconfigure(0, weight=1)
         self.Totallabelframe.grid_columnconfigure(3, weight=1)
 
+        #DetailsLabelChange(self, '',)
 
-        # Initialize the counter
-        self.i = 0
+        self.master2 = self
+        self.loadData(self.master2)
 
-        DetailsLabelChange(self, '')
-        # self.root.mainloop()
+    def loadData(self, master):
 
-    # adding data to treeview
-    def insert_data(self, data):
-        """
-        Insertion method.
-        """
-        self.treeview.insert('', 'end', text="Item_" + str(self.i),
-                             values=(data))
-        # Increment counter
-        self.i = self.i + 1
+        datalist = dbHelper.read_all_from_db()
+
+        for list in datalist:
+            for object in list:
+                if type(object) == Wedding.Wedding:
+                    insert_data(master, object.ID, "Wedding", object.nameOfContact,
+                                               object.contactNo, object.dateOfEvent, object.eventRoomNo,
+                                               object.netTotal())
+                elif type(object) == Party.Party:
+                    insert_data(master, object.ID, "Party", object.nameOfContact,
+                                object.contactNo, object.dateOfEvent, object.eventRoomNo,
+                                object.netTotal())
+                elif type(object) == Conference.Conference:
+                    insert_data(master, object.ID, "Conference", object.nameOfContact,
+                                object.contactNo, object.dateOfEvent, object.eventRoomNo,
+                                object.netTotal())
+
+# adding data to treeview
+def insert_data(self, ID, EventType, nameOfContact, contactNo, dateOfEvent, eventRoomNo, netTotal):
+    self.treeview.insert('', 'end', text= ID,
+                         values=( EventType, nameOfContact, contactNo, dateOfEvent, eventRoomNo, netTotal))

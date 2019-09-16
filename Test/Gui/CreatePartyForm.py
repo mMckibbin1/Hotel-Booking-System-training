@@ -16,7 +16,7 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
         BandNames = ["Lil' Febrezey", "Prawn Mendes", "AB/CD"]
 
         DefaultBandName = StringVar(master)
-        DefaultBandName.set(BandNames[0])  # default value
+        DefaultBandName.set("Please Select a Band")  # default value
 
         # Labels for Party booking form
         self.lblSubheading.config(text="Please fill in the details for the Party event you are booking")

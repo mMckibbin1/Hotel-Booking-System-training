@@ -14,8 +14,18 @@ class Conference(Events.BaseEvent.BaseEventobj):
         self.projectorRequired = projectorRequired
         self.costPerHead = 20.0
 
-    def Total(self):
-        return (self.noGuests * self.costPerHead) * self.noOfDays
+    def guestsCost(self):
+        return self.costPerHead * self.noGuests
+
+    def grosstotal(self):
+        return float(self.costPerHead * self.noGuests) * self.noOfDays
+
+    def VAT(self):
+        return self.grosstotal() / 5
+
+    def netTotal(self):
+        VAT = self.grosstotal() / 5
+        return self.grosstotal() + VAT
 
 # method to take data from form and add additional required data in order to create object to save to database
 def createConference(noOfGuest, nameOfContact, address, contactNo, DateofEvent, eventRoomNumber, CompanyName, NoOfDays, projectorRequired):

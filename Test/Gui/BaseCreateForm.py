@@ -15,7 +15,7 @@ class BaseEvent:
         #defines options for dropdown boxes
 
         DefaultRoomNo = StringVar(master)
-        DefaultRoomNo.set(Rooms[0])  # default value
+        DefaultRoomNo.set("Please Select A Room")  # default value
 
 
         #Labels for Wedding booking form
