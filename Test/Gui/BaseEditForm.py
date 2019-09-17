@@ -66,6 +66,8 @@ class BaseEditEvent:
         self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(25, 50), padx=(0, 25), sticky="ew")
         self.btnCloseForm.grid(row=10, column=3, columnspan=2, pady=(25, 50), padx=(0, 50), sticky="ew")
 
+        self.populateform(self,object)
+
     #function to get room number from dropdown
     def getRoomnumber(self, value):
         self.eventRoomNo = value
@@ -89,3 +91,10 @@ class BaseEditEvent:
         Date = str(Day) + "/" + str(Month) + "/" + str(year)
         self.CalDateOfEvent.delete(0, 'end')
         self.CalDateOfEvent.insert([0], Date)
+
+    def populateform(self, object):
+        self.EntContactNumber.insert(0, object.contactNo)
+        self.EntAddress.insert(0, object.address)
+        self.EntnameOfContact.insert(0, object.nameOfContact)
+        self.EntnumberOfguest.insert(0, object.noGuests)
+        self.CalDateOfEvent.insert(0, object.dateOfEvent)

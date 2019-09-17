@@ -4,7 +4,7 @@ import Gui.BaseEditForm
 
 class EditConference(Gui.BaseEditForm.BaseEvent):
 
-    def __init__(self, master):
+    def __init__(self, master, object):
         RoomOption = ['A', 'B', 'C']
 
         super().__init__(master,RoomOption, object)
