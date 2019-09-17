@@ -2,13 +2,13 @@ from tkinter import *
 from addtionalWidgets import CalendarWidget
 
 
-class BaseEvent:
+class BaseEditEvent:
     #setting default values for eventRoom and BandName as empty strings
     eventRoomNo = ''
-    def __init__(self, master, Rooms):
+    def __init__(self, master, Rooms, object):
         #Creation of wedding form set title, size ect..
         self.master = master
-        self.master.title("base bookings")
+        self.master.title("base edit bookings")
         self.master.resizable(0, 0)
         self.master.config(background="powder blue")
 
@@ -19,7 +19,7 @@ class BaseEvent:
 
 
         #Labels for Wedding booking form
-        self.lblSubheading = Label(master, text="Please fill in the details for the event you are booking",font=("arial", 15, "bold"), bg="powder blue")
+        self.lblSubheading = Label(master, text="Please update any details that you want to change", font=("arial", 15, "bold"), bg="powder blue")
         self.lblSubheading.grid(row=0, pady=(25, 0), padx=(10, 10), columnspan=4)
 
         self.lblNoofGuest = Label(master, text="Number of guest", font=("arial", 10, "bold"), bg="powder blue")
@@ -40,7 +40,7 @@ class BaseEvent:
         self.lblDateofEvent = Label(master, text="Date of event", font=("arial", 10, "bold"), bg="powder blue")
         self.lblDateofEvent.grid(row=6,columnspan=2,pady=(25, 0),padx=(10, 10))
 
-        #Entry boxes, dropdowns and datepicker for wedding form
+        #Entry boxes, dropdowns and datepicker for edit form
         self.EntnumberOfguest = Entry(master, font=("arial", 10), width=50)
         self.EntnameOfContact = Entry(master, font=("arial", 10), width=50)
         self.EntAddress = Entry(master, font=("arial", 10), width=50)
@@ -50,7 +50,7 @@ class BaseEvent:
         self.CalDateOfEvent.bind("<Button-1>", lambda event: self.popup(event, master))
         self.data = {}
 
-        # Entry boxes, dropdowns and datepicker for wedding form being placed using grid layout
+        # Entry boxes, dropdowns and datepicker for edit form being placed using grid layout
         self.EntnumberOfguest.grid(row=1, column=2, columnspan=2, sticky=W, pady=(25, 0), padx=(0, 25))
         self.EntnameOfContact.grid(row=2, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
         self.EntAddress.grid(row=3, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
@@ -58,10 +58,11 @@ class BaseEvent:
         self.OpmEventRoomNumber.grid(row=5, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
         self.CalDateOfEvent.grid(row=6, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
-        #Buttons for Add and Cancel on the wedding form
-        self.btnCloseForm = Button(master, text="Cancel", command=master.destroy)
+        #Buttons for Add and Cancel on the base edit form
         self.btnAddBooking = Button(master, text="Add Booking")
-        ##Buttons for Add and Cancel on the wedding form being placed using grid layout
+        self.btnCloseForm = Button(master, text="Cancel", command=master.destroy)
+
+        ##Buttons for Add and Cancel on the base edit form being placed using grid layout
         self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(25, 50), padx=(0, 25), sticky="ew")
         self.btnCloseForm.grid(row=10, column=3, columnspan=2, pady=(25, 50), padx=(0, 50), sticky="ew")
 
