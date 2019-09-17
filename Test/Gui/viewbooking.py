@@ -87,6 +87,27 @@ class frmViewBooking(Tkinter.Frame):
             self.lblNoOfBedsReserved.grid_remove()
             self.lblDisNoOfBedsReserved.grid_remove()
 
+            # label for guest price
+            self.lblGuestPrice.grid_remove()
+            self.lblDisGuestPrice.grid_remove()
+
+            # Label for band price
+            self.lblBandCost.grid_remove()
+            self.lblDisBandCost.grid_remove()
+
+            # Label for sub total
+            self.lblSubTotal.grid_remove()
+            self.lblDisSubTotal.grid_remove()
+
+            # Label for VAT
+            self.lblVat.grid_remove()
+            self.lblDisVat.grid_remove()
+
+            # Label for total
+            self.lblTotal.grid_remove()
+            self.lblDisTotal.grid_remove()
+
+
         # adds the labels that are consistent throughout all event types
         def addBaseLables(self, object):
             self.lblNoofGuests.grid()
@@ -144,6 +165,25 @@ class frmViewBooking(Tkinter.Frame):
 
         def updatePriceBreakdown(self, object):
             self.lblDisGuestPrice.config(text= object.guestsCost())
+
+            self.lblGuestPrice.grid()
+            self.lblDisGuestPrice.grid()
+
+            # Label for band price
+            self.lblBandCost.grid()
+            self.lblDisBandCost.grid()
+
+            # Label for sub total
+            self.lblSubTotal.grid()
+            self.lblDisSubTotal.grid()
+
+            # Label for VAT
+            self.lblVat.grid()
+            self.lblDisVat.grid()
+
+            # Label for total
+            self.lblTotal.grid()
+            self.lblDisTotal.grid()
 
             if type(object) == Conference.Conference:
                 self.lblBandCost.config(text="Cost Per Day:")
@@ -243,7 +283,7 @@ class frmViewBooking(Tkinter.Frame):
         btnDelete.bind("<Leave>", on_leaveDelete)
 
         # button refresh
-        btnRefresh = Button(self.parent, text="Refresh", width=13, height=2, background="snow", font=("arial", 10))
+        btnRefresh = Button(self.parent, text="Refresh", width=13, height=2, background="snow", font=("arial", 10), command=lambda :self.refreshData(self.master2))
         btnRefresh.grid(row=3, column=0, sticky="nw", pady=(0, 20), padx=(10, 0))
         btnRefresh.bind("<Enter>", on_enterRefresh)
         btnRefresh.bind("<Leave>", on_leaveRefresh)
@@ -449,12 +489,18 @@ class frmViewBooking(Tkinter.Frame):
         self.master2 = self
         self.loadData(self.master2)
         self.CalIncome(self.master2)
+        removeAllLabels(self.master2)
 
     def CalIncome(self, master):
         totalIncome = 0.0
         for child in master.treeview.get_children():
             totalIncome += float(master.treeview.item(child, "values")[5])
             master.lblTotalIncome.config(text=totalIncome)
+
+    def refreshData(self, master):
+        master.treeview.delete(*master.treeview.get_children())
+        self.loadData(master)
+        self.CalIncome(master)
 
     def loadData(self, master):
 
