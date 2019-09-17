@@ -5,7 +5,7 @@ from addtionalWidgets import CalendarWidget
 class BaseEvent:
     #setting default values for eventRoom and BandName as empty strings
     eventRoomNo = ''
-    def __init__(self, master, Rooms):
+    def __init__(self, master, Rooms,):
         #Creation of wedding form set title, size ect..
         self.master = master
         self.master.title("base bookings")

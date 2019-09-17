@@ -37,6 +37,8 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
         self.OpmBandName.grid(row=8, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
         self.EntBedroomReserved.grid(row=9, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
+        self.EntBedroomReserved.config()
+
         #Buttons for Add and Cancel on the wedding for
         self.btnAddBooking.config(command=lambda: [Events.Wedding.createwedding(self.EntnumberOfguest.get(),
                                                                        self.EntnameOfContact.get(),

@@ -203,8 +203,9 @@ class frmViewBooking(Tkinter.Frame):
         #  Total income section below the tree view
         ttk.Label(self.parent, text="Total Income", font=("arial", 10, "bold"), background="lavender").grid(row=2,
                                                                                     column=5, sticky="se", padx=(10, 10))
-        ttk.Label(self.parent, text="£10000", font=("arial", 10, "bold"), background="lavender").grid(row=2, column=6,
-                                                                                    sticky="sw", padx=(0, 55))
+
+        self.lblTotalIncome = Label(self.parent, text="£10000", font=("arial", 10, "bold"), background="lavender")
+        self.lblTotalIncome.grid(row=2, column=6,sticky="sw", padx=(0, 55))
 
         # BUTTONS #
         # button hover colour - update
@@ -447,6 +448,13 @@ class frmViewBooking(Tkinter.Frame):
 
         self.master2 = self
         self.loadData(self.master2)
+        self.CalIncome(self.master2)
+
+    def CalIncome(self, master):
+        totalIncome = 0.0
+        for child in master.treeview.get_children():
+            totalIncome += float(master.treeview.item(child, "values")[5])
+            master.lblTotalIncome.config(text=totalIncome)
 
     def loadData(self, master):
 
