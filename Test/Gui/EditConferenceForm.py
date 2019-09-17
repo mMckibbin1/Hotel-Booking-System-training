@@ -59,4 +59,7 @@ class EditConference(Gui.BaseEditForm.BaseEvent):
                                                                           self.EntNoOfDays.get(),
                                                                           #checkbox get
                                                                           CheckVar1.get()), master.destroy()])
-        # Buttons for Add and Cancel on the conference form being placed using grid layout
+
+    def populateform(self, object):
+        self.EntCompanyName.insert(0, object.companyName)
+        self.EntNoOfDays.insert(0, object.noOfdays)

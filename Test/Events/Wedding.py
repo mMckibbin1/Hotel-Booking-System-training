@@ -40,3 +40,8 @@ def createwedding(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber,
     Newwedding = Wedding(int(noOfGuest), nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, DateofBooking,
                          BandName, bedRoomsRes, bandPrice, ID)
     return dbHelper.insertwedding(Newwedding)
+
+# method to take data from form and update the selected booking
+def updateWedding(noOfGuest, nameOfContact, address, contactNo, DateofEvent, eventRoomNumber, CompanyName, NoOfDays, projectorRequired):
+
+  print("not yet working :)")

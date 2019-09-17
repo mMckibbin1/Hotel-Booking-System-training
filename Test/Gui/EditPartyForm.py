@@ -3,7 +3,7 @@ from tkinter import *
 import Events.Party
 
 class EditParty(Gui.BaseEditForm.BaseEvent):
-    def __init__(self, master):
+    def __init__(self, master, object):
         RoomOption = ['D', 'E', 'F', 'G']
         super().__init__(master,RoomOption, object)
         # Creation of wedding form set title, size ect..

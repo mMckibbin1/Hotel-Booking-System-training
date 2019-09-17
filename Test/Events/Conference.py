@@ -39,3 +39,9 @@ def createConference(noOfGuest, nameOfContact, address, contactNo, DateofEvent, 
 
     newconference = Conference(int(noOfGuest), nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateofBooking, CompanyName, NoOfDays, projectorRequired, ID)
     return dbHelper.insertConference(newconference)
+
+
+# method to take data from form and update the selected booking
+def updateConference(noOfGuest, nameOfContact, address, contactNo, DateofEvent, eventRoomNumber, CompanyName, NoOfDays, projectorRequired):
+
+  print("not yet working :)")

@@ -15,7 +15,7 @@ class BaseEditEvent:
         #defines options for dropdown boxes
 
         DefaultRoomNo = StringVar(master)
-        DefaultRoomNo.set("Please Select A Room")  # default value
+        DefaultRoomNo.set(object.eventRoomNo)  # default value set as what is stored already
 
 
         #Labels for Wedding booking form
@@ -59,7 +59,7 @@ class BaseEditEvent:
         self.CalDateOfEvent.grid(row=6, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
         #Buttons for Add and Cancel on the base edit form
-        self.btnAddBooking = Button(master, text="Add Booking")
+        self.btnUpdateBooking = Button(master, text="Update Booking")
         self.btnCloseForm = Button(master, text="Cancel", command=master.destroy)
 
         ##Buttons for Add and Cancel on the base edit form being placed using grid layout
@@ -93,8 +93,8 @@ class BaseEditEvent:
         self.CalDateOfEvent.insert([0], Date)
 
     def populateform(self, object):
-        self.EntContactNumber.insert(0, object.contactNo)
-        self.EntAddress.insert(0, object.address)
-        self.EntnameOfContact.insert(0, object.nameOfContact)
         self.EntnumberOfguest.insert(0, object.noGuests)
+        self.EntnameOfContact.insert(0, object.nameOfContact)
+        self.EntAddress.insert(0, object.address)
+        self.EntContactNumber.insert(0, object.contactNo)
         self.CalDateOfEvent.insert(0, object.dateOfEvent)

@@ -6,7 +6,7 @@ class EditWedding(Gui.BaseEditForm.BaseEvent):
     #setting default values for eventRoom and BandName as empty strings
     eventRoomNo = ''
     bandName = ''
-    def __init__(self, master):
+    def __init__(self, master, object):
         RoomOption = ['H', 'I']
         super().__init__(master,RoomOption, object)
         #Creation of wedding form set title, size ect..
