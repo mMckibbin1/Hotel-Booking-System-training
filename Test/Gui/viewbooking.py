@@ -28,6 +28,11 @@ class frmViewBooking(Tkinter.Frame):
         self.parent.grid_columnconfigure(0, weight=1)
         self.parent.config(background="lavender")
 
+        def unSelectItem(a, self):
+
+            self.treeview.selection_clear()
+            self.removeAllLabels(self)
+
         def selectItem(a):
 
             listofevents = []
@@ -230,6 +235,7 @@ class frmViewBooking(Tkinter.Frame):
         self.tree.heading('#5', text='Room Number')
         self.tree.heading('#6', text='Total Cost')
         self.tree.bind('<ButtonRelease-1>', selectItem)
+        #self.tree.bind('<Escape>' , lambda e:unSelectItem(e,self.master2))
         self.tree.column('#0', width=100)  # column width auto size
         self.tree.column('#1', width=100)
         self.tree.column('#2', width=100)
