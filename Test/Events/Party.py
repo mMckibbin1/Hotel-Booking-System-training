@@ -38,6 +38,8 @@ def createParty(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, D
     return dbHelper.insertParty(NewParty)
 
 # method to take data from form and update the selected booking
-def updateParty(noOfGuest, nameOfContact, address, contactNo, DateofEvent, eventRoomNumber, CompanyName, NoOfDays, projectorRequired):
+def updateParty(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateofBooking, BandName, ID):
+    BandPrice = 0
 
-  print("not yet working :)")
+    editParty = Party(int(noOfGuest), nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateofBooking, BandName, BandPrice, ID)
+    dbHelper.updateParty(editParty)

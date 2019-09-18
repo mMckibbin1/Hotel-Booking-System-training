@@ -3,6 +3,34 @@ import tkinter as Tkinter
 import tkinter.ttk as ttk
 from Database import dbHelper
 from Events import Wedding, Party, Conference
+from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
+from Gui.EditConferenceForm import EditConference
+from Gui.EditPartyForm import EditParty
+from Gui.EditWeddingForm import EditWedding
+
+
+def call_update_wedding_popup(object):
+    top = Toplevel()
+    ui = EditWeddingForm.EditWedding(top, object)
+    top.grab_set()
+    top.wait_window()
+    top.destroy()
+
+
+def call_update_party_popup(object):
+    top = Toplevel()
+    ui = EditPartyForm.EditParty(top, object)
+    top.grab_set()
+    top.wait_window()
+    top.destroy()
+
+
+def call_update_conference_popup(object):
+    top = Toplevel()
+    ui = EditConferenceForm.EditConference(top, object)
+    top.grab_set()
+    top.wait_window()
+    top.destroy()
 
 class frmViewBooking(Tkinter.Frame):
     #datalist = None
@@ -58,10 +86,44 @@ class frmViewBooking(Tkinter.Frame):
                             if object.ID == RowID:
                                 return DetailsLabelChange(self, types, object)
 
+        # except:
+        # print('Select a row!!!!')
+
+        def update_selected():
+            listofevents = []
+            listofdb = dbHelper.read_all_from_db()
+            #try:
+            curItem = self.tree.focus()
+
+            RowID = self.tree.item(curItem)['text']
 
 
-            #except:
-                #print('Select a row!!!!')
+            for value in self.tree.item(curItem)['values']:
+                listofevents.append(value)
+
+                types = listofevents[0]
+
+            for list in listofdb:
+                for object in list:
+                    if types == "Wedding":
+                        if type(object) == Wedding.Wedding:
+                            if object.ID == RowID:
+                                object = object
+                                return call_update_wedding_popup(object)
+                    elif types == "Party":
+                        if type(object) == Party.Party:
+                            if object.ID == RowID:
+                                object = object
+                                return call_update_party_popup(object)
+                    elif types == "Conference":
+                        if type(object) == Conference.Conference:
+                            if object.ID == RowID:
+                                object = object
+                                print(object.noOfDays)
+                                return call_update_conference_popup(object)
+
+
+
 
         # functions to allow the labels to change in the additional info labelframe
         # removes all labels stored within labelframe
@@ -230,7 +292,7 @@ class frmViewBooking(Tkinter.Frame):
 
 
         # button update
-        btnUpdate = Button(self.parent, text="Update", width=13, height=2, background="snow", font=("arial", 10))
+        btnUpdate = Button(self.parent, text="Update", width=13, height=2, background="snow", font=("arial", 10), command = update_selected)
         btnUpdate.grid(row=3, column=7, sticky="ne", pady=(0, 20))
         btnUpdate.bind("<Enter>", on_enterUpdate)
         btnUpdate.bind("<Leave>", on_leaveUpdate)

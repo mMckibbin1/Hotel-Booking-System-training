@@ -2,12 +2,12 @@ from tkinter import *
 import Events.Conference
 import Gui.BaseEditForm
 
-class EditConference(Gui.BaseEditForm.BaseEvent):
+class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
-    def __init__(self, master, object):
+    def __init__(self, master, booking):
         RoomOption = ['A', 'B', 'C']
 
-        super().__init__(master,RoomOption, object)
+        super().__init__(master, RoomOption, booking)
 
         # Creation of wedding form set title, size ect..
         master.title("Conference Edit")
@@ -47,19 +47,33 @@ class EditConference(Gui.BaseEditForm.BaseEvent):
 
         #checkbox.....
         self.chxProjectorRequired.grid(row=9, column=2, pady=(25, 0), padx=(0, 25))
-
+        print(booking.dateOfBooking)
         # Buttons for Add and Cancel on the conference form
         self.btnUpdateBooking.config(command=lambda: [Events.Conference.updateConference(self.EntnumberOfguest.get(),
                                                                           self.EntnameOfContact.get(),
                                                                           self.EntAddress.get(),
-                                                                          self.EntContactNumber.get(),
-                                                                          self.CalDateOfEvent.get(),
-                                                                          self.eventRoomNo,
+                                                                          self.EntContactNumber.get(),self.eventRoomNo,
+                                                                          self.CalDateOfEvent.get(), booking.dateOfBooking,
                                                                           self.EntCompanyName.get(),
                                                                           self.EntNoOfDays.get(),
                                                                           #checkbox get
-                                                                          CheckVar1.get()), master.destroy()])
+                                                                          CheckVar1.get(), booking.ID), master.destroy()])
 
-    def populateform(self, object):
-        self.EntCompanyName.insert(0, object.companyName)
-        self.EntNoOfDays.insert(0, object.noOfdays)
+
+        self.populateform_conference(booking)
+        # print(booking.ID)
+
+
+
+    def populateform_conference(self, booking):
+        self.EntCompanyName.insert(0, booking.companyName)
+        self.EntNoOfDays.insert(0, booking.noOfDays)
+
+        value = booking.projectorRequired
+
+        if value == 1:
+            self.chxProjectorRequired.select()
+        elif value == 0:
+            self.chxProjectorRequired.deselect()
+
+

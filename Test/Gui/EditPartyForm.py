@@ -2,7 +2,7 @@ import Gui.BaseEditForm
 from tkinter import *
 import Events.Party
 
-class EditParty(Gui.BaseEditForm.BaseEvent):
+class EditParty(Gui.BaseEditForm.BaseEditEvent):
     def __init__(self, master, object):
         RoomOption = ['D', 'E', 'F', 'G']
         super().__init__(master,RoomOption, object)
@@ -16,7 +16,7 @@ class EditParty(Gui.BaseEditForm.BaseEvent):
         BandNames = ["Lil' Febrezey", "Prawn Mendes", "AB/CD"]
 
         DefaultBandName = StringVar(master)
-        DefaultBandName.set("Please Select a Band")  # default value
+        DefaultBandName.set(object.bandName)  # default value from db for selected entry
 
         # Labels for Party booking form
         self.lblSubheading.config(text="Please update any details that you want to change")
@@ -34,10 +34,9 @@ class EditParty(Gui.BaseEditForm.BaseEvent):
         self.btnUpdateBooking.config(command=lambda: [Events.Party.updateParty(self.EntnumberOfguest.get(),
                                                                      self.EntnameOfContact.get(),
                                                                      self.EntAddress.get(),
-                                                                     self.EntContactNumber.get(),
-                                                                     self.eventRoomNo,
-                                                                     self.CalDateOfEvent.get(),
-                                                                     self.bandName), master.destroy()])
+                                                                     self.EntContactNumber.get(),self.eventRoomNo,
+                                                                     self.CalDateOfEvent.get(), object.dateOfBooking,
+                                                                     self.bandName, object.ID), master.destroy()])
 
     # function to get room number from dropdown
     def getRoomnumber(self, value):
@@ -46,3 +45,4 @@ class EditParty(Gui.BaseEditForm.BaseEvent):
     # function to get band name from dropdown
     def getBandName(self, value):
         self.bandName = value
+

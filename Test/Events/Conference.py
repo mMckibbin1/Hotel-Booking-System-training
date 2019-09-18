@@ -1,6 +1,7 @@
 import datetime
 import Events.BaseEvent
 from Database import dbHelper
+from Gui import EditConferenceForm
 
 
 class Conference(Events.BaseEvent.BaseEventobj):
@@ -28,7 +29,7 @@ class Conference(Events.BaseEvent.BaseEventobj):
         return self.grosstotal() + VAT
 
 # method to take data from form and add additional required data in order to create object to save to database
-def createConference(noOfGuest, nameOfContact, address, contactNo, DateofEvent, eventRoomNumber, CompanyName, NoOfDays, projectorRequired):
+def createConference(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, CompanyName, NoOfDays, projectorRequired):
 
     dateofBooking = datetime.datetime.now()
     ID=None
@@ -42,6 +43,14 @@ def createConference(noOfGuest, nameOfContact, address, contactNo, DateofEvent, 
 
 
 # method to take data from form and update the selected booking
-def updateConference(noOfGuest, nameOfContact, address, contactNo, DateofEvent, eventRoomNumber, CompanyName, NoOfDays, projectorRequired):
+def updateConference(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateofBooking, CompanyName, NoOfDays, projectorRequired, ID):
 
-  print("not yet working :)")
+
+
+    if projectorRequired == True:
+        projectorRequired = 1
+    else:
+        projectorRequired = 0
+
+    editConference = Conference(int(noOfGuest), nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateofBooking, CompanyName, NoOfDays, projectorRequired, ID)
+    dbHelper.updateConference(editConference)

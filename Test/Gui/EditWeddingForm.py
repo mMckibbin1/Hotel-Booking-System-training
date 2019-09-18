@@ -1,14 +1,17 @@
 from tkinter import *
 import Events.Wedding
 import Gui.BaseEditForm
+from Gui import BaseEditForm
 
-class EditWedding(Gui.BaseEditForm.BaseEvent):
+
+class EditWedding(Gui.BaseEditForm.BaseEditEvent):
     #setting default values for eventRoom and BandName as empty strings
     eventRoomNo = ''
     bandName = ''
-    def __init__(self, master, object):
+
+    def __init__(self, master, booking):
         RoomOption = ['H', 'I']
-        super().__init__(master,RoomOption, object)
+        super().__init__(master, RoomOption, booking)
         #Creation of wedding form set title, size ect..
         master.title("Wedding Edit")
         master.resizable(0, 0)
@@ -17,7 +20,7 @@ class EditWedding(Gui.BaseEditForm.BaseEvent):
         #defines options for dropdown boxes
         BandNames = ["Lil' Febrezey", "Prawn Mendes", "AB/CD"]
         DefaultBandName = StringVar(master)
-        DefaultBandName.set("Please Select a Band")  # default value
+        DefaultBandName.set(booking.bandName)  # default value from db for selected item
 
 
         #Labels for Wedding booking form
@@ -38,16 +41,17 @@ class EditWedding(Gui.BaseEditForm.BaseEvent):
         self.EntBedroomReserved.grid(row=9, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
         #Buttons for Add and Cancel on the wedding for
-        self.btnUpdateBooking.config(command=lambda: [Events.Wedding.updatewedding(self.EntnumberOfguest.get(),
+        self.btnUpdateBooking.config(command=lambda: [Events.Wedding.updateWedding(self.EntnumberOfguest.get(),
                                                                        self.EntnameOfContact.get(),
                                                                        self.EntAddress.get(),
                                                                        self.EntContactNumber.get(),
                                                                        self.eventRoomNo,
-                                                                       self.CalDateOfEvent.get(),
+                                                                       self.CalDateOfEvent.get(),booking.dateOfBooking,
                                                                        self.bandName,
-                                                                       self.EntBedroomReserved.get()), master.destroy()])
+                                                                       self.EntBedroomReserved.get(), booking.ID), master.destroy()])
 
         #Buttons for Add and Cancel on the wedding form being placed using grid layout
+        self.populateform_wedding(booking)
 
     #function to get room number from dropdown
     def getRoomnumber(self, value):
@@ -56,3 +60,7 @@ class EditWedding(Gui.BaseEditForm.BaseEvent):
     # function to get band name from dropdown
     def getBandName(self, value):
         self.bandName = value
+
+    def populateform_wedding(self, booking):
+
+        self.EntBedroomReserved.insert(0, booking.noBedroomsReserved)

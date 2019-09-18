@@ -1,5 +1,7 @@
 from tkinter import *
 from addtionalWidgets import CalendarWidget
+from Database import dbHelper
+from Gui import viewbooking
 
 
 class BaseEditEvent:
@@ -63,10 +65,10 @@ class BaseEditEvent:
         self.btnCloseForm = Button(master, text="Cancel", command=master.destroy)
 
         ##Buttons for Add and Cancel on the base edit form being placed using grid layout
-        self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(25, 50), padx=(0, 25), sticky="ew")
+        self.btnUpdateBooking.grid(row=10, column=1, columnspan=1, pady=(25, 50), padx=(0, 25), sticky="ew")
         self.btnCloseForm.grid(row=10, column=3, columnspan=2, pady=(25, 50), padx=(0, 50), sticky="ew")
 
-        self.populateform(self,object)
+        self.populateform(object)
 
     #function to get room number from dropdown
     def getRoomnumber(self, value):
@@ -98,3 +100,4 @@ class BaseEditEvent:
         self.EntAddress.insert(0, object.address)
         self.EntContactNumber.insert(0, object.contactNo)
         self.CalDateOfEvent.insert(0, object.dateOfEvent)
+

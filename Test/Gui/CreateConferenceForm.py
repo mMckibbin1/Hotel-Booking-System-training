@@ -53,8 +53,8 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
                                                                           self.EntnameOfContact.get(),
                                                                           self.EntAddress.get(),
                                                                           self.EntContactNumber.get(),
-                                                                          self.CalDateOfEvent.get(),
                                                                           self.eventRoomNo,
+                                                                          self.CalDateOfEvent.get(),
                                                                           self.EntCompanyName.get(),
                                                                           self.EntNoOfDays.get(),
                                                                           #checkbox get
