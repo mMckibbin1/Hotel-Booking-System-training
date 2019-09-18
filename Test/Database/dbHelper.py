@@ -126,3 +126,22 @@ def deleteBooking(ID, Type):
 
     # deletes the booking from the table
     cursor.execute("DELETE FROM " + Table + " WHERE Id=" + str(ID))
+
+###### Search #####
+def search(EventsList, StartDate, EndDate):
+    db = dbconn
+    cursor = db.cursor()
+    Date = None
+    if StartDate !="" and EndDate !="":
+        Date = " Where date >= "+StartDate+" and date <= "+EndDate
+    elif StartDate !="":
+        Date = " Where date = "+StartDate
+    elif EndDate !="":
+        Date = " Where date = "+EndDate
+    else:
+        Date = ""
+
+    loopcount = EventsList.Range()
+
+    for string in EventsList:
+        cursor.execute("select * from"+string+Date)

@@ -1,6 +1,6 @@
 from Database import dbHelper
 from Events import Wedding, Party, Conference
-
+from tkinter import *
 from Gui import DialogBoxes
 from addtionalWidgets import CalendarWidget
 
