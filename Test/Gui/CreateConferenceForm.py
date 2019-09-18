@@ -2,12 +2,13 @@ from tkinter import *
 import Events.Conference
 import Gui.BaseCreateForm
 
+
 class bookConference(Gui.BaseCreateForm.BaseEvent):
 
     def __init__(self, master):
         RoomOption = ['A', 'B', 'C']
 
-        super().__init__(master,RoomOption)
+        super().__init__(master, RoomOption)
 
         # Creation of wedding form set title, size ect..
         master.title("Conference bookings")
@@ -36,7 +37,7 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         self.EntCompanyName = Entry(master, font=("arial", 10), width=50)
         self.EntNoOfDays = Entry(master, font=("arial", 10), width=50)
 
-        #checkbox now works :)
+        # checkbox now works :)
         CheckVar1 = IntVar()
         self.chxProjectorRequired = Checkbutton(master, text='', variable=CheckVar1, onvalue=True, offvalue=False, command=ch_box_sel)
 
@@ -45,7 +46,7 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         self.EntNoOfDays.grid(row=8, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
 
-        #checkbox.....
+        # checkbox.....
         self.chxProjectorRequired.grid(row=9, column=2, pady=(25, 0), padx=(0, 25))
 
         # Buttons for Add and Cancel on the conference form

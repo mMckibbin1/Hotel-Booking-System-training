@@ -1,28 +1,30 @@
-from tkinter import *
-import tkinter as Tkinter
-import tkinter.ttk as ttk
 from Database import dbHelper
 from Events import Wedding, Party, Conference
-from Gui import DialogBoxes
+
 
 def unSelectItem(a, self):
     self.treeview.selection_clear()
     self.removeAllLabels(self)
 
 
+# selects item from treeview
 def selectItem(a, self):
     listofevents = []
     listofdb = dbHelper.read_all_from_db()
-    # try:
+
+    # sets the current item as the highlighted row in the treeview
     curItem = self.tree.focus()
 
+    # sets the id
     RowID = self.tree.item(curItem)['text']
 
+    # adds the values in the tree view to a list
     for value in self.tree.item(curItem)['values']:
         listofevents.append(value)
 
         types = listofevents[0]
 
+    # changes the labels depending on the ID and event type
     for list in listofdb:
         for object in list:
             if types == "Wedding":
@@ -37,9 +39,6 @@ def selectItem(a, self):
                 if type(object) == Conference.Conference:
                     if object.ID == RowID:
                         return DetailsLabelChange(self, types, object)
-
-    # except:
-    # print('Select a row!!!!')
 
 
 # functions to allow the labels to change in the additional info labelframe
@@ -98,6 +97,7 @@ def addBaseLables(self, object):
     self.lblCostPerHead.grid()
     self.lblDisCostPerHead.grid()
 
+    # additional info labels
     self.lblDisNoofGuests.config(text=object.noGuests)
     self.lblDisAddress.config(text=object.address)
     self.lblDisDateofBooking.config(text=object.dateOfBooking)
@@ -114,6 +114,7 @@ def addWeddingLabels(self, object):
     self.lblNoOfBedsReserved.grid()
     self.lblDisNoOfBedsReserved.grid()
 
+    # additional info labels
     self.lblDisBandName.config(text=object.bandName)
     self.lblDisBandPrice.config(text=object.bandPrice)
     self.lblDisNoOfBedsReserved.config(text=object.noBedroomsReserved)
@@ -127,6 +128,7 @@ def addPartyLabels(self, object):
     self.lblBandPrice.grid()
     self.lblDisBandPrice.grid()
 
+    # additional info labels
     self.lblDisBandName.config(text=object.bandName)
     self.lblDisBandPrice.config(text=object.bandPrice)
 
@@ -141,12 +143,15 @@ def addConferenceLables(self, object):
     self.lblProjectorRequired.grid()
     self.lblDisProjectorRequired.grid()
 
+    # additional info labels
     self.lblDisCompanyName.config(text=object.companyName)
     self.lblDisNumberofDays.config(text=object.noOfDays)
     self.lblDisProjectorRequired.config(text=object.projectorRequired)
 
 
+# functions to allow the labels to change in the price breakdown labelframe
 def updatePriceBreakdown(self, object):
+    # Label for guest price
     self.lblDisGuestPrice.config(text=object.guestsCost())
 
     self.lblGuestPrice.grid()
@@ -168,6 +173,7 @@ def updatePriceBreakdown(self, object):
     self.lblTotal.grid()
     self.lblDisTotal.grid()
 
+    # changes the labels if the event type is a conference
     if type(object) == Conference.Conference:
         self.lblBandCost.config(text="Cost Per Day:")
         self.lblDisBandCost.config(text=str(object.guestsCost()) + '   ( * ' + str(object.noOfDays) + " days)")
@@ -175,6 +181,7 @@ def updatePriceBreakdown(self, object):
         self.lblBandCost.config(text="Band Price")
         self.lblDisBandCost.config(text=object.bandPrice)
 
+    # labels for totals
     self.lblDisSubTotal.config(text=object.grosstotal())
     self.lblDisVat.config(text=object.VAT())
     self.lblDisTotal.config(text=object.netTotal())
@@ -200,18 +207,24 @@ def DetailsLabelChange(self, eventType, object):
     else:
         removeAllLabels(self)
 
-   ##################
+
+# calculates the total income
 def CalIncome(master):
     totalIncome = 0.0
+    # adds up the values in the total cost column
     for child in master.treeview.get_children():
         totalIncome += float(master.treeview.item(child, "values")[5])
         master.lblTotalIncome.config(text=totalIncome)
 
+
+# function to reload the table
 def refreshData(master):
     master.treeview.delete(*master.treeview.get_children())
     loadData(master)
     CalIncome(master)
 
+
+# function to load the data from the database into the table
 def loadData(master):
 
     datalist = dbHelper.read_all_from_db()
@@ -241,7 +254,8 @@ def insert_data(self, ID, EventType, nameOfContact, contactNo, dateOfEvent, even
 def delete_data(self):
     listofevents = []
     curItem = self.tree.focus()
-    RowID = self.tree.item(curItem)['text']  # ID
+    # sets the id to the id in the row
+    RowID = self.tree.item(curItem)['text']
 
     for value in self.tree.item(curItem)['values']:
         listofevents.append(value)

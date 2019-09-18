@@ -2,6 +2,7 @@ import Gui.BaseCreateForm
 from tkinter import *
 import Events.Party
 
+
 class bookParty(Gui.BaseCreateForm.BaseEvent):
     def __init__(self, master):
         RoomOption = ['D', 'E', 'F', 'G']

@@ -1,8 +1,6 @@
 from tkinter import *
 import tkinter as Tkinter
 import tkinter.ttk as ttk
-from Database import dbHelper
-from Events import Wedding, Party, Conference
 from Gui import DialogBoxes
 import Gui.viewbookinglogic
 
@@ -237,7 +235,7 @@ class frmViewBooking(Tkinter.Frame):
         self.labelframe.grid_columnconfigure(3, weight=1)
 
 
-        # labelframe for more price breakdown
+        # labelframe for price breakdown
         self.Totallabelframe = LabelFrame(self.parent, text="Price Breakdown", width=324, height=100,
                                           background="lavender", font=("arial", 9, "bold"))
         self.Totallabelframe.grid(row=1, column=7, columnspan=3, padx=(10, 20), pady=(0, 20))
@@ -290,7 +288,7 @@ class frmViewBooking(Tkinter.Frame):
         self.Totallabelframe.grid_columnconfigure(0, weight=1)
         self.Totallabelframe.grid_columnconfigure(3, weight=1)
 
-        #method calls
+        # method calls
         self.master2 = self
         Gui.viewbookinglogic.loadData(self.master2)
         Gui.viewbookinglogic.CalIncome(self.master2)

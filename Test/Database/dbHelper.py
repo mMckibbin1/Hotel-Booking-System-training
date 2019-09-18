@@ -112,16 +112,17 @@ def deleteBooking(ID, Type):
     db = dbconn
     cursor = db.cursor()
 
+    # global
     Table = None
 
+    #if statement - checks the type of event
     if Type == "Wedding":
-        #global Table
+        # sets table to delete booking from
         Table = "weddingTable"
     elif Type == "Party":
-        #global Table
         Table = "partyTable"
     elif Type == "Conference":
-        #global Table
         Table = "conferenceTable"
 
+    # deletes the booking from the table
     cursor.execute("DELETE FROM " + Table + " WHERE Id=" + str(ID))
