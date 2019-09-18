@@ -1,7 +1,9 @@
 import Events.BaseEvent
 import datetime
 from Database import dbHelper
-
+"""
+Wedding object used for wedding bookings
+"""
 
 class Wedding(Events.BaseEvent.BaseEventobj):
 

@@ -1,8 +1,9 @@
 import datetime
 import Events.BaseEvent
 from Database import dbHelper
-
-
+"""
+conference object used for conference bookings
+"""
 class Conference(Events.BaseEvent.BaseEventobj):
 
     def __init__(self, noGuests, nameOfContact, address, contactNo, eventRoomNo, dateOfEvent, dateOfBooking,

@@ -13,10 +13,8 @@ class BaseEvent:
         self.master.config(background="powder blue")
 
         #defines options for dropdown boxes
-
         DefaultRoomNo = StringVar(master)
         DefaultRoomNo.set("Please Select A Room")  # default value
-
 
         #Labels for Wedding booking form
         self.lblSubheading = Label(master, text="Please fill in the details for the wedding event you are booking",font=("arial", 15, "bold"), bg="powder blue")

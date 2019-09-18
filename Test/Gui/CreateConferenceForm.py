@@ -5,19 +5,17 @@ import Gui.BaseCreateForm
 class bookConference(Gui.BaseCreateForm.BaseEvent):
 
     def __init__(self, master):
+        # room options available for event type
         RoomOption = ['A', 'B', 'C']
-
         super().__init__(master,RoomOption)
-
         # Creation of wedding form set title, size ect..
         master.title("Conference bookings")
         master.resizable(0, 0)
         master.config(background="powder blue")
 
+        # method to get vaule of checkbutton
         def ch_box_sel():
             print(CheckVar1.get())
-
-        # defines options for dropdown boxes
 
         # Labels for Conference booking form
         self.lblSubheading.config(text="Please fill in the details for the Conference event you are booking")
@@ -36,19 +34,18 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         self.EntCompanyName = Entry(master, font=("arial", 10), width=50)
         self.EntNoOfDays = Entry(master, font=("arial", 10), width=50)
 
-        #checkbox now works :)
+        #checkbox
         CheckVar1 = IntVar()
         self.chxProjectorRequired = Checkbutton(master, text='', variable=CheckVar1, onvalue=True, offvalue=False, command=ch_box_sel)
 
-        # Entry boxes, dropdowns and datepicker for conference form being placed using a grid layout
+        # Entry boxes
         self.EntCompanyName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
         self.EntNoOfDays.grid(row=8, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
-
-        #checkbox.....
+        #checkbox
         self.chxProjectorRequired.grid(row=9, column=2, pady=(25, 0), padx=(0, 25))
 
-        # Buttons for Add and Cancel on the conference form
+        # Button config to override the parent button config
         self.btnAddBooking.config(command=lambda: [Events.Conference.createConference(self.EntnumberOfguest.get(),
                                                                           self.EntnameOfContact.get(),
                                                                           self.EntAddress.get(),
@@ -59,4 +56,3 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
                                                                           self.EntNoOfDays.get(),
                                                                           #checkbox get
                                                                           CheckVar1.get()), master.destroy()])
-        # Buttons for Add and Cancel on the conference form being placed using grid layout
