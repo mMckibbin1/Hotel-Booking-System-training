@@ -1,7 +1,9 @@
 import Events.BaseEvent
 import datetime
 from Database import dbHelper
-
+"""
+Wedding object used for wedding bookings
+"""
 
 class Wedding(Events.BaseEvent.BaseEventobj):
 
@@ -13,12 +15,22 @@ class Wedding(Events.BaseEvent.BaseEventobj):
                          costPerHead=0)
 
         self.bandName = bandName
-        self.costPerHead = 15.0
+        self.costPerHead = 30.0
         self.noBedroomsReserved = noBedroomsReserved
         self.bandPrice = Events.BaseEvent.CalbandPrice(bandName)
 
+    def guestsCost(self):
+        return self.costPerHead * self.noGuests
+
+    def VAT(self):
+        return self.grosstotal() / 5
+
     def grosstotal(self):
         return float (self.costPerHead * self.noGuests) + self.bandPrice
+
+    def netTotal(self):
+        return self.grosstotal() + self.VAT()
+
 
 # method to take data from form and add additional required data in order to create object to save to database
 def createwedding(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, BandName, bedRoomsRes):
@@ -30,3 +42,11 @@ def createwedding(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber,
     Newwedding = Wedding(int(noOfGuest), nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, DateofBooking,
                          BandName, bedRoomsRes, bandPrice, ID)
     return dbHelper.insertwedding(Newwedding)
+
+# method to take data from form and update the selected booking
+def updateWedding(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateOfBooking, BandName, bedRoomsRes, ID):
+    BandPrice = 0
+
+    editWedding = Wedding(int(noOfGuest), nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateOfBooking ,
+                      BandName, BandPrice, bedRoomsRes, ID)
+    dbHelper.updateWedding(editWedding)

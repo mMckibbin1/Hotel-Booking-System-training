@@ -1,35 +1,25 @@
 from tkinter import *
 import tkinter as Tkinter
 import tkinter.ttk as ttk
+from Gui import DialogBoxes
+import Gui.viewbookinglogic
+
 from Database import dbHelper
+from Events import Wedding, Party, Conference
+from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
+from Gui.EditConferenceForm import EditConference
+from Gui.EditPartyForm import EditParty
+from Gui.EditWeddingForm import EditWedding
 
 
-eventlist = [['wedding', 'Holly'], ['party', 'Tom'], ['conference', 'Bob'], ['']]
-
-
-def loadData():
-    datalist = dbHelper.read_all_from_db()
-
-    for list in datalist:
-        for object in list:
-            print(object.noGusets)
-        #frmViewBooking.insert_data(frmViewBooking,object)
 
 
 class frmViewBooking(Tkinter.Frame):
-
+    master2 = None
     def __init__(self, master):
-        '''
-        Constructor
-        '''
-        # self.root = Tkinter.Tk()
         Tkinter.Frame.__init__(self, master)
         self.parent = master
-        self.initialize_user_interface()
-
-        loadData()
-
-    def initialize_user_interface(self):
+        master.resizable(0, 0)
         """Draw a user interface allowing the user to type
         items and insert them into the treeview
         """
@@ -37,103 +27,6 @@ class frmViewBooking(Tkinter.Frame):
         self.parent.grid_rowconfigure(0, weight=1)
         self.parent.grid_columnconfigure(0, weight=1)
         self.parent.config(background="lavender")
-
-        def selectItem(a):
-
-            listofevents = []
-
-            try:
-                curItem = self.tree.focus()
-
-                for value in self.tree.item(curItem)['values']:
-                    listofevents.append(value)
-
-                    type = listofevents[0]
-                    return DetailsLabelChange(self, type)
-            except:
-                print('Select a row!!!!')
-
-        # functions to allow the labels to change in the additional info labelframe
-        # removes all labels stored within labelframe
-        def removeAllLabels(self):
-            self.lblNoofGuests.grid_remove()
-            self.lblDisNoofGuests.grid_remove()
-            self.lblAddress.grid_remove()
-            self.lblDisAddress.grid_remove()
-            self.lblDateofBooking.grid_remove()
-            self.lblDisDateofBooking.grid_remove()
-            self.lblCostPerHead.grid_remove()
-            self.lblDisCostPerHead.grid_remove()
-            self.lblBandName.grid_remove()
-            self.lblDisBandName.grid_remove()
-            self.lblBandPrice.grid_remove()
-            self.lblDisBandPrice.grid_remove()
-            self.lblCompanyName.grid_remove()
-            self.lblDisCompanyName.grid_remove()
-            self.lblNumberofDays.grid_remove()
-            self.lblDisNumberofDays.grid_remove()
-            self.lblProjectorRequired.grid_remove()
-            self.lblDisProjectorRequired.grid_remove()
-            self.lblNoOfBedsReserved.grid_remove()
-            self.lblDisNoOfBedsReserved.grid_remove()
-
-        # adds the labels that are consistent throughout all event types
-        def addBaseLables(self):
-            self.lblNoofGuests.grid()
-            self.lblDisNoofGuests.grid()
-            self.lblAddress.grid()
-            self.lblDisAddress.grid()
-            self.lblDateofBooking.grid()
-            self.lblDisDateofBooking.grid()
-            self.lblCostPerHead.grid()
-            self.lblDisCostPerHead.grid()
-
-        # adds the labels that are used for weddings
-        def addWeddingLabels(self):
-            addBaseLables(self)
-            self.lblBandName.grid()
-            self.lblDisBandName.grid()
-            self.lblBandPrice.grid()
-            self.lblDisBandPrice.grid()
-            self.lblNoOfBedsReserved.grid()
-            self.lblDisNoOfBedsReserved.grid()
-
-        # adds the labels that are used for parties
-        def addPartyLabels(self):
-            addBaseLables(self)
-            self.lblBandName.grid()
-            self.lblDisBandName.grid()
-            self.lblBandPrice.grid()
-            self.lblDisBandPrice.grid()
-
-        # adds the labels that are used for conferences
-        def addConferenceLables(self):
-            addBaseLables(self)
-            self.lblCompanyName.grid()
-            self.lblDisCompanyName.grid()
-            self.lblNumberofDays.grid()
-            self.lblDisNumberofDays.grid()
-            self.lblProjectorRequired.grid()
-            self.lblDisProjectorRequired.grid()
-
-        # function to change the labels shown, depending on the event type selected in the treeview
-        def DetailsLabelChange(self, eventType):
-
-            if eventType == 'wedding':
-                removeAllLabels(self)
-                addWeddingLabels(self)
-
-            elif eventType == 'party':
-                removeAllLabels(self)
-                addPartyLabels(self)
-
-            elif eventType == 'conference':
-                removeAllLabels(self)
-                addConferenceLables(self)
-
-            else:
-                removeAllLabels(self)
-
 
         # Set the treeview
         self.tree = ttk.Treeview(self.parent,
@@ -146,7 +39,8 @@ class frmViewBooking(Tkinter.Frame):
         self.tree.heading('#4', text='Event Date')
         self.tree.heading('#5', text='Room Number')
         self.tree.heading('#6', text='Total Cost')
-        self.tree.bind('<ButtonRelease-1>', selectItem)
+        self.tree.bind('<ButtonRelease-1>', lambda e :Gui.viewbookinglogic.selectItem(e,self))
+        #self.tree.bind('<Escape>' , lambda e:unSelectItem(e,self.master2))
         self.tree.column('#0', width=100)  # column width auto size
         self.tree.column('#1', width=100)
         self.tree.column('#2', width=100)
@@ -160,8 +54,9 @@ class frmViewBooking(Tkinter.Frame):
         #  Total income section below the tree view
         ttk.Label(self.parent, text="Total Income", font=("arial", 10, "bold"), background="lavender").grid(row=2,
                                                                                     column=5, sticky="se", padx=(10, 10))
-        ttk.Label(self.parent, text="£10000", font=("arial", 10, "bold"), background="lavender").grid(row=2, column=6,
-                                                                                    sticky="sw", padx=(0, 55))
+
+        self.lblTotalIncome = Label(self.parent, text="£10000", font=("arial", 10, "bold"), background="lavender")
+        self.lblTotalIncome.grid(row=2, column=6,sticky="sw", padx=(0, 55))
 
         # BUTTONS #
         # button hover colour - update
@@ -187,19 +82,21 @@ class frmViewBooking(Tkinter.Frame):
 
 
         # button update
-        btnUpdate = Button(self.parent, text="Update", width=13, height=2, background="snow", font=("arial", 10))
+        btnUpdate = Button(self.parent, text="Update", width=13, height=2, background="snow", font=("arial", 10), command = lambda :Gui.viewbookinglogic.update_selected(self.master2))
         btnUpdate.grid(row=3, column=7, sticky="ne", pady=(0, 20))
         btnUpdate.bind("<Enter>", on_enterUpdate)
         btnUpdate.bind("<Leave>", on_leaveUpdate)
 
         # button delete
-        btnDelete = Button(self.parent, text="Delete", width=13, height=2, background="snow", font=("arial", 10))
+        btnDelete = Button(self.parent, text="Delete", width=13, height=2, background="snow", font=("arial", 10),
+                           command=lambda :DialogBoxes.Delete(self))
         btnDelete.grid(row=3, column=8, sticky="ne", pady=(0, 20))
         btnDelete.bind("<Enter>", on_enterDelete)
         btnDelete.bind("<Leave>", on_leaveDelete)
 
         # button refresh
-        btnRefresh = Button(self.parent, text="Refresh", width=13, height=2, background="snow", font=("arial", 10))
+        btnRefresh = Button(self.parent, text="Refresh", width=13, height=2, background="snow", font=("arial", 10),
+                            command=lambda :Gui.viewbookinglogic.refreshData(self.master2))
         btnRefresh.grid(row=3, column=0, sticky="nw", pady=(0, 20), padx=(10, 0))
         btnRefresh.bind("<Enter>", on_enterRefresh)
         btnRefresh.bind("<Leave>", on_leaveRefresh)
@@ -230,10 +127,13 @@ class frmViewBooking(Tkinter.Frame):
             .grid(row=2, column=0, sticky=W, columnspan=1, padx=10, pady=(0, 5))
         self.EntStartDate = ttk.Entry(self.Selectlabelframe, font=("arial", 10), width=30)
         self.EntStartDate.grid(row=3, column=0, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
+        self.EntStartDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.Calendarpopup(event,"EntStartDate",self.master2,master))
         ttk.Label(self.Selectlabelframe, text="To", font=("arial", 10, "bold"), background="alice blue")\
             .grid(row=3, column=1, pady=(0, 20))
         self.EntEndDate = ttk.Entry(self.Selectlabelframe, font=("arial", 10), width=30)
         self.EntEndDate.grid(row=3, column=2, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
+        self.EntEndDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.Calendarpopup(event, "EntEndDate",self.master2,master))
+        self.data = {}
 
         # check boxes
         self.CbxWedding = Checkbutton(self.Selectlabelframe, text='Weddings', font=("arial", 10),
@@ -255,7 +155,7 @@ class frmViewBooking(Tkinter.Frame):
             btnSearchDate['background'] = "snow"
 
         # button search
-        btnSearchDate = Button(self.Selectlabelframe, text="Search", command=lambda: hideme(self.lblNoofGuests),
+        btnSearchDate = Button(self.Selectlabelframe, text="Search",
                                width=13, height=2, background="snow", font=("arial", 10))
         btnSearchDate.grid(row=3, column=8, pady=(0, 20), padx=(8, 15))
         btnSearchDate.bind("<Enter>", on_enterSearch)
@@ -347,7 +247,7 @@ class frmViewBooking(Tkinter.Frame):
         self.labelframe.grid_columnconfigure(3, weight=1)
 
 
-        # labelframe for more price breakdown
+        # labelframe for price breakdown
         self.Totallabelframe = LabelFrame(self.parent, text="Price Breakdown", width=324, height=100,
                                           background="lavender", font=("arial", 9, "bold"))
         self.Totallabelframe.grid(row=1, column=7, columnspan=3, padx=(10, 20), pady=(0, 20))
@@ -400,19 +300,9 @@ class frmViewBooking(Tkinter.Frame):
         self.Totallabelframe.grid_columnconfigure(0, weight=1)
         self.Totallabelframe.grid_columnconfigure(3, weight=1)
 
-
-        # Initialize the counter
-        self.i = 0
-
-        DetailsLabelChange(self, '')
-        # self.root.mainloop()
-
-    # adding data to treeview
-    def insert_data(self, data):
-        """
-        Insertion method.
-        """
-        self.treeview.insert('', 'end', text="Item_" + str(self.i),
-                             values=(data))
-        # Increment counter
-        self.i = self.i + 1
+        # method calls
+        self.master2 = self
+        Gui.viewbookinglogic.loadData(self.master2)
+        Gui.viewbookinglogic.CalIncome(self.master2)
+        Gui.viewbookinglogic.removeAllLabels(self.master2)
+        # DetailsLabelChange(self, '',)
