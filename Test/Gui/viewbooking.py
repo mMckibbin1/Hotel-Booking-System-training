@@ -12,28 +12,7 @@ from Gui.EditPartyForm import EditParty
 from Gui.EditWeddingForm import EditWedding
 
 
-def call_update_wedding_popup(object):
-    top = Toplevel()
-    ui = EditWeddingForm.EditWedding(top, object)
-    top.grab_set()
-    top.wait_window()
-    top.destroy()
 
-
-def call_update_party_popup(object):
-    top = Toplevel()
-    ui = EditPartyForm.EditParty(top, object)
-    top.grab_set()
-    top.wait_window()
-    top.destroy()
-
-
-def call_update_conference_popup(object):
-    top = Toplevel()
-    ui = EditConferenceForm.EditConference(top, object)
-    top.grab_set()
-    top.wait_window()
-    top.destroy()
 
 class frmViewBooking(Tkinter.Frame):
     master2 = None
@@ -48,39 +27,6 @@ class frmViewBooking(Tkinter.Frame):
         self.parent.grid_rowconfigure(0, weight=1)
         self.parent.grid_columnconfigure(0, weight=1)
         self.parent.config(background="lavender")
-
-        def update_selected():
-            listofevents = []
-            listofdb = dbHelper.read_all_from_db()
-            #try:
-            curItem = self.tree.focus()
-
-            RowID = self.tree.item(curItem)['text']
-
-
-            for value in self.tree.item(curItem)['values']:
-                listofevents.append(value)
-
-                types = listofevents[0]
-
-            for list in listofdb:
-                for object in list:
-                    if types == "Wedding":
-                        if type(object) == Wedding.Wedding:
-                            if object.ID == RowID:
-                                object = object
-                                return call_update_wedding_popup(object)
-                    elif types == "Party":
-                        if type(object) == Party.Party:
-                            if object.ID == RowID:
-                                object = object
-                                return call_update_party_popup(object)
-                    elif types == "Conference":
-                        if type(object) == Conference.Conference:
-                            if object.ID == RowID:
-                                object = object
-                                print(object.noOfDays)
-                                return call_update_conference_popup(object)
 
         # Set the treeview
         self.tree = ttk.Treeview(self.parent,
@@ -136,7 +82,7 @@ class frmViewBooking(Tkinter.Frame):
 
 
         # button update
-        btnUpdate = Button(self.parent, text="Update", width=13, height=2, background="snow", font=("arial", 10), command = update_selected)
+        btnUpdate = Button(self.parent, text="Update", width=13, height=2, background="snow", font=("arial", 10), command = lambda :Gui.viewbookinglogic.update_selected(self.master2))
         btnUpdate.grid(row=3, column=7, sticky="ne", pady=(0, 20))
         btnUpdate.bind("<Enter>", on_enterUpdate)
         btnUpdate.bind("<Leave>", on_leaveUpdate)

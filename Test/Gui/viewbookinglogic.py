@@ -3,11 +3,67 @@ from Events import Wedding, Party, Conference
 from tkinter import *
 from Gui import DialogBoxes
 from addtionalWidgets import CalendarWidget
+from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
 
+def call_update_wedding_popup(object):
+    top = Toplevel()
+    ui = EditWeddingForm.EditWedding(top, object)
+    top.grab_set()
+    top.wait_window()
+    top.destroy()
+
+
+def call_update_party_popup(object):
+    top = Toplevel()
+    ui = EditPartyForm.EditParty(top, object)
+    top.grab_set()
+    top.wait_window()
+    top.destroy()
+
+
+def call_update_conference_popup(object):
+    top = Toplevel()
+    ui = EditConferenceForm.EditConference(top, object)
+    top.grab_set()
+    top.wait_window()
+    top.destroy()
 
 def unSelectItem(a, self):
     self.treeview.selection_clear()
     self.removeAllLabels(self)
+
+
+def update_selected(self):
+    listofevents = []
+    listofdb = dbHelper.read_all_from_db()
+    # try:
+    curItem = self.tree.focus()
+
+    RowID = self.tree.item(curItem)['text']
+
+    for value in self.tree.item(curItem)['values']:
+        listofevents.append(value)
+
+        types = listofevents[0]
+
+    for list in listofdb:
+        for object in list:
+            if types == "Wedding":
+                if type(object) == Wedding.Wedding:
+                    if object.ID == RowID:
+                        object = object
+                        return call_update_wedding_popup(object)
+            elif types == "Party":
+                if type(object) == Party.Party:
+                    if object.ID == RowID:
+                        object = object
+                        return call_update_party_popup(object)
+            elif types == "Conference":
+                if type(object) == Conference.Conference:
+                    if object.ID == RowID:
+                        object = object
+                        print(object.noOfDays)
+                        return call_update_conference_popup(object)
 
 
 # selects item from treeview
