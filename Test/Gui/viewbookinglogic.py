@@ -235,3 +235,18 @@ def loadData(master):
 def insert_data(self, ID, EventType, nameOfContact, contactNo, dateOfEvent, eventRoomNo, netTotal):
     self.treeview.insert('', 'end', text= ID,
                      values=( EventType, nameOfContact, contactNo, dateOfEvent, eventRoomNo, netTotal))
+
+
+# delete data from table
+def delete_data(self):
+    listofevents = []
+    curItem = self.tree.focus()
+    RowID = self.tree.item(curItem)['text']  # ID
+
+    for value in self.tree.item(curItem)['values']:
+        listofevents.append(value)
+        Type = listofevents[0]
+
+    dbHelper.deleteBooking(RowID, Type)
+
+

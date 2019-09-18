@@ -82,7 +82,7 @@ class frmViewBooking(Tkinter.Frame):
 
         # button delete
         btnDelete = Button(self.parent, text="Delete", width=13, height=2, background="snow", font=("arial", 10),
-                           command=DialogBoxes.Delete)
+                           command=lambda :DialogBoxes.Delete(self))
         btnDelete.grid(row=3, column=8, sticky="ne", pady=(0, 20))
         btnDelete.bind("<Enter>", on_enterDelete)
         btnDelete.bind("<Leave>", on_leaveDelete)

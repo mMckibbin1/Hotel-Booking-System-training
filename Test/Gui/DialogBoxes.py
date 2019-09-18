@@ -1,10 +1,12 @@
 from tkinter import *
 from tkinter.messagebox import *
+from Gui import viewbookinglogic
 
 
 class Delete:
-    def __init__(self):
+    def __init__(self, vbself):
         if askyesno('Delete', 'Do you want to delete this booking?'):
+            viewbookinglogic.delete_data(vbself)
             showinfo('Yes', 'Booking Deleted')
         else:
             showinfo('No', 'Booking Not Deleted')

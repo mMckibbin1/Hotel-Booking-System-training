@@ -115,8 +115,13 @@ def deleteBooking(ID, Type):
     Table = None
 
     if Type == "Wedding":
-        Table == "weddingTable"
+        #global Table
+        Table = "weddingTable"
     elif Type == "Party":
-        Table == "partyTable"
+        #global Table
+        Table = "partyTable"
     elif Type == "Conference":
-        Table == "conferenceTable"
+        #global Table
+        Table = "conferenceTable"
+
+    cursor.execute("DELETE FROM " + Table + " WHERE Id=" + str(ID))
