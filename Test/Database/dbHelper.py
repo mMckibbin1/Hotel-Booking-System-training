@@ -106,3 +106,17 @@ def insertConference(conference):
         ))
         conn.commit()
         cursor.close()
+
+##### Delete #####
+def deleteBooking(ID, Type):
+    db = dbconn
+    cursor = db.cursor()
+
+    Table = None
+
+    if Type == "Wedding":
+        Table == "weddingTable"
+    elif Type == "Party":
+        Table == "partyTable"
+    elif Type == "Conference":
+        Table == "conferenceTable"
