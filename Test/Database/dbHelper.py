@@ -126,3 +126,42 @@ def deleteBooking(ID, Type):
 
     # deletes the booking from the table
     cursor.execute("DELETE FROM " + Table + " WHERE Id=" + str(ID))
+
+def updateConference(conference):
+    conn = dbconn
+    with conn:
+        cursor = conn.cursor()
+        cursor.execute(
+        "UPDATE conferenceTable SET Guests=?, Name=?, Address=?, Phone=?, Room=?, EventDate=?, BookingDate=?, CompanyName=?, Days=?, ProjectRequired=?  WHERE ID=? ",
+        (
+            conference.noGuests, conference.nameOfContact, conference.address, conference.contactNo, conference.eventRoomNo, conference.dateOfEvent,
+            conference.dateOfBooking, conference.companyName, conference.noOfDays, conference.projectorRequired, conference.ID
+        ))
+        conn.commit()
+        cursor.close()
+
+def updateWedding(wedding):
+    conn = dbconn
+    with conn:
+        cursor = conn.cursor()
+        cursor.execute(
+        "UPDATE weddingTable SET Guests=?, Name=?, Address=?, Phone=?, Room=?, EventDate=?, BookingDate=?, Band=?, bandPrice=?, Bedrooms=?  WHERE ID=? ",
+        (
+            wedding.noGuests, wedding.nameOfContact, wedding.address, wedding.contactNo, wedding.eventRoomNo, wedding.dateOfEvent, wedding.dateOfBooking,
+            wedding.bandName, wedding.bandPrice, wedding.noBedroomsReserved, wedding.ID
+        ))
+        conn.commit()
+        cursor.close()
+
+def updateParty(party):
+    conn = dbconn
+    with conn:
+        cursor = conn.cursor()
+        cursor.execute(
+        "UPDATE partyTable SET Guests=?, Name=?, Address=?, Phone=?, Room=?, EventDate=?, BookingDate=?, Band=?, BandPrice=?  WHERE ID=? ",
+        (
+            party.noGuests, party.nameOfContact, party.address, party.contactNo, party.eventRoomNo,
+             party.dateOfEvent,party.dateOfBooking,party.bandName,party.bandPrice, party.ID
+        ))
+        conn.commit()
+        cursor.close()
