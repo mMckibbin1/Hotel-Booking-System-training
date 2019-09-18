@@ -1,6 +1,9 @@
 from Database import dbHelper
 from Events import Wedding, Party, Conference
 
+from Gui import DialogBoxes
+from addtionalWidgets import CalendarWidget
+
 
 def unSelectItem(a, self):
     self.treeview.selection_clear()
@@ -249,6 +252,30 @@ def insert_data(self, ID, EventType, nameOfContact, contactNo, dateOfEvent, even
     self.treeview.insert('', 'end', text= ID,
                      values=( EventType, nameOfContact, contactNo, dateOfEvent, eventRoomNo, netTotal))
 
+# function to display calander widget for date of event
+def Calendarpopup(event,entryField, master, root):
+    child = Toplevel()
+    cal = CalendarWidget.Calendar(child, master.data)
+    root.grab_release()
+    child.grab_set()
+    child.wait_window()
+    child.grab_release()
+    root.grab_set()
+    Get_selected_date(master, event,entryField)
+
+# function to get the selected date from calander widget and display it as a formatted string
+def Get_selected_date(self, event, entryField):
+    Day = self.data.get("day_selected", "date error")
+    Month = self.data.get("month_selected", "date error")
+    year = self.data.get("year_selected", "date error")
+    Date = str(Day) + "/" + str(Month) + "/" + str(year)
+
+    if entryField == "EntStartDate":
+        self.EntStartDate.delete(0,'end')
+        self.EntStartDate.insert([0], Date)
+    else:
+        self.EntEndDate.delete(0, 'end')
+        self.EntEndDate.insert([0], Date)
 
 # delete data from table
 def delete_data(self):
@@ -262,5 +289,3 @@ def delete_data(self):
         Type = listofevents[0]
 
     dbHelper.deleteBooking(RowID, Type)
-
-

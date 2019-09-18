@@ -118,10 +118,13 @@ class frmViewBooking(Tkinter.Frame):
             .grid(row=2, column=0, sticky=W, columnspan=1, padx=10, pady=(0, 5))
         self.EntStartDate = ttk.Entry(self.Selectlabelframe, font=("arial", 10), width=30)
         self.EntStartDate.grid(row=3, column=0, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
+        self.EntStartDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.Calendarpopup(event,"EntStartDate",self.master2,master))
         ttk.Label(self.Selectlabelframe, text="To", font=("arial", 10, "bold"), background="alice blue")\
             .grid(row=3, column=1, pady=(0, 20))
         self.EntEndDate = ttk.Entry(self.Selectlabelframe, font=("arial", 10), width=30)
         self.EntEndDate.grid(row=3, column=2, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
+        self.EntEndDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.Calendarpopup(event, "EntEndDate",self.master2,master))
+        self.data = {}
 
         # check boxes
         self.CbxWedding = Checkbutton(self.Selectlabelframe, text='Weddings', font=("arial", 10),

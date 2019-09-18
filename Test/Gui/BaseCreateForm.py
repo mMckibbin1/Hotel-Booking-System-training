@@ -13,8 +13,8 @@ class BaseEvent:
         self.master.resizable(0, 0)
         self.master.config(background="powder blue")
 
-        # defines options for dropdown boxes
 
+        # defines options for dropdown boxes
         DefaultRoomNo = StringVar(master)
         DefaultRoomNo.set("Please Select A Room")  # default value
 
@@ -22,6 +22,14 @@ class BaseEvent:
         # Labels for Wedding booking form
         self.lblSubheading = Label(master, text="Please fill in the details for the wedding event you are booking",
                                    font=("arial", 15, "bold"), bg="powder blue")
+
+        #defines options for dropdown boxes
+        DefaultRoomNo = StringVar(master)
+        DefaultRoomNo.set("Please Select A Room")  # default value
+
+        #Labels for Wedding booking form
+        self.lblSubheading = Label(master, text="Please fill in the details for the wedding event you are booking",font=("arial", 15, "bold"), bg="powder blue")
+
         self.lblSubheading.grid(row=0, pady=(25, 0), padx=(10, 10), columnspan=4)
 
         self.lblNoofGuest = Label(master, text="Number of guest", font=("arial", 10, "bold"), bg="powder blue")
