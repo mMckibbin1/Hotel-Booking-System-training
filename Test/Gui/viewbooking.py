@@ -3,6 +3,8 @@ import tkinter as Tkinter
 import tkinter.ttk as ttk
 from Database import dbHelper
 from Events import Wedding, Party, Conference
+from Gui import DialogBoxes
+
 
 class frmViewBooking(Tkinter.Frame):
     #datalist = None
@@ -283,13 +285,15 @@ class frmViewBooking(Tkinter.Frame):
         btnUpdate.bind("<Leave>", on_leaveUpdate)
 
         # button delete
-        btnDelete = Button(self.parent, text="Delete", width=13, height=2, background="snow", font=("arial", 10))
+        btnDelete = Button(self.parent, text="Delete", width=13, height=2, background="snow", font=("arial", 10),
+                           command=DialogBoxes.Delete)
         btnDelete.grid(row=3, column=8, sticky="ne", pady=(0, 20))
         btnDelete.bind("<Enter>", on_enterDelete)
         btnDelete.bind("<Leave>", on_leaveDelete)
 
         # button refresh
-        btnRefresh = Button(self.parent, text="Refresh", width=13, height=2, background="snow", font=("arial", 10), command=lambda :self.refreshData(self.master2))
+        btnRefresh = Button(self.parent, text="Refresh", width=13, height=2, background="snow", font=("arial", 10),
+                            command=lambda :self.refreshData(self.master2))
         btnRefresh.grid(row=3, column=0, sticky="nw", pady=(0, 20), padx=(10, 0))
         btnRefresh.bind("<Enter>", on_enterRefresh)
         btnRefresh.bind("<Leave>", on_leaveRefresh)
