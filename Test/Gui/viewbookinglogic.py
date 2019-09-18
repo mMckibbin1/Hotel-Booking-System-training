@@ -262,3 +262,15 @@ def Get_selected_date(self, event, entryField):
     else:
         self.EntEndDate.delete(0, 'end')
         self.EntEndDate.insert([0], Date)
+
+# delete data from table
+def delete_data(self):
+    listofevents = []
+    curItem = self.tree.focus()
+    RowID = self.tree.item(curItem)['text']  # ID
+
+    for value in self.tree.item(curItem)['values']:
+        listofevents.append(value)
+        Type = listofevents[0]
+
+    dbHelper.deleteBooking(RowID, Type)
