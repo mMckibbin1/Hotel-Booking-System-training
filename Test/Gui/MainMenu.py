@@ -35,6 +35,8 @@ def call_viewBookings_popup():
     top.wait_window()
     top.destroy()
 
+
+
 ##########################################       MAIN MENU      ###################################################
 
 # Main menu of application used to access all other forms
