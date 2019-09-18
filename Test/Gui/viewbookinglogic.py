@@ -33,6 +33,20 @@ def unSelectItem(a, self):
     self.removeAllLabels(self)
 
 
+def Search(self):
+
+
+    eventslist = []
+
+    if self.checkVarWedding.get() != "":
+        eventslist.append( self.checkVarWedding.get())
+    if  self.checkVarParty.get() != "":
+        eventslist.append(self.checkVarParty.get())
+    if  self.checkVarConference.get() != "":
+        eventslist.append( self.checkVarConference.get())
+
+    dbHelper.search(eventslist, self.EntStartDate.get(), self.EntEndDate.get())
+
 def update_selected(self):
     listofevents = []
     listofdb = dbHelper.read_all_from_db()

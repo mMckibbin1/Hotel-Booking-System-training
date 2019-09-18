@@ -141,10 +141,8 @@ def search(EventsList, StartDate, EndDate):
     else:
         Date = ""
 
-    loopcount = EventsList.Range()
-
     for string in EventsList:
-        cursor.execute("select * from"+string+Date)
+        cursor.execute("select * from "+string+Date)
 
 def updateConference(conference):
     conn = dbconn

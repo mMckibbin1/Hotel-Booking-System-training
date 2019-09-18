@@ -82,7 +82,8 @@ class frmViewBooking(Tkinter.Frame):
 
 
         # button update
-        btnUpdate = Button(self.parent, text="Update", width=13, height=2, background="snow", font=("arial", 10), command = lambda :Gui.viewbookinglogic.update_selected(self.master2))
+        btnUpdate = Button(self.parent, text="Update", width=13, height=2, background="snow", font=("arial", 10),
+                           command = lambda :Gui.viewbookinglogic.update_selected(self.master2))
         btnUpdate.grid(row=3, column=7, sticky="ne", pady=(0, 20))
         btnUpdate.bind("<Enter>", on_enterUpdate)
         btnUpdate.bind("<Leave>", on_leaveUpdate)
@@ -136,15 +137,23 @@ class frmViewBooking(Tkinter.Frame):
         self.data = {}
 
         # check boxes
-        self.CbxWedding = Checkbutton(self.Selectlabelframe, text='Weddings', font=("arial", 10),
-                                      background="alice blue")
+        self.checkVarWedding = StringVar()
+        self.checkVarConference = StringVar()
+        self.checkVarParty = StringVar()
+
+        self.CbxWedding = Checkbutton(self.Selectlabelframe, text='Weddings', variable=self.checkVarWedding, onvalue="weddingTable",
+                                      offvalue="", font=("arial", 10),background="alice blue")
         self.CbxWedding.grid(row=3, column=4, padx=(0, 20), sticky=W, pady=(0, 20))
+
         self.CbxConference = Checkbutton(self.Selectlabelframe, text='Conference', font=("arial", 10),
-                                         background="alice blue")
+                                         background="alice blue",variable=self.checkVarConference, onvalue="conferenceTable",
+                                         offvalue="")
         self.CbxConference.grid(row=3, column=5, padx=(0, 20), pady=(0, 20))
+
         self.CbxParties = Checkbutton(self.Selectlabelframe, text='Parties', font=("arial", 10),
-                                      background="alice blue")
+                                      background="alice blue", variable=self.checkVarParty, onvalue="partyTable", offvalue="")
         self.CbxParties.grid(row=3, column=6, padx=(0, 0), pady=(0, 20))
+
 
 
         # button hover colour - search
@@ -156,7 +165,7 @@ class frmViewBooking(Tkinter.Frame):
 
         # button search
         btnSearchDate = Button(self.Selectlabelframe, text="Search",
-                               width=13, height=2, background="snow", font=("arial", 10))
+                               width=13, height=2, background="snow", font=("arial", 10), command=lambda :Gui.viewbookinglogic.Search(self.master2))
         btnSearchDate.grid(row=3, column=8, pady=(0, 20), padx=(8, 15))
         btnSearchDate.bind("<Enter>", on_enterSearch)
         btnSearchDate.bind("<Leave>", on_leaveSearch)
