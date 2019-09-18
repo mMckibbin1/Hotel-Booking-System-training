@@ -45,31 +45,33 @@ class mainMenu:
         # creates form, removes maximise button on form, adds form title and adds background colour
         main_menu = Tk()
         main_menu.resizable(0, 0)
-        main_menu.title("Main Menu")
-        main_menu.config(background="powder blue")
+        main_menu.title("Hotel Booking System - Main Menu")
+        main_menu.config(background="#70ABAF")
 
         # adding UI elements to the form
 
         # Main menu Title
 
-        Label(main_menu, text="Please select what you would like to do...",font=("arial",15,"bold"), bg="powder blue")\
-            .grid(row=0, pady=(25, 0), padx=(10,10))
+        Label(main_menu, text="Welcome", font=("arial", 30, "bold","underline",), bg="#70ABAF") \
+            .grid(row=0, pady=(25, 0), padx=(10, 10))
+        Label(main_menu, text="Please select what you would like to do today",font=("arial",14), bg="#70ABAF")\
+            .grid(row=1, pady=(25, 0), padx=(10,10))
 
         # Main menu buttons with styling that redirect to our other windows
-        btnbookWedding = Button(main_menu, text="Add wedding Booking", width=23, bg="medium aquamarine",
+        btnbookWedding = Button(main_menu, text="Add wedding Booking", font=("arial", 12, "bold"), width=30,height=4, bg="medium aquamarine",
                                 command=call_wedding_popup)
-        btnbookParty = Button(main_menu, text="Add Party Booking", width=23, bg="medium aquamarine",
+        btnbookParty = Button(main_menu, text="Add Party Booking",font=("arial", 12, "bold"),  width=30,height=4, bg="medium aquamarine",
                               command=call_party_popup)
-        btnbookConference = Button(main_menu, text="Add Conference Booking", width=23, bg="medium aquamarine",
+        btnbookConference = Button(main_menu, text="Add Conference Booking",font=("arial", 12, "bold"),  width=30,height=4, bg="medium aquamarine",
                                    command=call_conference_popup)
-        btnviewbookings = Button(main_menu, text="View, edit and delete Bookings", width=23, bg="medium aquamarine",
+        btnviewbookings = Button(main_menu, text="View, edit and delete Bookings", font=("arial", 12, "bold"),width=30,height=4, bg="medium aquamarine",
                                  command=call_viewBookings_popup)
 
         # Main menu buttons being placed using grid layout
-        btnbookWedding.grid(row=1, column=0, pady=(25, 5))
-        btnbookParty.grid(row=2, column=0, pady=(25, 5))
-        btnbookConference.grid(row=3, column=0, pady=(25, 5))
-        btnviewbookings.grid(row=4, column=0, pady=(25, 25))
+        btnbookWedding.grid(row=2, column=0, pady=(25, 5))
+        btnbookParty.grid(row=3, column=0, pady=(25, 5))
+        btnbookConference.grid(row=4, column=0, pady=(25, 5))
+        btnviewbookings.grid(row=5, column=0, pady=(25, 25))
 
         # calling the main menu loop
         main_menu.mainloop()

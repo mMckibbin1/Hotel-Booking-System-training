@@ -9,7 +9,7 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
         # Creation of wedding form set title, size ect..
         master.title("Party Edit")
         master.resizable(0, 0)
-        master.config(background="powder blue")
+        master.config(background="#70ABAF")
 
         # defines options for dropdown boxes
 

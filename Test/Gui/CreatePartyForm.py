@@ -10,9 +10,9 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
         super(bookParty, self).__init__(master,RoomOption)
 
         # Creation of wedding form set title, size ect..
-        master.title("Party bookings")
+        master.title("Hotel Booking System - Book a Party")
         master.resizable(0, 0)
-        master.config(background="powder blue")
+        master.config(background="#70ABAF")
 
         # defines options for bandName dropdown box
         BandNames = ["Lil' Febrezey", "Prawn Mendes", "AB/CD"]
@@ -22,8 +22,8 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
         DefaultBandName.set("Please Select a Band")  # default value
 
         # Labels for Party booking form
-        self.lblSubheading.config(text="Please fill in the details for the Party event you are booking")
-        self.lblBandName = Label(master, text="Band Name", font=("arial", 10, "bold"), bg="powder blue")
+        self.lblSubheading.config(text="Please Fill in the Details for the Party")
+        self.lblBandName = Label(master, text="Band Name",font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblBandName.grid(row=7, columnspan=2,pady=(25, 0), padx=(10, 10))
 
         # dropdowns for party form

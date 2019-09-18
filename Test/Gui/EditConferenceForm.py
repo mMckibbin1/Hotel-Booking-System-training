@@ -12,7 +12,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         # Creation of wedding form set title, size ect..
         master.title("Conference Edit")
         master.resizable(0, 0)
-        master.config(background="powder blue")
+        master.config(background="#70ABAF")
 
         def ch_box_sel():
             print(CheckVar1.get())

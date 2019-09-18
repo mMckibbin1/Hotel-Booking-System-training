@@ -20,9 +20,9 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
         super().__init__(master,RoomOption)
 
         #Creation of wedding form set title, size ect..
-        master.title("Wedding bookings")
+        master.title("Hotel Booking System - Book a Wedding")
         master.resizable(0, 0)
-        master.config(background="powder blue")
+        master.config(background="#70ABAF")
 
         # defines options for dropdown boxes
         BandNames = ["Lil' Febrezey", "Prawn Mendes", "AB/CD"]
@@ -32,12 +32,12 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
 
 
         # Labels for Wedding booking form
-        self.lblSubheading.config(text="Please fill in the details for the wedding event you are booking")
+        self.lblSubheading.config(text="Please Fill in the Details for the Wedding")
 
-        self.lblbandName = Label(master, text="Band Name", font=("arial", 10, "bold"), bg="powder blue")
+        self.lblbandName = Label(master, text="Band Name",font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblbandName.grid(row=8, columnspan=2, pady=(25, 0), padx=(10, 10))
 
-        self.lblNoofRoomsRes = Label(master, text="Number of bedrooms reserved", font=("arial", 10, "bold"), bg="powder blue")
+        self.lblNoofRoomsRes = Label(master, text="Number of bedrooms reserved",font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblNoofRoomsRes.grid(row=9, columnspan=2, pady=(25, 0), padx=(10, 10))
 
         # Entry boxes, dropdowns and datepicker for wedding form

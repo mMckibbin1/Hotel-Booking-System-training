@@ -9,9 +9,9 @@ class BaseEvent:
     def __init__(self, master, Rooms,):
         # Creation of wedding form set title, size ect..
         self.master = master
-        self.master.title("base bookings")
+        self.master.title("Hotel Booking System - Base booking form")
         self.master.resizable(0, 0)
-        self.master.config(background="powder blue")
+        self.master.config(background="#70ABAF")
 
 
         # defines options for dropdown boxes
@@ -19,35 +19,31 @@ class BaseEvent:
         DefaultRoomNo.set("Please Select A Room")  # default value
 
 
-        # Labels for Wedding booking form
-        self.lblSubheading = Label(master, text="Please fill in the details for the wedding event you are booking",
-                                   font=("arial", 15, "bold"), bg="powder blue")
-
         #defines options for dropdown boxes
         DefaultRoomNo = StringVar(master)
         DefaultRoomNo.set("Please Select A Room")  # default value
 
         #Labels for Wedding booking form
 
-        self.lblSubheading = Label(master, text="Please fill in the details for the event you are booking",font=("arial", 15, "bold"), bg="powder blue")
-        self.lblSubheading.grid(row=0, pady=(25, 0), padx=(10, 10), columnspan=4)
+        self.lblSubheading = Label(master, font=("arial", 20,"bold", "underline"), bg="#70ABAF")
+        self.lblSubheading.grid(row=0, pady=(35,25), padx=(10, 10), columnspan=4)
 
-        self.lblNoofGuest = Label(master, text="Number of guest", font=("arial", 10, "bold"), bg="powder blue")
+        self.lblNoofGuest = Label(master, text="Number of guest", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblNoofGuest.grid(row=1, columnspan=2, pady=(25, 0), padx=(10, 10))
 
-        self.lblNameofContact = Label(master, text="Name of contact", font=("arial", 10, "bold"), bg="powder blue")
+        self.lblNameofContact = Label(master, text="Name of contact", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblNameofContact.grid(row=2,columnspan=2,pady=( 25, 0), padx=(10, 10))
 
-        self.lblAddress = Label(master, text="Address", font=("arial", 10, "bold"), bg="powder blue")
+        self.lblAddress = Label(master, text="Address", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblAddress.grid(row=3, columnspan=2,pady=(25, 0),padx=(10, 10))
 
-        self.lblContactNumber = Label(master, text="Contact number", font=("arial", 10, "bold"), bg="powder blue")
+        self.lblContactNumber = Label(master, text="Contact number", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblContactNumber.grid(row=4, columnspan=2,pady=(25, 0),padx=(10, 10))
 
-        self.lblEventRoomNo = Label(master, text="Event Room Number", font=("arial", 10, "bold"), bg="powder blue")
+        self.lblEventRoomNo = Label(master, text="Event Room Number", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblEventRoomNo.grid(row=5,columnspan=2,pady=(25, 0),padx=(10,10))
 
-        self.lblDateofEvent = Label(master, text="Date of event", font=("arial", 10, "bold"), bg="powder blue")
+        self.lblDateofEvent = Label(master, text="Date of event", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblDateofEvent.grid(row=6,columnspan=2,pady=(25, 0),padx=(10, 10))
 
         # Entry boxes, dropdowns and datepicker for wedding form
@@ -69,11 +65,11 @@ class BaseEvent:
         self.CalDateOfEvent.grid(row=6, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
         # Buttons for Add and Cancel on the wedding form
-        self.btnCloseForm = Button(master, text="Cancel", command=master.destroy)
-        self.btnAddBooking = Button(master, text="Add Booking")
+        self.btnCloseForm = Button(master, text="Cancel",bg="medium aquamarine",font=("arial", 11, "bold"), width=30,height=3, command=master.destroy)
+        self.btnAddBooking = Button(master, text="Add Booking", bg="medium aquamarine",font=("arial", 11, "bold"), width=30,height=3)
         # Buttons for Add and Cancel on the wedding form being placed using grid layout
-        self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(25, 50), padx=(0, 25), sticky="ew")
-        self.btnCloseForm.grid(row=10, column=3, columnspan=2, pady=(25, 50), padx=(0, 50), sticky="ew")
+        self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(50, 50), padx=(75, 25), sticky="ew")
+        self.btnCloseForm.grid(row=10, column=3, columnspan=2, pady=(50, 50), padx=(75, 25), sticky="ew")
 
     # function to get room number from dropdown
     def getRoomnumber(self, value):
