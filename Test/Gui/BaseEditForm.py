@@ -1,3 +1,4 @@
+import datetime
 from tkinter import *
 from addtionalWidgets import CalendarWidget
 from Database import dbHelper
@@ -90,9 +91,10 @@ class BaseEditEvent:
         Day = self.data.get("day_selected", "date error")
         Month = self.data.get("month_selected", "date error")
         year = self.data.get("year_selected", "date error")
-        Date = str(Day) + "/" + str(Month) + "/" + str(year)
+        Date = str(Month) + "-" + str(Day) + "-" + str(year)
+        FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
         self.CalDateOfEvent.delete(0, 'end')
-        self.CalDateOfEvent.insert([0], Date)
+        self.CalDateOfEvent.insert([0], str(FormtDate))
 
     def populateform(self, object):
         self.EntnumberOfguest.insert(0, object.noGuests)

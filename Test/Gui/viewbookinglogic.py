@@ -1,3 +1,5 @@
+import datetime
+
 from Database import dbHelper
 from Events import Wedding, Party, Conference
 from tkinter import *
@@ -35,7 +37,6 @@ def unSelectItem(a, self):
 
 def Search(self):
 
-
     eventslist = []
 
     if self.checkVarWedding.get() != "":
@@ -45,7 +46,24 @@ def Search(self):
     if  self.checkVarConference.get() != "":
         eventslist.append( self.checkVarConference.get())
 
-    dbHelper.search(eventslist, self.EntStartDate.get(), self.EntEndDate.get())
+    self.treeview.delete(*self.treeview.get_children())
+    for object in dbHelper.search(eventslist, self.EntStartDate.get(), self.EntEndDate.get()):
+        if type(object) == Wedding.Wedding:
+            insert_data(self, object.ID, "Wedding", object.nameOfContact,
+                                       object.contactNo, object.dateOfEvent, object.eventRoomNo,
+                                       object.netTotal())
+        elif type(object) == Party.Party:
+            insert_data(self, object.ID, "Party", object.nameOfContact,
+                        object.contactNo, object.dateOfEvent, object.eventRoomNo,
+                        object.netTotal())
+        elif type(object) == Conference.Conference:
+            insert_data(self, object.ID, "Conference", object.nameOfContact,
+                        object.contactNo, object.dateOfEvent, object.eventRoomNo,
+                        object.netTotal())
+
+
+    CalIncome(self)
+
 
 def update_selected(self):
     listofevents = []
@@ -289,7 +307,6 @@ def CalIncome(master):
         totalIncome += float(master.treeview.item(child, "values")[5])
         master.lblTotalIncome.config(text=totalIncome)
 
-
 # function to reload the table
 def refreshData(master):
     master.treeview.delete(*master.treeview.get_children())
@@ -338,14 +355,16 @@ def Get_selected_date(self, event, entryField):
     Day = self.data.get("day_selected", "date error")
     Month = self.data.get("month_selected", "date error")
     year = self.data.get("year_selected", "date error")
-    Date = str(Day) + "/" + str(Month) + "/" + str(year)
+    Date = str(year) + "-" + str(Month) + "-" + str(Day)
+
+    FormtDate = datetime.datetime.strptime(Date,"%Y-%m-%d").date()
 
     if entryField == "EntStartDate":
         self.EntStartDate.delete(0,'end')
-        self.EntStartDate.insert([0], Date)
+        self.EntStartDate.insert([0], str(FormtDate))
     else:
         self.EntEndDate.delete(0, 'end')
-        self.EntEndDate.insert([0], Date)
+        self.EntEndDate.insert([0], str(FormtDate))
 
 # delete data from table
 def delete_data(self):

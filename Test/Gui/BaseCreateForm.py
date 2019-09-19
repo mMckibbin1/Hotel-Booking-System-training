@@ -1,3 +1,4 @@
+import datetime
 from tkinter import *
 from addtionalWidgets import CalendarWidget
 
@@ -95,6 +96,8 @@ class BaseEvent:
         Day = self.data.get("day_selected", "date error")
         Month = self.data.get("month_selected", "date error")
         year = self.data.get("year_selected", "date error")
-        Date = str(Day) + "/" + str(Month) + "/" + str(year)
+        Date = str(year) + "-" + str(Month) + "-" + str(Day)
+
+        FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
         self.CalDateOfEvent.delete(0, 'end')
-        self.CalDateOfEvent.insert([0], Date)
+        self.CalDateOfEvent.insert([0], str(FormtDate))

@@ -133,16 +133,38 @@ def search(EventsList, StartDate, EndDate):
     cursor = db.cursor()
     Date = None
     if StartDate !="" and EndDate !="":
-        Date = " Where date >= "+StartDate+" and date <= "+EndDate
+        Date = " Where date(EventDate) between date('{}') and date('{}')".format(StartDate,EndDate)
     elif StartDate !="":
-        Date = " Where date = "+StartDate
+        Date = " Where date(EventDate) = date('{}')".format(StartDate)
     elif EndDate !="":
-        Date = " Where date = "+EndDate
+        Date = " Where date(EventDate) = date('{}')".format(EndDate)
     else:
         Date = ""
 
+    weddinglist = []
+    partylist = []
+    conferencelist = []
+
     for string in EventsList:
-        cursor.execute("select * from "+string+Date)
+        query = "select * from "+string+Date
+        cursor.execute(query)
+        if string == "weddingTable":
+            for row in cursor.fetchall():
+                wedding = Wedding.Wedding(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[10], row[9], row[0])
+                weddinglist.append(wedding)
+        if string == "conferenceTable":
+            for row in cursor.fetchall():
+                conference = Conference.Conference(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9],
+                                                   row[10], row[0])
+                conferencelist.append(conference)
+        if string == "partyTable":
+            for row in cursor.fetchall():
+                party = Party.Party(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[0])
+                partylist.append(party)
+
+    cursor.close()
+
+    return weddinglist + partylist + conferencelist
 
 def updateConference(conference):
     conn = dbconn
