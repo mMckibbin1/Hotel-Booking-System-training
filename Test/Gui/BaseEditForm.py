@@ -1,7 +1,7 @@
 from tkinter import *
 from addtionalWidgets import CalendarWidget
 from Database import dbHelper
-from Gui import viewbooking
+from Gui import viewbooking, DialogBoxes
 
 
 class BaseEditEvent:
@@ -16,8 +16,8 @@ class BaseEditEvent:
 
         #defines options for dropdown boxes
 
-        DefaultRoomNo = StringVar(master)
-        DefaultRoomNo.set(object.eventRoomNo)  # default value set as what is stored already
+        self.DefaultRoomNo = StringVar(master)
+        self.DefaultRoomNo.set(object.eventRoomNo)  # default value set as what is stored already
 
 
         #Labels for Wedding booking form
@@ -47,7 +47,7 @@ class BaseEditEvent:
         self.EntnameOfContact = Entry(master, font=("arial", 10), width=50)
         self.EntAddress = Entry(master, font=("arial", 10), width=50)
         self.EntContactNumber = Entry(master, font=("arial", 10), width=50)
-        self.OpmEventRoomNumber = OptionMenu(master, DefaultRoomNo, *Rooms, command=self.getRoomnumber)
+        self.OpmEventRoomNumber = OptionMenu(master, self.DefaultRoomNo, *Rooms, command=self.getRoomnumber)
         self.CalDateOfEvent = Entry(master, font=("arial", 10), width=50)
         self.CalDateOfEvent.bind("<Button-1>", lambda event: self.popup(event, master))
         self.data = {}
@@ -61,12 +61,12 @@ class BaseEditEvent:
         self.CalDateOfEvent.grid(row=6, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
         #Buttons for Add and Cancel on the base edit form
-        self.btnUpdateBooking = Button(master, text="Update Booking")
-        self.btnCloseForm = Button(master, text="Cancel", command=master.destroy)
+        self.btnUpdateBooking = Button(master, text="Update Booking", bg="medium aquamarine",font=("arial", 11, "bold"), width=30, height=3)
+        self.btnCloseForm = Button(master, text="Cancel", bg="medium aquamarine",font=("arial", 11, "bold"), width=30, height=3, command=lambda: [master.destroy(), DialogBoxes.not_saved(self)]) # calls destroy and message box
 
         ##Buttons for Add and Cancel on the base edit form being placed using grid layout
-        self.btnUpdateBooking.grid(row=10, column=1, columnspan=1, pady=(25, 50), padx=(0, 25), sticky="ew")
-        self.btnCloseForm.grid(row=10, column=3, columnspan=2, pady=(25, 50), padx=(0, 50), sticky="ew")
+        self.btnUpdateBooking.grid(row=10, column=1, columnspan=1,  pady=(50, 50), padx=(75, 25), sticky="ew")
+        self.btnCloseForm.grid(row=10, column=3, columnspan=2,  pady=(50, 50), padx=(75, 25), sticky="ew")
 
         self.populateform(object)
 

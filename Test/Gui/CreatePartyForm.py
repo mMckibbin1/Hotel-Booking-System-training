@@ -1,6 +1,7 @@
 import Gui.BaseCreateForm
 from tkinter import *
 import Events.Party
+from Gui import DialogBoxes
 
 
 class bookParty(Gui.BaseCreateForm.BaseEvent):
@@ -37,7 +38,7 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
                                                                      self.EntContactNumber.get(),
                                                                      self.eventRoomNo,
                                                                      self.CalDateOfEvent.get(),
-                                                                     self.bandName), master.destroy()])
+                                                                     self.bandName), master.destroy(), DialogBoxes.saved(self)])
 
     # function to get band name from dropdown
     def getBandName(self, value):

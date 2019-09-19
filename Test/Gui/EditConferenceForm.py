@@ -1,6 +1,8 @@
 from tkinter import *
 import Events.Conference
 import Gui.BaseEditForm
+from Gui import DialogBoxes
+
 
 class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
@@ -10,7 +12,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         super().__init__(master, RoomOption, booking)
 
         # Creation of wedding form set title, size ect..
-        master.title("Conference Edit")
+        master.title("Hotel Booking System - Update Selected Conference")
         master.resizable(0, 0)
         master.config(background="#70ABAF")
 
@@ -22,13 +24,13 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         # Labels for Conference booking form
         self.lblSubheading.config(text="Please update any details that you want to change")
 
-        self.lblCompanyname = Label(master, text="Company Name", font=("arial", 10, "bold"), bg="powder blue")
+        self.lblCompanyname = Label(master, text="Company Name", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblCompanyname.grid(row=7,columnspan=2,pady=(25, 0),padx=(10, 10))
 
-        self.lblNoofDays = Label(master, text="Number of Days", font=("arial", 10, "bold"), bg="powder blue")
+        self.lblNoofDays = Label(master, text="Number of Days", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblNoofDays.grid(row=8,columnspan=2, pady=(25, 0),padx=(10, 10))
 
-        self.lblProjectorReq = Label(master, text="Projector Required", font=("arial", 10, "bold"), bg="powder blue")
+        self.lblProjectorReq = Label(master, text="Projector Required", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblProjectorReq.grid(row=9, columnspan=2,pady=(25,0),padx=(10,10))
 
 
@@ -38,7 +40,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
         #checkbox now works :)
         CheckVar1 = IntVar()
-        self.chxProjectorRequired = Checkbutton(master, text='', variable=CheckVar1, onvalue=True, offvalue=False, command=ch_box_sel)
+        self.chxProjectorRequired = Checkbutton(master, text='', variable=CheckVar1, onvalue=True, offvalue=False, bg="#70ABAF", command=ch_box_sel)
 
         # Entry boxes, dropdowns and datepicker for conference form being placed using a grid layout
         self.EntCompanyName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
@@ -52,12 +54,12 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         self.btnUpdateBooking.config(command=lambda: [Events.Conference.updateConference(self.EntnumberOfguest.get(),
                                                                           self.EntnameOfContact.get(),
                                                                           self.EntAddress.get(),
-                                                                          self.EntContactNumber.get(),self.eventRoomNo,
+                                                                          self.EntContactNumber.get(),self.DefaultRoomNo.get(),
                                                                           self.CalDateOfEvent.get(), booking.dateOfBooking,
                                                                           self.EntCompanyName.get(),
                                                                           self.EntNoOfDays.get(),
                                                                           #checkbox get
-                                                                          CheckVar1.get(), booking.ID), master.destroy()])
+                                                                          CheckVar1.get(), booking.ID), master.destroy(), DialogBoxes.updated(self)]) # calls update ,destroy and message box
 
 
         self.populateform_conference(booking)

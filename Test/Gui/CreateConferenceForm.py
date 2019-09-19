@@ -1,6 +1,7 @@
 from tkinter import *
 import Events.Conference
 import Gui.BaseCreateForm
+from Gui import DialogBoxes
 
 
 class bookConference(Gui.BaseCreateForm.BaseEvent):
@@ -66,4 +67,4 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
                                                                           self.EntCompanyName.get(),
                                                                           self.EntNoOfDays.get(),
                                                                           #checkbox get
-                                                                          CheckVar1.get()), master.destroy()])
+                                                                          CheckVar1.get()), master.destroy(), DialogBoxes.saved(self)])

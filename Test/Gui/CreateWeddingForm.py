@@ -1,6 +1,7 @@
 from tkinter import *
 import Events.Wedding
 import Gui.BaseCreateForm
+from Gui import DialogBoxes
 
 
 class bookwedding(Gui.BaseCreateForm.BaseEvent):
@@ -59,7 +60,7 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
                                                                        self.eventRoomNo,
                                                                        self.CalDateOfEvent.get(),
                                                                        self.bandName,
-                                                                       self.EntBedroomReserved.get()), master.destroy()])
+                                                                       self.EntBedroomReserved.get()), master.destroy(), DialogBoxes.saved(self)])
 
         # Buttons for Add and Cancel on the wedding form being placed using grid layout
 
