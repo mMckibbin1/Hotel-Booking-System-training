@@ -1,6 +1,7 @@
 import Gui.BaseCreateForm
 from tkinter import *
 import Events.Party
+import Validation
 
 
 class bookParty(Gui.BaseCreateForm.BaseEvent):
@@ -31,13 +32,25 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
         self.OpmBandName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
 
         # Button config to override the parent button config
-        self.btnAddBooking.config(command=lambda: [Events.Party.createParty(self.EntnumberOfguest.get(),
-                                                                     self.EntnameOfContact.get(),
-                                                                     self.EntAddress.get(),
-                                                                     self.EntContactNumber.get(),
-                                                                     self.eventRoomNo,
-                                                                     self.CalDateOfEvent.get(),
-                                                                     self.bandName), master.destroy()])
+        self.btnAddBooking.config(command=lambda: [Validation.stringEmpty(self.savelist()), Events.Party.createParty(
+                                                            self.EntnumberOfguest.get(),
+                                                            self.EntnameOfContact.get(),
+                                                            self.EntAddress.get(),
+                                                            self.EntContactNumber.get(),
+                                                            self.eventRoomNo,
+                                                            self.CalDateOfEvent.get(),
+                                                            self.bandName), master.destroy()])
+
+    def savelist(self):
+        self.validationTestList = []
+        self.validationTestList.append(self.EntnumberOfguest.get())
+        self.validationTestList.append(self.EntnameOfContact.get())
+        self.validationTestList.append(self.EntAddress.get())
+        self.validationTestList.append(self.EntContactNumber.get())
+        self.validationTestList.append(self.eventRoomNo)
+        self.validationTestList.append(self.CalDateOfEvent.get())
+        self.validationTestList.append(self.bandName)
+        return self.validationTestList
 
     # function to get band name from dropdown
     def getBandName(self, value):
