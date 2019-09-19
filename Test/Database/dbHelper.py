@@ -3,6 +3,7 @@ from Events import Conference, Wedding, Party
 
 dbconn = sqlite3.connect('Database\events.db')
 
+
 ##set up sqlite
 def connect():
     db = dbconn
@@ -17,18 +18,21 @@ def connect():
     db.commit()
     cursor.close()
 
+
 def read_wedding_db():
     db = dbconn
     cursor = db.cursor()
     cursor.execute('SELECT * FROM weddingTable')
     list = []
     for row in cursor.fetchall():
-        wedding = Wedding.Wedding(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[10], row[9], row[0])
+        wedding = Wedding.Wedding(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[10], row[9],
+                                  row[0])
 
         list.append(wedding)
 
     cursor.close()
     return list
+
 
 def read_party_db():
     db = dbconn
@@ -43,13 +47,15 @@ def read_party_db():
     cursor.close()
     return list
 
+
 def read_conference_db():
     db = dbconn
     cursor = db.cursor()
     cursor.execute('SELECT * FROM conferenceTable')
     list = []
     for row in cursor.fetchall():
-        conference = Conference.Conference(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[0])
+        conference = Conference.Conference(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9],
+                                           row[10], row[0])
 
         list.append(conference)
 
@@ -83,7 +89,6 @@ def insertwedding(wedding):
         cursor.close()
 
 
-
 def insertParty(party):
     conn = dbconn
     with conn:
@@ -92,20 +97,23 @@ def insertParty(party):
             'INSERT INTO partyTable(Guests, Name, Address, Phone, Room, EventDate, BookingDate, Band, BandPrice) VALUES(?, ?, ?, ?, ?, ?, ?, ?,?)',
             (party.noGuests, party.nameOfContact, party.address, party.contactNo, party.eventRoomNo,
              party.dateOfEvent, party.dateOfBooking,
-             party.bandName,party.bandPrice))
+             party.bandName, party.bandPrice))
+
 
 def insertConference(conference):
     conn = dbconn
     with conn:
         cursor = conn.cursor()
         cursor.execute(
-        "INSERT INTO conferenceTable(Guests, Name, Address, Phone, Room, EventDate, BookingDate, CompanyName, Days, ProjectRequired) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
-        (
-            conference.noGuests, conference.nameOfContact, conference.address, conference.contactNo, conference.eventRoomNo, conference.dateOfEvent, conference.dateOfBooking,
-            conference.companyName, conference.noOfDays, conference.projectorRequired
-        ))
+            "INSERT INTO conferenceTable(Guests, Name, Address, Phone, Room, EventDate, BookingDate, CompanyName, Days, ProjectRequired) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
+            (
+                conference.noGuests, conference.nameOfContact, conference.address, conference.contactNo,
+                conference.eventRoomNo, conference.dateOfEvent, conference.dateOfBooking,
+                conference.companyName, conference.noOfDays, conference.projectorRequired
+            ))
         conn.commit()
         cursor.close()
+
 
 ##### Delete #####
 def deleteBooking(ID, Type):
@@ -115,7 +123,7 @@ def deleteBooking(ID, Type):
     # global
     Table = None
 
-    #if statement - checks the type of event
+    # if statement - checks the type of event
     if Type == "Wedding":
         # sets table to delete booking from
         Table = "weddingTable"
@@ -127,16 +135,17 @@ def deleteBooking(ID, Type):
     # deletes the booking from the table
     cursor.execute("DELETE FROM " + Table + " WHERE Id=" + str(ID))
 
+
 ###### Search #####
 def search(EventsList, StartDate, EndDate):
     db = dbconn
     cursor = db.cursor()
     Date = None
-    if StartDate !="" and EndDate !="":
-        Date = " Where date(EventDate) between date('{}') and date('{}')".format(StartDate,EndDate)
-    elif StartDate !="":
+    if StartDate != "" and EndDate != "":
+        Date = " Where date(EventDate) between date('{}') and date('{}')".format(StartDate, EndDate)
+    elif StartDate != "":
         Date = " Where date(EventDate) = date('{}')".format(StartDate)
-    elif EndDate !="":
+    elif EndDate != "":
         Date = " Where date(EventDate) = date('{}')".format(EndDate)
     else:
         Date = ""
@@ -146,15 +155,17 @@ def search(EventsList, StartDate, EndDate):
     conferencelist = []
 
     for string in EventsList:
-        query = "select * from "+string+Date
+        query = "select * from " + string + Date
         cursor.execute(query)
         if string == "weddingTable":
             for row in cursor.fetchall():
-                wedding = Wedding.Wedding(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[10], row[9], row[0])
+                wedding = Wedding.Wedding(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[10],
+                                          row[9], row[0])
                 weddinglist.append(wedding)
         if string == "conferenceTable":
             for row in cursor.fetchall():
-                conference = Conference.Conference(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9],
+                conference = Conference.Conference(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],
+                                                   row[9],
                                                    row[10], row[0])
                 conferencelist.append(conference)
         if string == "partyTable":
@@ -166,41 +177,47 @@ def search(EventsList, StartDate, EndDate):
 
     return weddinglist + partylist + conferencelist
 
+
 def updateConference(conference):
     conn = dbconn
     with conn:
         cursor = conn.cursor()
         cursor.execute(
-        "UPDATE conferenceTable SET Guests=?, Name=?, Address=?, Phone=?, Room=?, EventDate=?, BookingDate=?, CompanyName=?, Days=?, ProjectRequired=?  WHERE ID=? ",
-        (
-            conference.noGuests, conference.nameOfContact, conference.address, conference.contactNo, conference.eventRoomNo, conference.dateOfEvent,
-            conference.dateOfBooking, conference.companyName, conference.noOfDays, conference.projectorRequired, conference.ID
-        ))
+            "UPDATE conferenceTable SET Guests=?, Name=?, Address=?, Phone=?, Room=?, EventDate=?, BookingDate=?, CompanyName=?, Days=?, ProjectRequired=?  WHERE ID=? ",
+            (
+                conference.noGuests, conference.nameOfContact, conference.address, conference.contactNo,
+                conference.eventRoomNo, conference.dateOfEvent,
+                conference.dateOfBooking, conference.companyName, conference.noOfDays, conference.projectorRequired,
+                conference.ID
+            ))
         conn.commit()
         cursor.close()
+
 
 def updateWedding(wedding):
     conn = dbconn
     with conn:
         cursor = conn.cursor()
         cursor.execute(
-        "UPDATE weddingTable SET Guests=?, Name=?, Address=?, Phone=?, Room=?, EventDate=?, BookingDate=?, Band=?, bandPrice=?, Bedrooms=?  WHERE ID=? ",
-        (
-            wedding.noGuests, wedding.nameOfContact, wedding.address, wedding.contactNo, wedding.eventRoomNo, wedding.dateOfEvent, wedding.dateOfBooking,
-            wedding.bandName, wedding.bandPrice, wedding.noBedroomsReserved, wedding.ID
-        ))
+            "UPDATE weddingTable SET Guests=?, Name=?, Address=?, Phone=?, Room=?, EventDate=?, BookingDate=?, Band=?, bandPrice=?, Bedrooms=?  WHERE ID=? ",
+            (
+                wedding.noGuests, wedding.nameOfContact, wedding.address, wedding.contactNo, wedding.eventRoomNo,
+                wedding.dateOfEvent, wedding.dateOfBooking,
+                wedding.bandName, wedding.bandPrice, wedding.noBedroomsReserved, wedding.ID
+            ))
         conn.commit()
         cursor.close()
+
 
 def updateParty(party):
     conn = dbconn
     with conn:
         cursor = conn.cursor()
         cursor.execute(
-        "UPDATE partyTable SET Guests=?, Name=?, Address=?, Phone=?, Room=?, EventDate=?, BookingDate=?, Band=?, BandPrice=?  WHERE ID=? ",
-        (
-            party.noGuests, party.nameOfContact, party.address, party.contactNo, party.eventRoomNo,
-             party.dateOfEvent,party.dateOfBooking,party.bandName,party.bandPrice, party.ID
-        ))
+            "UPDATE partyTable SET Guests=?, Name=?, Address=?, Phone=?, Room=?, EventDate=?, BookingDate=?, Band=?, BandPrice=?  WHERE ID=? ",
+            (
+                party.noGuests, party.nameOfContact, party.address, party.contactNo, party.eventRoomNo,
+                party.dateOfEvent, party.dateOfBooking, party.bandName, party.bandPrice, party.ID
+            ))
         conn.commit()
         cursor.close()
