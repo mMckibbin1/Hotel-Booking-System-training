@@ -203,43 +203,26 @@
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Gui/viewbookinglogic.py</url>
-          <line>382</line>
-          <option name="timeStamp" value="5" />
+          <url>file://$PROJECT_DIR$/Database/dbHelper.py</url>
+          <line>249</line>
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Gui/viewbookinglogic.py</url>
-          <line>384</line>
-          <option name="timeStamp" value="6" />
+          <url>file://$PROJECT_DIR$/Database/dbHelper.py</url>
+          <line>251</line>
+          <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Gui/viewbookinglogic.py</url>
-          <line>388</line>
-          <option name="timeStamp" value="7" />
+          <url>file://$PROJECT_DIR$/Database/dbHelper.py</url>
+          <line>248</line>
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Gui/viewbookinglogic.py</url>
-          <line>352</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Gui/DialogBoxes.py</url>
-          <line>14</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Gui/DialogBoxes.py</url>
-          <line>10</line>
-          <option name="timeStamp" value="11" />
+          <url>file://$PROJECT_DIR$/Database/dbHelper.py</url>
+          <line>254</line>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="self._last_child_ids" />
-        <watch expression="__py_debug_temp_var_1932334717" />
-        <watch expression="__py_debug_temp_var_1932334717" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>

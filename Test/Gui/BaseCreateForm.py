@@ -83,7 +83,8 @@ class BaseEvent:
         self.CalDateOfEvent.grid(row=6, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
         # Buttons for Add and Cancel on the wedding form
-        self.btnCloseForm = Button(master, text="Cancel",bg="medium aquamarine",font=("arial", 11, "bold"), width=30,height=3, command=lambda: [master.destroy(), DialogBoxes.not_saved(self)]) # calls destroy and message box
+        self.btnCloseForm = Button(master, text="Cancel",bg="medium aquamarine",font=("arial", 11, "bold"),
+                                   width=30,height=3, command=lambda: [master.destroy(), DialogBoxes.not_saved(self)]) # calls destroy and message box
         self.btnAddBooking = Button(master, text="Add Booking", bg="medium aquamarine",font=("arial", 11, "bold"), width=30,height=3)
         # Buttons for Add and Cancel on the wedding form being placed using grid layout
         self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(50, 50), padx=(75, 25), sticky="ew")

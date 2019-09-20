@@ -316,3 +316,5 @@ class frmViewBooking(Tkinter.Frame):
         Gui.viewbookinglogic.CalIncome(self.master2)
         Gui.viewbookinglogic.removeAllLabels(self.master2)
         # DetailsLabelChange(self, '',)
+
+        self.treeview.selection_set()

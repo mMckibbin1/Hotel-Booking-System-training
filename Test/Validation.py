@@ -4,15 +4,10 @@ from tkinter.messagebox import *
 def stringEmpty(test):
     validationfailed = False
     for strings in test:
-
         if strings == "":
             validationfailed = True
 
-    if validationfailed:
-        showwarning('Warning', 'Please enter a value')
-
-        # else:
-        #     showwarning('Warning', 'Failed')
+    return validationfailed
 
 
 # only allows numbers to be entered into an entry box

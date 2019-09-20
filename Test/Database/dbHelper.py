@@ -1,3 +1,4 @@
+import datetime
 import sqlite3
 from Events import Conference, Wedding, Party
 
@@ -221,3 +222,36 @@ def updateParty(party):
             ))
         conn.commit()
         cursor.close()
+
+
+# validation
+def date_conflict(table_name, date, room):
+    conn = dbconn
+    cursor = conn.cursor()
+    query = "SELECT * FROM {} WHERE date(EventDate) = date('{}') AND Room = '{}'".format(table_name, date, room)
+    cursor.execute(query)
+
+    if len(cursor.fetchall()) > 0:
+        cursor.close()
+        return True
+    else:
+        cursor.close()
+        return False
+
+
+def con_date_conflict(table_name, start_date, duration, room):
+
+    duration = int(duration) - 1
+    date_1 = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = date_1 + datetime.timedelta(duration)
+    conn = dbconn
+    cursor = conn.cursor()
+    query = "SELECT * FROM {} WHERE date(EventDate) BETWEEN date('{}') AND date('{}') AND Room = '{}'".format(table_name, start_date, end_date, room)
+    cursor.execute(query)
+
+    if len(cursor.fetchall()) > 0:
+        cursor.close()
+        return True
+    else:
+        cursor.close()
+        return False
