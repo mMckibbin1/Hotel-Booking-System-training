@@ -1,6 +1,5 @@
 from tkinter import *
 from addtionalWidgets import CalendarWidget
-# from tkinter.messagebox import *
 import Validation
 
 
@@ -56,14 +55,17 @@ class BaseEvent:
 
         # Entry boxes, dropdowns and datepicker for wedding form
         self.EntnumberOfguest = Entry(master, font=("arial", 10), width=50)
-        self.GuestsVcmd = (self.EntnumberOfguest.register(Validation.callback))
+        self.GuestsVcmd = (self.EntnumberOfguest.register(Validation.callback))  # Validation
         self.EntnumberOfguest.config(validate='all', validatecommand=(self.GuestsVcmd, '%P'))
 
         self.EntnameOfContact = Entry(master, font=("arial", 10), width=50)
+        self.NameVcmd = (self.EntnameOfContact.register(Validation.charOnly))  # Validation
+        self.EntnameOfContact.config(validate='all', validatecommand=(self.NameVcmd, '%P'))
+
         self.EntAddress = Entry(master, font=("arial", 10), width=50)
 
         self.EntContactNumber = Entry(master, font=("arial", 10), width=50)
-        self.ContactVcmd = (self.EntContactNumber.register(Validation.callback))
+        self.ContactVcmd = (self.EntContactNumber.register(Validation.callback))  # Validation
         self.EntContactNumber.config(validate='all', validatecommand=(self.ContactVcmd, '%P'))
 
         self.OpmEventRoomNumber = OptionMenu(master, DefaultRoomNo, *Rooms, command=self.getRoomnumber)

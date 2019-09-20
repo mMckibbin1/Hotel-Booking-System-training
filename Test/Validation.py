@@ -21,3 +21,10 @@ def callback(P):
             return True
         else:
             return False
+
+# only allows characters to be entered into an entry box
+def charOnly(C):
+    if str.isalpha(C) or C == "":
+        return True
+    else:
+        return False

@@ -3,8 +3,11 @@ from tkinter import *
 import Events.Party
 import Validation
 
-
+#
 class bookParty(Gui.BaseCreateForm.BaseEvent):
+
+    bandName = ''
+
     def __init__(self, master):
         # room options available for event type
         RoomOption = ['D', 'E', 'F', 'G']
