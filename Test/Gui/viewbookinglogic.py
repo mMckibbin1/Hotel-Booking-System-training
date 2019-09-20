@@ -1,5 +1,5 @@
 import datetime
-
+from logging import exception
 from Database import dbHelper
 from Events import Wedding, Party, Conference
 from tkinter import *
@@ -7,6 +7,7 @@ from Gui import DialogBoxes
 from addtionalWidgets import CalendarWidget
 from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
 import Events.Invoice
+from tkinter import messagebox
 
 
 def call_update_wedding_popup(object):
@@ -102,70 +103,80 @@ def Search(self):
 
 
 def update_selected(self):
-    listofevents = []
-    listofdb = dbHelper.read_all_from_db()
-    # try:
-    curItem = self.tree.focus()
+    try:
+            listofevents = []
+            listofdb = dbHelper.read_all_from_db()
+            # try:
+            curItem = self.tree.focus()
 
-    RowID = self.tree.item(curItem)['text']
+            RowID = self.tree.item(curItem)['text']
 
-    for value in self.tree.item(curItem)['values']:
-        listofevents.append(value)
+            for value in self.tree.item(curItem)['values']:
+                listofevents.append(value)
 
-        types = listofevents[0]
+                types = listofevents[0]
 
-    for list in listofdb:
-        for object in list:
-            if types == "Wedding":
-                if type(object) == Wedding.Wedding:
-                    if object.ID == RowID:
-                        object = object
-                        return call_update_wedding_popup(object)
-            elif types == "Party":
-                if type(object) == Party.Party:
-                    if object.ID == RowID:
-                        object = object
-                        return call_update_party_popup(object)
-            elif types == "Conference":
-                if type(object) == Conference.Conference:
-                    if object.ID == RowID:
-                        object = object
-                        print(object.noOfDays)
-                        return call_update_conference_popup(object)
+
+            for list in listofdb:
+                for object in list:
+                    if types == "Wedding":
+                        if type(object) == Wedding.Wedding:
+                            if object.ID == RowID:
+                                object = object
+                                return call_update_wedding_popup(object)
+                    elif types == "Party":
+                        if type(object) == Party.Party:
+                            if object.ID == RowID:
+                                object = object
+                                return call_update_party_popup(object)
+                    elif types == "Conference":
+                        if type(object) == Conference.Conference:
+                            if object.ID == RowID:
+                                object = object
+                                print(object.noOfDays)
+                                return call_update_conference_popup(object)
+    except:
+     print("please select a row first")
+     DialogBoxes.select_row()
 
 
 # selects item from treeview
 def selectItem(a, self):
-    listofevents = []
-    listofdb = dbHelper.read_all_from_db()
 
-    # sets the current item as the highlighted row in the treeview
-    curItem = self.tree.focus()
+   # try except to make sure a row is selected
+    try:
+            listofevents = []
+            listofdb = dbHelper.read_all_from_db()
 
-    # sets the id
-    RowID = self.tree.item(curItem)['text']
+            # sets the current item as the highlighted row in the treeview
+            curItem = self.tree.focus()
 
-    # adds the values in the tree view to a list
-    for value in self.tree.item(curItem)['values']:
-        listofevents.append(value)
+            # sets the id
+            RowID = self.tree.item(curItem)['text']
 
-        types = listofevents[0]
+            # adds the values in the tree view to a list
+            for value in self.tree.item(curItem)['values']:
+                listofevents.append(value)
 
-    # changes the labels depending on the ID and event type
-    for list in listofdb:
-        for object in list:
-            if types == "Wedding":
-                if type(object) == Wedding.Wedding:
-                    if object.ID == RowID:
-                        return DetailsLabelChange(self, types, object)
-            elif types == "Party":
-                if type(object) == Party.Party:
-                    if object.ID == RowID:
-                        return DetailsLabelChange(self, types, object)
-            elif types == "Conference":
-                if type(object) == Conference.Conference:
-                    if object.ID == RowID:
-                        return DetailsLabelChange(self, types, object)
+                types = listofevents[0]
+
+            # changes the labels depending on the ID and event type
+            for list in listofdb:
+                for object in list:
+                    if types == "Wedding":
+                        if type(object) == Wedding.Wedding:
+                            if object.ID == RowID:
+                                return DetailsLabelChange(self, types, object)
+                    elif types == "Party":
+                        if type(object) == Party.Party:
+                            if object.ID == RowID:
+                                return DetailsLabelChange(self, types, object)
+                    elif types == "Conference":
+                        if type(object) == Conference.Conference:
+                            if object.ID == RowID:
+                                return DetailsLabelChange(self, types, object)
+    except:
+     print("Please select a row")
 
 
 # functions to allow the labels to change in the additional info labelframe
@@ -349,6 +360,8 @@ def refreshData(master):
     master.treeview.delete(*master.treeview.get_children())
     loadData(master)
     CalIncome(master)
+    #dialog box to confirm refresh
+    DialogBoxes.table_refreshed()
 
 
 # function to load the data from the database into the table
@@ -380,6 +393,7 @@ def insert_data(self, ID, EventType, nameOfContact, contactNo, dateOfEvent, even
 # function to display calander widget for date of event
 def Calendarpopup(event, entryField, master, root):
     child = Toplevel()
+    child.title("Select A Date")
     cal = CalendarWidget.Calendar(child, master.data)
     root.grab_release()
     child.grab_set()
@@ -408,6 +422,26 @@ def Get_selected_date(self, event, entryField):
 
 # delete data from table
 def delete_data(self):
+    #try catch to check if a row is selected
+    try:
+            listofevents = []
+            curItem = self.tree.focus()
+            # sets the id to the id in the row
+            RowID = self.tree.item(curItem)['text']
+
+            for value in self.tree.item(curItem)['values']:
+                listofevents.append(value)
+                Type = listofevents[0]
+
+            dbHelper.deleteBooking(RowID, Type)
+
+    except:
+     print("please select a row first")
+     #displays a promt to select a row
+     DialogBoxes.select_row()
+
+def is_row_selected_delete(self):
+    #function to check if a row is selected
     listofevents = []
     curItem = self.tree.focus()
     # sets the id to the id in the row
@@ -416,5 +450,11 @@ def delete_data(self):
     for value in self.tree.item(curItem)['values']:
         listofevents.append(value)
         Type = listofevents[0]
-
-    dbHelper.deleteBooking(RowID, Type)
+    #if the row is not empty then the delete functions will be run
+    if RowID != "":
+        # asks user is there really want to delete or not
+        DialogBoxes.Delete(self)
+    #if it is empty user will be promted to select a row
+    else:
+        # displays a promt to select a row
+        DialogBoxes.select_row()
