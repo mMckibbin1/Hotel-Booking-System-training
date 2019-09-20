@@ -16,8 +16,6 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
     def __init__(self, master):
         # room options available for event type
         RoomOption = ['H', 'I']
-
-        super().__init__(master, RoomOption)
         # Creation of wedding form set title, size ect..
         super().__init__(master,RoomOption)
 
