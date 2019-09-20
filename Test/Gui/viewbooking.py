@@ -303,7 +303,7 @@ class frmViewBooking(Tkinter.Frame):
         self.lblDisTotal = Label(self.Totallabelframe, text="£", background="lavender")
         self.lblDisTotal.grid(row=4, column=2)
 
-        self.btninvoice = Button(self.Totallabelframe, text="Save Invoice")
+        self.btninvoice = Button(self.Totallabelframe, text="Save Invoice", command=lambda :Gui.viewbookinglogic.Invoice(self.master2))
         self.btninvoice.grid(row=3, column=3, rowspan=2, columnspan=2)
 
         # setting weight for rows and columns

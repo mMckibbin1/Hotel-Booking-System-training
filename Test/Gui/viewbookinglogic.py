@@ -6,6 +6,8 @@ from tkinter import *
 from Gui import DialogBoxes
 from addtionalWidgets import CalendarWidget
 from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
+import Events.Invoice
+
 
 def call_update_wedding_popup(object):
     top = Toplevel()
@@ -30,28 +32,63 @@ def call_update_conference_popup(object):
     top.wait_window()
     top.destroy()
 
+
 def unSelectItem(a, self):
     self.treeview.selection_clear()
     self.removeAllLabels(self)
 
 
-def Search(self):
+def Invoice(self):
+    listofevents = []
+    listofdb = dbHelper.read_all_from_db()
 
+    # sets the current item as the highlighted row in the treeview
+    curItem = self.tree.focus()
+
+    # sets the id
+    RowID = self.tree.item(curItem)['text']
+
+    # adds the values in the tree view to a list
+    for value in self.tree.item(curItem)['values']:
+        listofevents.append(value)
+
+        types = listofevents[0]
+
+    # changes the labels depending on the ID and event type
+    for list in listofdb:
+        for object in list:
+            if types == "Wedding":
+                if type(object) == Wedding.Wedding:
+                    if object.ID == RowID:
+                        return Events.Invoice(address= object.address,invoice_number="123", cost_per_head=object.costPerHead, number_of_guests=object.noGuests,
+                                              band_name= object.bandName, band_cost= object.bandPrice,number_of_days="N/A", guests_cost=object.guestsCost(), cost_per_day="N/A",sub_total= object.grosstotal(),
+                                              VAT=object.VAT(), total=object.netTotal(), file_name="Test 1")
+            elif types == "Party":
+                if type(object) == Party.Party:
+                    if object.ID == RowID:
+                        return DetailsLabelChange(self, types, object)
+            elif types == "Conference":
+                if type(object) == Conference.Conference:
+                    if object.ID == RowID:
+                        return DetailsLabelChange(self, types, object)
+
+
+def Search(self):
     eventslist = []
 
     if self.checkVarWedding.get() != "":
-        eventslist.append( self.checkVarWedding.get())
-    if  self.checkVarParty.get() != "":
+        eventslist.append(self.checkVarWedding.get())
+    if self.checkVarParty.get() != "":
         eventslist.append(self.checkVarParty.get())
-    if  self.checkVarConference.get() != "":
-        eventslist.append( self.checkVarConference.get())
+    if self.checkVarConference.get() != "":
+        eventslist.append(self.checkVarConference.get())
 
     self.treeview.delete(*self.treeview.get_children())
     for object in dbHelper.search(eventslist, self.EntStartDate.get(), self.EntEndDate.get()):
         if type(object) == Wedding.Wedding:
             insert_data(self, object.ID, "Wedding", object.nameOfContact,
-                                       object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                                       object.netTotal())
+                        object.contactNo, object.dateOfEvent, object.eventRoomNo,
+                        object.netTotal())
         elif type(object) == Party.Party:
             insert_data(self, object.ID, "Party", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
@@ -60,7 +97,6 @@ def Search(self):
             insert_data(self, object.ID, "Conference", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
                         object.netTotal())
-
 
     CalIncome(self)
 
@@ -307,6 +343,7 @@ def CalIncome(master):
         totalIncome += float(master.treeview.item(child, "values")[5])
         master.lblTotalIncome.config(text=totalIncome)
 
+
 # function to reload the table
 def refreshData(master):
     master.treeview.delete(*master.treeview.get_children())
@@ -316,15 +353,14 @@ def refreshData(master):
 
 # function to load the data from the database into the table
 def loadData(master):
-
     datalist = dbHelper.read_all_from_db()
 
     for list in datalist:
         for object in list:
             if type(object) == Wedding.Wedding:
                 insert_data(master, object.ID, "Wedding", object.nameOfContact,
-                                           object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                                           object.netTotal())
+                            object.contactNo, object.dateOfEvent, object.eventRoomNo,
+                            object.netTotal())
             elif type(object) == Party.Party:
                 insert_data(master, object.ID, "Party", object.nameOfContact,
                             object.contactNo, object.dateOfEvent, object.eventRoomNo,
@@ -334,13 +370,15 @@ def loadData(master):
                             object.contactNo, object.dateOfEvent, object.eventRoomNo,
                             object.netTotal())
 
+
 # adding data to treeview
 def insert_data(self, ID, EventType, nameOfContact, contactNo, dateOfEvent, eventRoomNo, netTotal):
-    self.treeview.insert('', 'end', text= ID,
-                     values=( EventType, nameOfContact, contactNo, dateOfEvent, eventRoomNo, netTotal))
+    self.treeview.insert('', 'end', text=ID,
+                         values=(EventType, nameOfContact, contactNo, dateOfEvent, eventRoomNo, netTotal))
+
 
 # function to display calander widget for date of event
-def Calendarpopup(event,entryField, master, root):
+def Calendarpopup(event, entryField, master, root):
     child = Toplevel()
     cal = CalendarWidget.Calendar(child, master.data)
     root.grab_release()
@@ -348,7 +386,8 @@ def Calendarpopup(event,entryField, master, root):
     child.wait_window()
     child.grab_release()
     root.grab_set()
-    Get_selected_date(master, event,entryField)
+    Get_selected_date(master, event, entryField)
+
 
 # function to get the selected date from calander widget and display it as a formatted string
 def Get_selected_date(self, event, entryField):
@@ -357,14 +396,15 @@ def Get_selected_date(self, event, entryField):
     year = self.data.get("year_selected", "date error")
     Date = str(year) + "-" + str(Month) + "-" + str(Day)
 
-    FormtDate = datetime.datetime.strptime(Date,"%Y-%m-%d").date()
+    FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
 
     if entryField == "EntStartDate":
-        self.EntStartDate.delete(0,'end')
+        self.EntStartDate.delete(0, 'end')
         self.EntStartDate.insert([0], str(FormtDate))
     else:
         self.EntEndDate.delete(0, 'end')
         self.EntEndDate.insert([0], str(FormtDate))
+
 
 # delete data from table
 def delete_data(self):

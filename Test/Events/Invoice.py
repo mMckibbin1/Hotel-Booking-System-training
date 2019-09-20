@@ -1,13 +1,35 @@
+from __future__ import print_function
+
 import datetime
 
+from mailmerge import MailMerge
 
-class Invoice:
-    def  __init__(self, address, invoice_number, cost_per_head, number_of_guests, band_name, band_cost, number_of_days):
-        self.date = datetime.datetime.now()
-        self.address = address
-        self.invoice_number = invoice_number
-        self.cost_per_head = cost_per_head
-        self.number_of_guests = number_of_guests
-        self.band_name = band_name
-        self.band_cost = band_cost
-        self.number_of_days = number_of_days
+template = "M:\GitHub\Hotel-Booking-System-training\Test\Invoice Template\invoiceTemplate.docx"
+
+document = MailMerge(template)
+print(document.get_merge_fields())
+
+def Invoice(address, invoice_number, cost_per_head, number_of_guests, band_name, band_cost, number_of_days,
+             guests_cost, cost_per_day, sub_total, VAT, total, file_name):
+    template = "M:\GitHub\Hotel-Booking-System-training\Test\Invoice Template\invoiceTemplate.docx"
+
+    document = MailMerge(template)
+    print(document.get_merge_fields())
+
+    document.merge(
+        GuestsCost=guests_cost,
+        costPerHead=cost_per_head,
+        BandCost=band_cost,
+        Date=datetime.datetime.now().date(),
+        VAT=VAT,
+        Address=address,
+        BandName=band_name,
+        subTotal=sub_total,
+        TotalCost=total,
+        CostPerDay=cost_per_day,
+        numberofguests=number_of_guests,
+        InvoiceNumber=invoice_number,
+        numberofDays=number_of_days
+    )
+
+    document.write("Invoice Template/{}.docx".format(file_name))
