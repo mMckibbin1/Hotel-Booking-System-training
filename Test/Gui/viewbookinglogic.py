@@ -3,7 +3,7 @@ from logging import exception
 from Database import dbHelper
 from Events import Wedding, Party, Conference
 from tkinter import *
-from Gui import DialogBoxes
+from Gui import DialogBoxes, InvoiceFileName
 from addtionalWidgets import CalendarWidget
 from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
 import Events.Invoice
@@ -40,6 +40,12 @@ def unSelectItem(a, self):
 
 
 def Invoice(self):
+
+    top = Toplevel()
+    ui = InvoiceFileName.CreateInvoiceDialog(top)
+    top.grab_set()
+    top.wait_window()
+    top.destroy()
     listofevents = []
     listofdb = dbHelper.read_all_from_db()
 
@@ -61,17 +67,29 @@ def Invoice(self):
             if types == "Wedding":
                 if type(object) == Wedding.Wedding:
                     if object.ID == RowID:
-                        return Events.Invoice(address= object.address,invoice_number="123", cost_per_head=object.costPerHead, number_of_guests=object.noGuests,
+                        return Events.Invoice.Invoice(address= object.address,invoice_number="123", cost_per_head=object.costPerHead, number_of_guests=object.noGuests,
                                               band_name= object.bandName, band_cost= object.bandPrice,number_of_days="N/A", guests_cost=object.guestsCost(), cost_per_day="N/A",sub_total= object.grosstotal(),
                                               VAT=object.VAT(), total=object.netTotal(), file_name="Test 1")
             elif types == "Party":
                 if type(object) == Party.Party:
                     if object.ID == RowID:
-                        return DetailsLabelChange(self, types, object)
+                        return Events.Invoice.Invoice(address=object.address, invoice_number="123",
+                                                      cost_per_head=object.costPerHead,
+                                                      number_of_guests=object.noGuests,
+                                                      band_name=object.bandName, band_cost=object.bandPrice,
+                                                      number_of_days="N/A", guests_cost=object.guestsCost(),
+                                                      cost_per_day="N/A", sub_total=object.grosstotal(),
+                                                      VAT=object.VAT(), total=object.netTotal(), file_name="Test 2")
             elif types == "Conference":
                 if type(object) == Conference.Conference:
                     if object.ID == RowID:
-                        return DetailsLabelChange(self, types, object)
+                        return Events.Invoice.Invoice(address=object.address, invoice_number="123",
+                                                      cost_per_head=object.costPerHead,
+                                                      number_of_guests=object.noGuests,
+                                                      band_name="N/A", band_cost="N/A",
+                                                      number_of_days=object.noOfDays, guests_cost=object.guestsCost(),
+                                                      cost_per_day=object.guestsCost(), sub_total=object.grosstotal(),
+                                                      VAT=object.VAT(), total=object.netTotal(), file_name="Test 3")
 
 
 def Search(self):
