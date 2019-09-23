@@ -1,5 +1,8 @@
 import datetime
 from tkinter import *
+from tkinter import messagebox
+
+import Validation
 from addtionalWidgets import CalendarWidget
 from Database import dbHelper
 from Gui import viewbooking, DialogBoxes
@@ -103,3 +106,39 @@ class BaseEditEvent:
         self.EntContactNumber.insert(0, object.contactNo)
         self.CalDateOfEvent.insert(0, object.dateOfEvent)
 
+    # validation
+    def validation(self, object):
+        valpassed = True
+
+        if Validation.stringEmpty(self.savelist()):
+            valpassed = False
+            return messagebox.showinfo("Booking Failed", "All fields are required to be filled in.")
+
+        elif dbHelper.date_conflict_update("weddingTable", self.CalDateOfEvent.get(), self.eventRoomNo, object.id):
+            valpassed = False
+            return messagebox.showinfo('Booking Failed',
+                                       'Room is currently booked. Please select another room, or change the date of booking.')
+        elif Validation.min_number(self.EntnumberOfguest.get(), self.EntBedroomReserved.get()):
+            valpassed = False
+            return messagebox.showinfo("Booking Failed", "Must have entered more than one guest and room.")
+
+        if valpassed:
+            Events.Wedding.createwedding(
+                self.EntnumberOfguest.get(),
+                self.EntnameOfContact.get(),
+                self.EntAddress.get(),
+                self.EntContactNumber.get(),
+                self.eventRoomNo,
+                self.CalDateOfEvent.get(),
+                self.bandName,
+                self.EntBedroomReserved.get())
+
+    def savelist(self):
+        self.validationTestList = []
+        self.validationTestList.append(self.EntnumberOfguest.get())
+        self.validationTestList.append(self.EntnameOfContact.get())
+        self.validationTestList.append(self.EntAddress.get())
+        self.validationTestList.append(self.EntContactNumber.get())
+        self.validationTestList.append(self.eventRoomNo)
+        self.validationTestList.append(self.CalDateOfEvent.get())
+        return self.validationTestList

@@ -5,7 +5,7 @@ from Gui import DialogBoxes
 
 
 class EditParty(Gui.BaseEditForm.BaseEditEvent):
-    def __init__(self, master, object):
+    def __init__(self, master, object, viewbookingself):
         RoomOption = ['D', 'E', 'F', 'G']
         super().__init__(master,RoomOption, object)
         # Creation of wedding form set title, size ect..
@@ -38,7 +38,7 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
                                                                      self.EntAddress.get(),
                                                                      self.EntContactNumber.get(),self.DefaultRoomNo.get(),
                                                                      self.CalDateOfEvent.get(), object.dateOfBooking,
-                                                                     self.DefaultBandName.get(), object.ID), master.destroy(), DialogBoxes.updated(self)]) # calls update ,destroy and message box
+                                                                     self.DefaultBandName.get(), object.ID), master.destroy(), DialogBoxes.updated(self, master=viewbookingself)]) # calls update ,destroy and message box
 
     # function to get room number from dropdown
     def getRoomnumber(self, value):

@@ -8,31 +8,31 @@ from addtionalWidgets import CalendarWidget
 from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
 import Events.Invoice
 
-def call_update_wedding_popup(object):
+def call_update_wedding_popup(object,self):
     top = Toplevel()
-    ui = EditWeddingForm.EditWedding(top, object)
+    ui = EditWeddingForm.EditWedding(top, object, self)
     top.grab_set()
     top.wait_window()
     top.destroy()
 
 
-def call_update_party_popup(object):
+def call_update_party_popup(object, self):
     top = Toplevel()
-    ui = EditPartyForm.EditParty(top, object)
+    ui = EditPartyForm.EditParty(top, object,self)
     top.grab_set()
     top.wait_window()
     top.destroy()
 
 
-def call_update_conference_popup(object):
+def call_update_conference_popup(object, self):
     top = Toplevel()
-    ui = EditConferenceForm.EditConference(top, object)
+    ui = EditConferenceForm.EditConference(top, object,self)
     top.grab_set()
     top.wait_window()
     top.destroy()
 
 
-def unSelectItem(self):
+def select_first_row_(self):
     child_id = self.treeview.get_children()
     if child_id:
         self.tree.focus(child_id[0])
@@ -174,18 +174,18 @@ def update_selected(self):
                     if type(object) == Wedding.Wedding:
                         if object.ID == RowID:
                             object = object
-                            return call_update_wedding_popup(object)
+                            return call_update_wedding_popup(object, self)
                 elif types == "Party":
                     if type(object) == Party.Party:
                         if object.ID == RowID:
                             object = object
-                            return call_update_party_popup(object)
+                            return call_update_party_popup(object,self)
                 elif types == "Conference":
                     if type(object) == Conference.Conference:
                         if object.ID == RowID:
                             object = object
                             print(object.noOfDays)
-                            return call_update_conference_popup(object)
+                            return call_update_conference_popup(object, self)
     except:
         print("please select a row first")
         DialogBoxes.select_row()
@@ -412,7 +412,7 @@ def refreshData(master):
     loadData(master)
     CalIncome(master)
     #dialog box to confirm refresh
-    DialogBoxes.table_refreshed()
+    #DialogBoxes.table_refreshed()
 
 
 # function to load the data from the database into the table
@@ -491,7 +491,7 @@ def delete_data(self):
         # displays a promt to select a row
         DialogBoxes.select_row()
 
-def is_row_selected_delete(self):
+def is_row_selected_delete(self,master):
     # function to check if a row is selected
     listofevents = []
     curItem = self.tree.focus()
@@ -504,7 +504,7 @@ def is_row_selected_delete(self):
     # if the row is not empty then the delete functions will be run
     if RowID != "":
         # asks user is there really want to delete or not
-        DialogBoxes.Delete(self)
+        DialogBoxes.Delete(self, master)
     # if it is empty user will be promted to select a row
     else:
         # displays a promt to select a row

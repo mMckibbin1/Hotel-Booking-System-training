@@ -6,7 +6,7 @@ from Gui import DialogBoxes
 
 class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
-    def __init__(self, master, booking):
+    def __init__(self, master, booking, viewbookingself):
         RoomOption = ['A', 'B', 'C']
 
         super().__init__(master, RoomOption, booking)
@@ -59,7 +59,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
                                                                           self.EntCompanyName.get(),
                                                                           self.EntNoOfDays.get(),
                                                                           #checkbox get
-                                                                          CheckVar1.get(), booking.ID), master.destroy(), DialogBoxes.updated(self)]) # calls update ,destroy and message box
+                                                                          CheckVar1.get(), booking.ID), master.destroy(), DialogBoxes.updated(self,master=viewbookingself)]) # calls update ,destroy and message box
 
 
         self.populateform_conference(booking)

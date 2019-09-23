@@ -9,7 +9,7 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
     eventRoomNo = ''
     bandName = ''
 
-    def __init__(self, master, booking):
+    def __init__(self, master, booking, viewbookingself):
         RoomOption = ['H', 'I']
         super().__init__(master, RoomOption, booking)
         #Creation of wedding form set title, size ect..
@@ -48,10 +48,12 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
                                                                        self.DefaultRoomNo.get(),
                                                                        self.CalDateOfEvent.get(),booking.dateOfBooking,
                                                                        self.DefaultBandName.get(),
-                                                                       self.EntBedroomReserved.get(), booking.ID), master.destroy(), DialogBoxes.updated(self)]) # calls update ,destroy and message box
+                                                                       self.EntBedroomReserved.get(), booking.ID), master.destroy(), DialogBoxes.updated(self, master=viewbookingself)]) # calls update ,destroy and message box
 
         #Buttons for Add and Cancel on the wedding form being placed using grid layout
         self.populateform_wedding(booking)
+
+        self.savelist().append(self.EntBedroomReserved.get(),self.bandName)
 
     #function to get room number from dropdown
     def getRoomnumber(self, value):
@@ -64,3 +66,4 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
     def populateform_wedding(self, booking):
 
         self.EntBedroomReserved.insert(0, booking.noBedroomsReserved)
+

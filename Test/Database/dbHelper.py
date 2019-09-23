@@ -248,6 +248,19 @@ def date_conflict(table_name, date, room):
         cursor.close()
         return False
 
+def date_conflict_update(table_name, date, room,id):
+    conn = dbconn
+    cursor = conn.cursor()
+    query = "SELECT * FROM {} WHERE date(EventDate) = date('{}') AND Room = '{}'".format(table_name, date, room)
+    cursor.execute(query)
+
+    if len(cursor.fetchall()) > 0:
+        cursor.close()
+        return True
+    else:
+        cursor.close()
+        return False
+
 
 def con_date_conflict(table_name, start_date, duration, room):
 

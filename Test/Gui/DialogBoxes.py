@@ -8,7 +8,7 @@ from tkinter import messagebox
 # classes to display and accept response from a dialog box
 class Delete:
     # dialog to confirm that user wants to delete booking from database
-    def __init__(self, vbself):
+    def __init__(self, vbself, master):
 
 
                 # dialog box pops up
@@ -17,6 +17,7 @@ class Delete:
                     viewbookinglogic.delete_data(vbself)
                     # informs user that booking is deleted
                     showinfo('Yes', 'Booking Deleted')
+                    viewbookinglogic.refreshData(master=master)
 
                 else:
                     # informs user that booking is not deleted
@@ -25,8 +26,9 @@ class Delete:
 
 
 # updated dialog message box
-def updated(self):
+def updated(self, master):
  messagebox.showinfo("Successful", "These details have been changed!")
+ viewbookinglogic.refreshData(master=master)
 
 # not saved dialog message box
 def not_saved(self):

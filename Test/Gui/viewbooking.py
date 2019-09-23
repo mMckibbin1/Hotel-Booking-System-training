@@ -89,7 +89,7 @@ class frmViewBooking(Tkinter.Frame):
 
         # button delete
         btnDelete = Button(self.parent, text="Delete Selected Booking", width=20, height=2, background="snow", font=("arial", 10),
-                           command=lambda : viewbookinglogic.is_row_selected_delete(self))
+                           command=lambda : viewbookinglogic.is_row_selected_delete(self, self.master2))
         btnDelete.grid(row=3, column=8, sticky="ne", pady=(0, 20))
         btnDelete.bind("<Enter>", on_enterDelete)
         btnDelete.bind("<Leave>", on_leaveDelete)
@@ -171,6 +171,9 @@ class frmViewBooking(Tkinter.Frame):
         btnSearchDate.bind("<Enter>", on_enterSearch)
         btnSearchDate.bind("<Leave>", on_leaveSearch)
 
+        btn_main_menu = Button(self.Selectlabelframe, text="Main Menu", width=13, height=2, background="snow",
+                               font=("arial", 10),command=lambda :self.master.destroy())
+        btn_main_menu.grid(row=4, column=8, pady=(0, 20), padx=(8, 15), sticky="WE")
 
         # labelframe for additional info box
         self.labelframe = LabelFrame(self.parent, text="Additional Information", width=324, height=167,
@@ -317,4 +320,4 @@ class frmViewBooking(Tkinter.Frame):
         Gui.viewbookinglogic.loadData(self.master2)
         Gui.viewbookinglogic.CalIncome(self.master2)
         Gui.viewbookinglogic.removeAllLabels(self.master2)
-        Gui.viewbookinglogic.unSelectItem(self.master2)
+        Gui.viewbookinglogic.select_first_row_(self.master2)
