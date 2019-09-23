@@ -1,5 +1,6 @@
 import datetime
 from tkinter import *
+from tkinter import messagebox
 
 from Gui import DialogBoxes
 from addtionalWidgets import CalendarWidget
@@ -10,7 +11,6 @@ import caltest
 class BaseEvent:
     # setting default values for eventRoom and BandName as empty strings
     eventRoomNo = ''
-
 
     def __init__(self, master, Rooms,):
         # Creation of wedding form set title, size ect..
@@ -85,7 +85,8 @@ class BaseEvent:
         self.CalDateOfEvent.grid(row=6, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
         # Buttons for Add and Cancel on the wedding form
-        self.btnCloseForm = Button(master, text="Cancel",bg="medium aquamarine",font=("arial", 11, "bold"), width=30,height=3, command=lambda: [master.destroy(), DialogBoxes.not_saved(self)]) # calls destroy and message box
+        self.btnCloseForm = Button(master, text="Cancel",bg="medium aquamarine",font=("arial", 11, "bold"),
+                                   width=30,height=3, command=lambda: [master.destroy(), DialogBoxes.not_saved(self)]) # calls destroy and message box
         self.btnAddBooking = Button(master, text="Add Booking", bg="medium aquamarine",font=("arial", 11, "bold"), width=30,height=3)
         # Buttons for Add and Cancel on the wedding form being placed using grid layout
         self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(50, 50), padx=(75, 25), sticky="ew")
@@ -115,5 +116,9 @@ class BaseEvent:
         Date = str(year) + "-" + str(Month) + "-" + str(Day)
 
         FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
-        self.CalDateOfEvent.delete(0, 'end')
-        self.CalDateOfEvent.insert([0], str(FormtDate))
+
+        if FormtDate < datetime.datetime.now().date():
+            return messagebox.showinfo("Invalid Date", "Can not pick a past date.\n Please pick a new date.")
+        else:
+            self.CalDateOfEvent.delete(0, 'end')
+            self.CalDateOfEvent.insert([0], str(FormtDate))

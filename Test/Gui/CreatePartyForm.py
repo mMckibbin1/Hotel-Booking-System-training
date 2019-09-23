@@ -3,6 +3,8 @@ from tkinter import *
 import Events.Party
 import Validation
 from Gui import DialogBoxes
+from Database import dbHelper
+from tkinter import messagebox
 
 
 class bookParty(Gui.BaseCreateForm.BaseEvent):
@@ -22,7 +24,7 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
         # defines options for bandName dropdown box
         BandNames = ["Lil' Febrezey", "Prawn Mendes", "AB/CD"]
 
-        #variable to store selected band name from dropdown
+        # variable to store selected band name from dropdown
         DefaultBandName = StringVar(master)
         DefaultBandName.set("Please Select a Band")  # default value
 
@@ -36,14 +38,33 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
         self.OpmBandName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
 
         # Button config to override the parent button config
-        self.btnAddBooking.config(command=lambda: [Validation.stringEmpty(self.savelist()), Events.Party.createParty(
-                                                            self.EntnumberOfguest.get(),
-                                                            self.EntnameOfContact.get(),
-                                                            self.EntAddress.get(),
-                                                            self.EntContactNumber.get(),
-                                                            self.eventRoomNo,
-                                                            self.CalDateOfEvent.get(),
-                                                            self.bandName), master.destroy(),DialogBoxes.saved(self)])
+        self.btnAddBooking.config(command=lambda: [self.validation(), master.destroy()])
+
+    # validation
+    def validation(self):
+        valpassed = True
+
+        if Validation.stringEmpty(self.savelist()):
+            valpassed = False
+            return messagebox.showinfo("Booking Failed", "All fields are required to be filled in.")
+        elif dbHelper.date_conflict("partyTable", self.CalDateOfEvent.get(), self.eventRoomNo):
+            valpassed = False
+            return messagebox.showinfo('Booking Failed',
+                                       'Room is currently booked. Please select another room, or change the date of booking.')
+        elif Validation.min_number(self.EntnumberOfguest.get()):
+            valpassed = False
+            return messagebox.showinfo("Booking Failed", "Must have more than one guest.")
+
+
+        if valpassed:
+            Events.Party.createParty(
+                self.EntnumberOfguest.get(),
+                self.EntnameOfContact.get(),
+                self.EntAddress.get(),
+                self.EntContactNumber.get(),
+                self.eventRoomNo,
+                self.CalDateOfEvent.get(),
+                self.bandName)
 
     def savelist(self):
         self.validationTestList = []

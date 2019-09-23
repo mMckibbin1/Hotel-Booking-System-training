@@ -3,6 +3,9 @@ import Events.Conference
 import Gui.BaseCreateForm
 import Validation
 from Gui import DialogBoxes
+from Database import dbHelper
+from tkinter import messagebox
+import datetime
 
 
 class bookConference(Gui.BaseCreateForm.BaseEvent):
@@ -19,7 +22,7 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
 
         # method to get value of checkbutton
         def ch_box_sel():
-            print(CheckVar1.get())
+            print(self.CheckVar1.get())
 
         # Labels for Conference booking form
         self.lblSubheading.config(text="Please Fill in the Details for the Conference")
@@ -43,32 +46,53 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         self.EntNoOfDays.config(validate='all', validatecommand=(self.DaysVcmd, '%P'))
 
         # checkbox now works :)
-        #checkbox
+        # checkbox
 
-        CheckVar1 = IntVar()
-        self.chxProjectorRequired = Checkbutton(master, text='', variable=CheckVar1, onvalue=True, offvalue=False,
+        self.CheckVar1 = IntVar()
+        self.chxProjectorRequired = Checkbutton(master, text='', variable=self.CheckVar1, onvalue=True, offvalue=False,
                                                 bg="#70ABAF", command=ch_box_sel)
 
         # Entry boxes
         self.EntCompanyName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
         self.EntNoOfDays.grid(row=8, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
-        #checkbox
+        # checkbox
 
         self.chxProjectorRequired.grid(row=9, column=2, pady=(25, 0), padx=(0, 25))
 
         # Button config to override the parent button config
-        self.btnAddBooking.config(command=lambda: [Validation.stringEmpty(self.savelist()), Events.Conference.createConference(
-                                                                            self.EntnumberOfguest.get(),
-                                                                            self.EntnameOfContact.get(),
-                                                                            self.EntAddress.get(),
-                                                                            self.EntContactNumber.get(),
-                                                                            self.eventRoomNo,
-                                                                            self.CalDateOfEvent.get(),
-                                                                            self.EntCompanyName.get(),
-                                                                            self.EntNoOfDays.get(),
-                                                                            #checkbox get
-                                                                            CheckVar1.get()), master.destroy(),DialogBoxes.saved(self)])
+        self.btnAddBooking.config(command=lambda: [self.validation(), master.destroy()])
+
+    # validation
+    def validation(self):
+        valpassed = True
+
+
+
+        if Validation.stringEmpty(self.savelist()):
+            valpassed = False
+            return messagebox.showinfo("Booking Failed",
+                                       "All fields are required to be filled in.")
+        elif dbHelper.con_date_conflict("conferenceTable", self.CalDateOfEvent.get(), self.EntNoOfDays.get(), self.eventRoomNo):
+            valpassed = False
+            return messagebox.showinfo('Booking Failed',
+                                       'Room is currently booked. Please select another room, or change the date of booking.')
+        elif Validation.min_number(self.EntnumberOfguest.get()):
+            valpassed = False
+            return messagebox.showinfo("Booking Failed", "Must have more than one guest.")
+
+
+        if valpassed:
+            Events.Conference.createConference(
+                self.EntnumberOfguest.get(),
+                self.EntnameOfContact.get(),
+                self.EntAddress.get(),
+                self.EntContactNumber.get(),
+                self.eventRoomNo,
+                self.CalDateOfEvent.get(),
+                self.EntCompanyName.get(),
+                self.EntNoOfDays.get(),
+                self.CheckVar1.get())
 
     def savelist(self):
         self.validationTestList = []

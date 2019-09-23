@@ -1,3 +1,4 @@
+import datetime
 import sqlite3
 from Events import Conference, Wedding, Party
 
@@ -76,6 +77,8 @@ def read_all_from_db():
     return listdbWedding + listdbParty + listdbConference
 
 
+##### Insert #####
+# Wedding
 def insertwedding(wedding):
     conn = dbconn
     with conn:
@@ -89,6 +92,7 @@ def insertwedding(wedding):
         cursor.close()
 
 
+# Party
 def insertParty(party):
     conn = dbconn
     with conn:
@@ -100,6 +104,7 @@ def insertParty(party):
              party.bandName, party.bandPrice))
 
 
+# Conference
 def insertConference(conference):
     conn = dbconn
     with conn:
@@ -180,6 +185,8 @@ def search(EventsList, StartDate, EndDate):
     return weddinglist + partylist + conferencelist
 
 
+##### Update #####
+# Conference
 def updateConference(conference):
     conn = dbconn
     with conn:
@@ -196,6 +203,7 @@ def updateConference(conference):
         cursor.close()
 
 
+# Wedding
 def updateWedding(wedding):
     conn = dbconn
     with conn:
@@ -211,6 +219,7 @@ def updateWedding(wedding):
         cursor.close()
 
 
+# Party
 def updateParty(party):
     conn = dbconn
     with conn:
@@ -223,3 +232,37 @@ def updateParty(party):
             ))
         conn.commit()
         cursor.close()
+
+
+##### Validation #####
+def date_conflict(table_name, date, room):
+    conn = dbconn
+    cursor = conn.cursor()
+    query = "SELECT * FROM {} WHERE date(EventDate) = date('{}') AND Room = '{}'".format(table_name, date, room)
+    cursor.execute(query)
+
+    if len(cursor.fetchall()) > 0:
+        cursor.close()
+        return True
+    else:
+        cursor.close()
+        return False
+
+
+def con_date_conflict(table_name, start_date, duration, room):
+
+    duration = int(duration) - 1
+    date_1 = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = date_1 + datetime.timedelta(duration)
+    conn = dbconn
+    cursor = conn.cursor()
+    query = "select *, date(EventDate, '+'||(Days - 1)||' days') as endDate from {} where endDate BETWEEN date('{}') and date('{}') and Room = '{}'".format(table_name, start_date, end_date, room)
+    #query = "SELECT * FROM {} WHERE date(EventDate) BETWEEN date('{}') AND date('{}') AND Room = '{}'".format(table_name, start_date, end_date, room)
+    cursor.execute("select *, date(EventDate, '+'||(Days - 1)||' days') as endDate from {} where endDate BETWEEN date('{}') and date('{}') and Room = '{}'".format(table_name, start_date, end_date, room))
+
+    if len(cursor.fetchall()) > 0:
+        cursor.close()
+        return True
+    else:
+        cursor.close()
+        return False

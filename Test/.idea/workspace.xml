@@ -208,18 +208,16 @@
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Gui/DialogBoxes.py</url>
-          <line>10</line>
-          <option name="timeStamp" value="11" />
+          <url>file://$PROJECT_DIR$/Database/dbHelper.py</url>
+          <line>260</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Database/dbHelper.py</url>
+          <line>258</line>
+          <option name="timeStamp" value="37" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="self._last_child_ids" />
-        <watch expression="__py_debug_temp_var_1932334717" />
-        <watch expression="__py_debug_temp_var_1932334717" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>
