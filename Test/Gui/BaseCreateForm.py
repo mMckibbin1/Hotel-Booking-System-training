@@ -5,7 +5,6 @@ from tkinter import messagebox
 from Gui import DialogBoxes
 from addtionalWidgets import CalendarWidget
 import Validation
-import caltest
 
 
 class BaseEvent:
@@ -56,17 +55,17 @@ class BaseEvent:
         # Entry boxes, dropdowns and datepicker for wedding form
         self.EntnumberOfguest = Entry(master, font=("arial", 10), width=50)
         self.GuestsVcmd = (self.EntnumberOfguest.register(Validation.callback))  # Validation
-        self.EntnumberOfguest.config(validate='all', validatecommand=(self.GuestsVcmd, '%P'))
+        self.EntnumberOfguest.config(validate='all', validatecommand=(self.GuestsVcmd, '%S'))
 
         self.EntnameOfContact = Entry(master, font=("arial", 10), width=50)
         self.NameVcmd = (self.EntnameOfContact.register(Validation.charOnly))  # Validation
-        self.EntnameOfContact.config(validate='all', validatecommand=(self.NameVcmd, '%P'))
+        self.EntnameOfContact.config(validate='all', validatecommand=(self.NameVcmd, '%S'))
 
         self.EntAddress = Entry(master, font=("arial", 10), width=50)
 
         self.EntContactNumber = Entry(master, font=("arial", 10), width=50)
         self.ContactVcmd = (self.EntContactNumber.register(Validation.callback))  # Validation
-        self.EntContactNumber.config(validate='all', validatecommand=(self.ContactVcmd, '%P'))
+        self.EntContactNumber.config(validate='all', validatecommand=(self.ContactVcmd, '%S'))
 
         self.OpmEventRoomNumber = OptionMenu(master, DefaultRoomNo, *Rooms, command=self.getRoomnumber)
 

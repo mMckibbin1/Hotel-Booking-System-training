@@ -19,7 +19,7 @@ def callback(P):
 
 # only allows characters to be entered into an entry box
 def charOnly(C):
-    if str.isalpha(C) or C == "":
+    if str.isalpha(C) or str.isspace(C) or C == "":
         return True
     else:
         return False
