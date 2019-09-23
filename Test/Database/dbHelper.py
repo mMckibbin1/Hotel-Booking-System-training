@@ -135,6 +135,8 @@ def deleteBooking(ID, Type):
     # deletes the booking from the table
     cursor.execute("DELETE FROM " + Table + " WHERE Id=" + str(ID))
 
+    dbconn.commit()
+
 
 ###### Search #####
 def search(EventsList, StartDate, EndDate):
@@ -144,9 +146,9 @@ def search(EventsList, StartDate, EndDate):
     if StartDate != "" and EndDate != "":
         Date = " Where date(EventDate) between date('{}') and date('{}')".format(StartDate, EndDate)
     elif StartDate != "":
-        Date = " Where date(EventDate) = date('{}')".format(StartDate)
+        Date = " Where date(EventDate) >= date('{}')".format(StartDate)
     elif EndDate != "":
-        Date = " Where date(EventDate) = date('{}')".format(EndDate)
+        Date = " Where date(EventDate) =< date('{}')".format(EndDate)
     else:
         Date = ""
 

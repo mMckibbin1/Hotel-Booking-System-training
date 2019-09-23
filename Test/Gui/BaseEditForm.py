@@ -91,7 +91,7 @@ class BaseEditEvent:
         Day = self.data.get("day_selected", "date error")
         Month = self.data.get("month_selected", "date error")
         year = self.data.get("year_selected", "date error")
-        Date = str(Month) + "-" + str(Day) + "-" + str(year)
+        Date = str(year) + "-" + str(Month) + "-" + str(Day)
         FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
         self.CalDateOfEvent.delete(0, 'end')
         self.CalDateOfEvent.insert([0], str(FormtDate))

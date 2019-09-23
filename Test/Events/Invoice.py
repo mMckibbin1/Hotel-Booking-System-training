@@ -3,12 +3,11 @@ import datetime
 from mailmerge import MailMerge
 
 
-def Invoice(address, invoice_number, cost_per_head, number_of_guests, band_name, band_cost, number_of_days,
+def Invoice(address, invoice_type, cost_per_head, number_of_guests, band_name, band_cost, number_of_days,
             guests_cost, cost_per_day, sub_total, VAT, total, file_name):
     template = "M:\GitHub\Hotel-Booking-System-training\Test\Invoice Template\invoiceTemplate.docx"
 
     document = MailMerge(template)
-    print(document.get_merge_fields())
 
     document.merge(
         GuestsCost=str(guests_cost),
@@ -22,8 +21,8 @@ def Invoice(address, invoice_number, cost_per_head, number_of_guests, band_name,
         TotalCost=str(total),
         CostPerDay=str(cost_per_day),
         numberofguests=str(number_of_guests),
-        InvoiceNumber=str(invoice_number),
+        InvoiceType=str(invoice_type),
         numberofDays=str(number_of_days)
     )
-
-    document.write("Invoice Template/{}.docx".format(file_name))
+    if file_name:
+        document.write(file_name)

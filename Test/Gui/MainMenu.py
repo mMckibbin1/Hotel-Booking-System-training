@@ -5,7 +5,6 @@ import Gui.CreatePartyForm
 import Gui.CreateConferenceForm
 import Gui.viewbooking
 
-
 # Functions to call various pop-ups
 def call_wedding_popup():
     top = Toplevel()

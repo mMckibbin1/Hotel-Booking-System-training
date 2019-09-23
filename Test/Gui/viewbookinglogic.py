@@ -1,14 +1,12 @@
 import datetime
-from logging import exception
+from tkinter.filedialog import asksaveasfile
 from Database import dbHelper
 from Events import Wedding, Party, Conference
 from tkinter import *
-from Gui import DialogBoxes, InvoiceFileName
+from Gui import DialogBoxes
 from addtionalWidgets import CalendarWidget
 from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
 import Events.Invoice
-from tkinter import messagebox
-
 
 def call_update_wedding_popup(object):
     top = Toplevel()
@@ -34,18 +32,46 @@ def call_update_conference_popup(object):
     top.destroy()
 
 
-def unSelectItem(a, self):
-    self.treeview.selection_clear()
-    self.removeAllLabels(self)
+def unSelectItem(self):
+    child_id = self.treeview.get_children()
+    if child_id:
+        self.tree.focus(child_id[0])
+        self.tree.selection_set(child_id[0])
+        removeAllLabels(self)
+
+        listofevents = []
+        listofdb = dbHelper.read_all_from_db()
+
+        # sets the current item as the highlighted row in the treeview
+        curItem = self.tree.focus()
+
+        # sets the id
+        RowID = self.tree.item(curItem)['text']
+
+        # adds the values in the tree view to a list
+        for value in self.tree.item(curItem)['values']:
+            listofevents.append(value)
+
+            types = listofevents[0]
+
+        # changes the labels depending on the ID and event type
+        for list in listofdb:
+            for object in list:
+                if types == "Wedding":
+                    if type(object) == Wedding.Wedding:
+                        if object.ID == RowID:
+                            return DetailsLabelChange(self, types, object)
+                elif types == "Party":
+                    if type(object) == Party.Party:
+                        if object.ID == RowID:
+                            return DetailsLabelChange(self, types, object)
+                elif types == "Conference":
+                    if type(object) == Conference.Conference:
+                        if object.ID == RowID:
+                            return DetailsLabelChange(self, types, object)
 
 
 def Invoice(self):
-
-    top = Toplevel()
-    ui = InvoiceFileName.CreateInvoiceDialog(top)
-    top.grab_set()
-    top.wait_window()
-    top.destroy()
     listofevents = []
     listofdb = dbHelper.read_all_from_db()
 
@@ -61,35 +87,42 @@ def Invoice(self):
 
         types = listofevents[0]
 
+
+    def load_file():
+        fname = asksaveasfile(defaultextension=".docx",filetypes=([("document file","*.docx")]))
+
+        if fname:
+            return fname.name
+
     # changes the labels depending on the ID and event type
     for list in listofdb:
         for object in list:
             if types == "Wedding":
                 if type(object) == Wedding.Wedding:
                     if object.ID == RowID:
-                        return Events.Invoice.Invoice(address= object.address,invoice_number="123", cost_per_head=object.costPerHead, number_of_guests=object.noGuests,
-                                              band_name= object.bandName, band_cost= object.bandPrice,number_of_days="N/A", guests_cost=object.guestsCost(), cost_per_day="N/A",sub_total= object.grosstotal(),
-                                              VAT=object.VAT(), total=object.netTotal(), file_name="Test 1")
+                        return Events.Invoice.Invoice(address= object.address, invoice_type="Wedding", cost_per_head=object.costPerHead, number_of_guests=object.noGuests,
+                                                      band_name= object.bandName, band_cost= object.bandPrice, number_of_days="N/A", guests_cost=object.guestsCost(), cost_per_day="N/A", sub_total= object.grosstotal(),
+                                                      VAT=object.VAT(), total=object.netTotal(), file_name=load_file())
             elif types == "Party":
                 if type(object) == Party.Party:
                     if object.ID == RowID:
-                        return Events.Invoice.Invoice(address=object.address, invoice_number="123",
+                        return Events.Invoice.Invoice(address=object.address, invoice_type="Party",
                                                       cost_per_head=object.costPerHead,
                                                       number_of_guests=object.noGuests,
                                                       band_name=object.bandName, band_cost=object.bandPrice,
                                                       number_of_days="N/A", guests_cost=object.guestsCost(),
                                                       cost_per_day="N/A", sub_total=object.grosstotal(),
-                                                      VAT=object.VAT(), total=object.netTotal(), file_name="Test 2")
+                                                      VAT=object.VAT(), total=object.netTotal(), file_name=load_file())
             elif types == "Conference":
                 if type(object) == Conference.Conference:
                     if object.ID == RowID:
-                        return Events.Invoice.Invoice(address=object.address, invoice_number="123",
+                        return Events.Invoice.Invoice(address=object.address, invoice_type="Conference",
                                                       cost_per_head=object.costPerHead,
                                                       number_of_guests=object.noGuests,
                                                       band_name="N/A", band_cost="N/A",
                                                       number_of_days=object.noOfDays, guests_cost=object.guestsCost(),
                                                       cost_per_day=object.guestsCost(), sub_total=object.grosstotal(),
-                                                      VAT=object.VAT(), total=object.netTotal(), file_name="Test 3")
+                                                      VAT=object.VAT(), total=object.netTotal(), file_name=load_file())
 
 
 def Search(self):
@@ -476,3 +509,7 @@ def is_row_selected_delete(self):
     else:
         # displays a promt to select a row
         DialogBoxes.select_row()
+
+def clear_date(self):
+    self.EntStartDate.delete(0, 'end')
+    self.EntEndDate.delete(0, 'end')

@@ -32,7 +32,7 @@ class frmViewBooking(Tkinter.Frame):
         self.tree = ttk.Treeview(self.parent,
                                  columns=('Event Type', 'Contact Name', 'Contact Number', 'Event Date',
                                           'Room Number', 'Total Cost'))
-        self.tree.heading('#0', text='Item')
+        self.tree.heading('#0', text='ID')
         self.tree.heading('#1', text='Event Type')
         self.tree.heading('#2', text='Contact Name')
         self.tree.heading('#3', text='Contact Number')
@@ -40,7 +40,6 @@ class frmViewBooking(Tkinter.Frame):
         self.tree.heading('#5', text='Room Number')
         self.tree.heading('#6', text='Total Cost')
         self.tree.bind('<ButtonRelease-1>', lambda e :Gui.viewbookinglogic.selectItem(e,self))
-        #self.tree.bind('<Escape>' , lambda e:unSelectItem(e,self.master2))
         self.tree.column('#0', width=100)  # column width auto size
         self.tree.column('#1', width=100)
         self.tree.column('#2', width=100)
@@ -55,7 +54,7 @@ class frmViewBooking(Tkinter.Frame):
         ttk.Label(self.parent, text="Total Income", font=("arial", 10, "bold"), background="#70ABAF").grid(row=2,
                                                                                     column=5, sticky="se", padx=(10, 10))
 
-        self.lblTotalIncome = Label(self.parent, text="£10000", font=("arial", 10, "bold"),background="#70ABAF")
+        self.lblTotalIncome = Label(self.parent, text="£0", font=("arial", 10, "bold"),background="#70ABAF")
         self.lblTotalIncome.grid(row=2, column=6,sticky="sw", padx=(0, 55))
 
         # BUTTONS #
@@ -82,21 +81,21 @@ class frmViewBooking(Tkinter.Frame):
 
 
         # button update
-        btnUpdate = Button(self.parent, text="Update", width=13, height=2, background="snow", font=("arial", 10),
+        btnUpdate = Button(self.parent, text="Update Selected Booking", width=20, height=2, background="snow", font=("arial", 10),
                            command = lambda :Gui.viewbookinglogic.update_selected(self.master2))
         btnUpdate.grid(row=3, column=7, sticky="ne", pady=(0, 20))
         btnUpdate.bind("<Enter>", on_enterUpdate)
         btnUpdate.bind("<Leave>", on_leaveUpdate)
 
         # button delete
-        btnDelete = Button(self.parent, text="Delete", width=13, height=2, background="snow", font=("arial", 10),
+        btnDelete = Button(self.parent, text="Delete Selected Booking", width=20, height=2, background="snow", font=("arial", 10),
                            command=lambda : viewbookinglogic.is_row_selected_delete(self))
         btnDelete.grid(row=3, column=8, sticky="ne", pady=(0, 20))
         btnDelete.bind("<Enter>", on_enterDelete)
         btnDelete.bind("<Leave>", on_leaveDelete)
 
         # button refresh
-        btnRefresh = Button(self.parent, text="Refresh", width=13, height=2, background="snow", font=("arial", 10),
+        btnRefresh = Button(self.parent, text="Refresh table", width=13, height=2, background="snow", font=("arial", 10),
                             command=lambda :Gui.viewbookinglogic.refreshData(self.master2))
         btnRefresh.grid(row=3, column=0, sticky="nw", pady=(0, 20), padx=(10, 0))
         btnRefresh.bind("<Enter>", on_enterRefresh)
@@ -135,6 +134,9 @@ class frmViewBooking(Tkinter.Frame):
         self.EntEndDate.grid(row=3, column=2, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
         self.EntEndDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.Calendarpopup(event, "EntEndDate",self.master2,master))
         self.data = {}
+        self.btn_clear_date = Button(self.Selectlabelframe,text="Clear Dates", width=13, height=2, background="snow",
+                                     font=("arial", 10), command=lambda:Gui.viewbookinglogic.clear_date(self.master2))
+        self.btn_clear_date.grid(row=4, column=0, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
 
         # check boxes
 
@@ -315,4 +317,4 @@ class frmViewBooking(Tkinter.Frame):
         Gui.viewbookinglogic.loadData(self.master2)
         Gui.viewbookinglogic.CalIncome(self.master2)
         Gui.viewbookinglogic.removeAllLabels(self.master2)
-        # DetailsLabelChange(self, '',)
+        Gui.viewbookinglogic.unSelectItem(self.master2)

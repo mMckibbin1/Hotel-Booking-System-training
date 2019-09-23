@@ -4,6 +4,7 @@ from tkinter import *
 from Gui import DialogBoxes
 from addtionalWidgets import CalendarWidget
 import Validation
+import caltest
 
 
 class BaseEvent:
@@ -68,6 +69,7 @@ class BaseEvent:
         self.EntContactNumber.config(validate='all', validatecommand=(self.ContactVcmd, '%P'))
 
         self.OpmEventRoomNumber = OptionMenu(master, DefaultRoomNo, *Rooms, command=self.getRoomnumber)
+
         self.CalDateOfEvent = Entry(master, font=("arial", 10), width=50)
         self.CalDateOfEvent.bind("<Button-1>", lambda event: self.popup(event, master))
         self.data = {}
