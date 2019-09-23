@@ -77,6 +77,9 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
             valpassed = False
             return messagebox.showinfo('Booking Failed',
                                        'Room is currently booked. Please select another room, or change the date of booking.')
+        elif Validation.min_number(self.EntnumberOfguest.get()):
+            valpassed = False
+            return messagebox.showinfo("Booking Failed", "Must have more than one guest.")
 
 
         if valpassed:

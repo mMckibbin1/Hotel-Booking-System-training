@@ -1,5 +1,6 @@
 import datetime
 from tkinter import *
+from tkinter import messagebox
 
 from Gui import DialogBoxes
 from addtionalWidgets import CalendarWidget
@@ -9,7 +10,6 @@ import Validation
 class BaseEvent:
     # setting default values for eventRoom and BandName as empty strings
     eventRoomNo = ''
-
 
     def __init__(self, master, Rooms,):
         # Creation of wedding form set title, size ect..
@@ -114,5 +114,9 @@ class BaseEvent:
         Date = str(year) + "-" + str(Month) + "-" + str(Day)
 
         FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
-        self.CalDateOfEvent.delete(0, 'end')
-        self.CalDateOfEvent.insert([0], str(FormtDate))
+
+        if FormtDate < datetime.datetime.now().date():
+            return messagebox.showinfo("Invalid Date", "Can not pick a past date.\n Please pick a new date.")
+        else:
+            self.CalDateOfEvent.delete(0, 'end')
+            self.CalDateOfEvent.insert([0], str(FormtDate))

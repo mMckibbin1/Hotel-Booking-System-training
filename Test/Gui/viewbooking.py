@@ -55,7 +55,7 @@ class frmViewBooking(Tkinter.Frame):
         ttk.Label(self.parent, text="Total Income", font=("arial", 10, "bold"), background="#70ABAF").grid(row=2,
                                                                                     column=5, sticky="se", padx=(10, 10))
 
-        self.lblTotalIncome = Label(self.parent, text="£10000", font=("arial", 10, "bold"),background="#70ABAF")
+        self.lblTotalIncome = Label(self.parent, text="", font=("arial", 10, "bold"),background="#70ABAF")
         self.lblTotalIncome.grid(row=2, column=6,sticky="sw", padx=(0, 55))
 
         # BUTTONS #

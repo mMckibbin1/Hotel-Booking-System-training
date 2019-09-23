@@ -23,3 +23,11 @@ def charOnly(C):
         return True
     else:
         return False
+
+
+# min number
+def min_number(M, N=1):
+    if int(M) and int(N) >= 1:
+        return False
+    else:
+        return True
