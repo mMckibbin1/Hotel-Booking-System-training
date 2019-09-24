@@ -1,6 +1,10 @@
+from tkinter import messagebox
+
 import Gui.BaseEditForm
 from tkinter import *
 import Events.Party
+import Validation
+from Database import dbHelper
 from Gui import DialogBoxes
 
 
@@ -13,6 +17,7 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
         master.resizable(0, 0)
         master.config(background="#70ABAF")
 
+        self.viewbookingself = viewbookingself
         # defines options for dropdown boxes
 
         BandNames = ["Lil' Febrezey", "Prawn Mendes", "AB/CD"]
@@ -33,16 +38,44 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
         self.OpmBandName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
 
         # Buttons for Add and Cancel on the party form
-        self.btnUpdateBooking.config(command=lambda: [Events.Party.updateParty(self.EntnumberOfguest.get(),
-                                                                     self.EntnameOfContact.get(),
-                                                                     self.EntAddress.get(),
-                                                                     self.EntContactNumber.get(),self.DefaultRoomNo.get(),
-                                                                     self.CalDateOfEvent.get(), object.dateOfBooking,
-                                                                     self.DefaultBandName.get(), object.ID), master.destroy(), DialogBoxes.updated(self, master=viewbookingself)]) # calls update ,destroy and message box
+        self.btnUpdateBooking.config(command=lambda: self.validation(object))  # calls update ,destroy and message box
 
-    # function to get room number from dropdown
-    def getRoomnumber(self, value):
-        self.eventRoomNo = value
+    def validation(self,booking):
+        valpassed = True
+
+        if Validation.stringEmpty(self.savelist()):
+            valpassed = False
+            return messagebox.showinfo("Booking Failed", "All fields are required to be filled in.")
+        elif dbHelper.date_conflict_update("partyTable", self.CalDateOfEvent.get(), self.eventRoomNo, booking.ID ):
+            valpassed = False
+            return messagebox.showinfo('Booking Failed',
+                                       'Room is currently booked. Please select another room, or change the date of booking.')
+        elif Validation.min_number([self.EntnumberOfguest.get()]):
+            valpassed = False
+            return messagebox.showinfo("Booking Failed", "Must have more than one guest.")
+
+        if valpassed:
+            Events.Party.updateParty(self.EntnumberOfguest.get(),
+                                      self.EntnameOfContact.get(),
+                                      self.EntAddress.get(),
+                                      self.EntContactNumber.get(), self.DefaultRoomNo.get(),
+                                      self.CalDateOfEvent.get(), booking.dateOfBooking,
+                                      self.DefaultBandName.get(), booking.ID)
+
+            DialogBoxes.updated(self, master=self.master)
+            self.master.destroy()
+
+
+    def savelist(self):
+        self.validationTestList = []
+        self.validationTestList.append(self.EntnumberOfguest.get())
+        self.validationTestList.append(self.EntnameOfContact.get())
+        self.validationTestList.append(self.EntAddress.get())
+        self.validationTestList.append(self.EntContactNumber.get())
+        self.validationTestList.append(self.DefaultRoomNo.get())
+        self.validationTestList.append(self.CalDateOfEvent.get())
+        self.validationTestList.append(self.DefaultBandName.get())
+        return self.validationTestList
 
     # function to get band name from dropdown
     def getBandName(self, value):

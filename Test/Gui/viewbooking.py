@@ -82,7 +82,7 @@ class frmViewBooking(Tkinter.Frame):
 
         # button update
         btnUpdate = Button(self.parent, text="Update Selected Booking", width=20, height=2, background="snow", font=("arial", 10),
-                           command = lambda :Gui.viewbookinglogic.update_selected(self.master2))
+                           command = lambda :Gui.viewbookinglogic.update_selected(self.master2, self.master))
         btnUpdate.grid(row=3, column=7, sticky="ne", pady=(0, 20))
         btnUpdate.bind("<Enter>", on_enterUpdate)
         btnUpdate.bind("<Leave>", on_leaveUpdate)

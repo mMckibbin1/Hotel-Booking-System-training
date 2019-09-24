@@ -11,7 +11,7 @@ def connect():
     cursor = db.cursor()
     ##Create a table if none exists
     cursor.execute(
-        "CREATE TABLE IF NOT EXISTS weddingTable(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Guests INTEGER, Name TEXT, Address TEXT, Phone TEXT, Room TEXT, EventDate TEXT, BookingDate TEXT, Band TEXT, BandPrice INTEGER, Bedrooms REAL)")
+        "CREATE TABLE IF NOT EXISTS weddingTable(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Guests INTEGER, Name TEXT, Address TEXT, Phone TEXT, Room TEXT, EventDate TEXT, BookingDate TEXT, Band TEXT, BandPrice INTEGER, Bedrooms INTEGER)")
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS partyTable(Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Guests INTEGER, Name TEXT, Address TEXT, Phone TEXT, Room TEXT, EventDate TEXT, BookingDate TEXT, Band TEXT, BandPrice INTEGER)")
     cursor.execute(
@@ -251,7 +251,8 @@ def date_conflict(table_name, date, room):
 def date_conflict_update(table_name, date, room,id):
     conn = dbconn
     cursor = conn.cursor()
-    query = "SELECT * FROM {} WHERE date(EventDate) = date('{}') AND Room = '{}'".format(table_name, date, room)
+    query = "SELECT * FROM {} WHERE date(EventDate) = date('{}') AND Room = '{}' AND Id != {}".format(table_name, date,
+                                                                                                     room, id)
     cursor.execute(query)
 
     if len(cursor.fetchall()) > 0:
@@ -269,9 +270,24 @@ def con_date_conflict(table_name, start_date, duration, room):
     end_date = date_1 + datetime.timedelta(duration)
     conn = dbconn
     cursor = conn.cursor()
-    query = "select *, date(EventDate, '+'||(Days - 1)||' days') as endDate from {} where endDate BETWEEN date('{}') and date('{}') and Room = '{}'".format(table_name, start_date, end_date, room)
-    #query = "SELECT * FROM {} WHERE date(EventDate) BETWEEN date('{}') AND date('{}') AND Room = '{}'".format(table_name, start_date, end_date, room)
     cursor.execute("select *, date(EventDate, '+'||(Days - 1)||' days') as endDate from {} where endDate BETWEEN date('{}') and date('{}') and Room = '{}'".format(table_name, start_date, end_date, room))
+
+    if len(cursor.fetchall()) > 0:
+        cursor.close()
+        return True
+    else:
+        cursor.close()
+        return False
+
+
+def con_date_conflict_update(table_name, start_date, duration, room, id):
+
+    duration = int(duration) - 1
+    date_1 = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = date_1 + datetime.timedelta(duration)
+    conn = dbconn
+    cursor = conn.cursor()
+    cursor.execute("select *, date(EventDate, '+'||(Days - 1)||' days') as endDate from {} where endDate BETWEEN date('{}') and date('{}') and Room = '{}' and Id != {}".format(table_name, start_date, end_date, room,id))
 
     if len(cursor.fetchall()) > 0:
         cursor.close()

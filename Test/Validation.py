@@ -25,9 +25,12 @@ def charOnly(C):
         return False
 
 
-# min number
-def min_number(M, N=1):
-    if int(M) and int(N) >= 1:
-        return False
-    else:
-        return True
+def min_number(list):
+    val_failed = True
+    for item in list:
+        if float(item) >= 1:
+            val_failed = False
+        else:
+            val_failed = True
+            return val_failed
+    return val_failed

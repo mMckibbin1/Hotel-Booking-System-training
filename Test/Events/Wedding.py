@@ -50,6 +50,6 @@ def createwedding(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber,
 def updateWedding(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateOfBooking, BandName, bedRoomsRes, ID):
     BandPrice = 0
 
-    editWedding = Wedding(int(noOfGuest), nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateOfBooking ,
-                      BandName, BandPrice, bedRoomsRes, ID)
+    editWedding = Wedding(noGuests=int(noOfGuest),nameOfContact=nameOfContact, address=address, contactNo=contactNo, eventRoomNo=eventRoomNumber, dateOfEvent=DateofEvent, dateOfBooking=dateOfBooking ,
+                      bandName=BandName, bandPrice=BandPrice, noBedroomsReserved=bedRoomsRes, ID=ID)
     dbHelper.updateWedding(editWedding)

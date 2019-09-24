@@ -67,8 +67,6 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
     def validation(self):
         valpassed = True
 
-
-
         if Validation.stringEmpty(self.savelist()):
             valpassed = False
             return messagebox.showinfo("Booking Failed",

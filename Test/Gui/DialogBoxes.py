@@ -1,7 +1,7 @@
 from tkinter.messagebox import *
 from Gui import viewbookinglogic
 from tkinter import messagebox
-
+import Gui.MainMenu
 
 
 # delete dialog box
@@ -26,14 +26,13 @@ class Delete:
 
 
 # updated dialog message box
-def updated(self, master):
- messagebox.showinfo("Successful", "These details have been changed!")
- viewbookinglogic.refreshData(master=master)
+def updated(self, master, view_booking):
+ messagebox.showinfo("Successful", "These details have been changed!",parent=master)
+ viewbookinglogic.refreshData(master=view_booking)
 
 # not saved dialog message box
 def not_saved(self):
-    messagebox.showinfo("Aborted", "Action canceled, no details have been saved!")
-
+    messagebox.showinfo("Aborted", "Action canceled, no details have been saved!", parent=self)
 # saved dialog message box
 def saved(self):
     messagebox.showinfo("Successful", "These details have been successfully saved!")
@@ -43,6 +42,6 @@ def table_refreshed():
     messagebox.showinfo("Successful", "The table has been refreshed and is now up to date.")
 
 #promt for user to select a row
-def select_row():
-    messagebox.showinfo("Nothing Selected", "Please Select a Row first!")
+def select_row(self):
+    messagebox.showinfo("Nothing Selected", "Please Select a Row first!",parent=self)
 

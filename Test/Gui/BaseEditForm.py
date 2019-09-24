@@ -48,10 +48,21 @@ class BaseEditEvent:
 
         #Entry boxes, dropdowns and datepicker for edit form
         self.EntnumberOfguest = Entry(master, font=("arial", 10), width=50)
+        self.GuestsVcmd = (self.EntnumberOfguest.register(Validation.callback))  # Validation
+        self.EntnumberOfguest.config(validate='all', validatecommand=(self.GuestsVcmd, '%P'))
+
         self.EntnameOfContact = Entry(master, font=("arial", 10), width=50)
+        self.NameVcmd = (self.EntnameOfContact.register(Validation.charOnly))  # Validation
+        self.EntnameOfContact.config(validate='all', validatecommand=(self.NameVcmd, '%P'))
+
         self.EntAddress = Entry(master, font=("arial", 10), width=50)
+
         self.EntContactNumber = Entry(master, font=("arial", 10), width=50)
+        self.ContactVcmd = (self.EntContactNumber.register(Validation.callback))  # Validation
+        self.EntContactNumber.config(validate='all', validatecommand=(self.ContactVcmd, '%P'))
+
         self.OpmEventRoomNumber = OptionMenu(master, self.DefaultRoomNo, *Rooms, command=self.getRoomnumber)
+
         self.CalDateOfEvent = Entry(master, font=("arial", 10), width=50)
         self.CalDateOfEvent.bind("<Button-1>", lambda event: self.popup(event, master))
         self.data = {}
@@ -66,7 +77,7 @@ class BaseEditEvent:
 
         #Buttons for Add and Cancel on the base edit form
         self.btnUpdateBooking = Button(master, text="Update Booking", bg="medium aquamarine",font=("arial", 11, "bold"), width=30, height=3)
-        self.btnCloseForm = Button(master, text="Cancel", bg="medium aquamarine",font=("arial", 11, "bold"), width=30, height=3, command=lambda: [master.destroy(), DialogBoxes.not_saved(self)]) # calls destroy and message box
+        self.btnCloseForm = Button(master, text="Cancel", bg="medium aquamarine",font=("arial", 11, "bold"), width=30, height=3, command=lambda: [DialogBoxes.not_saved(master), master.destroy() ]) # calls destroy and message box
 
         ##Buttons for Add and Cancel on the base edit form being placed using grid layout
         self.btnUpdateBooking.grid(row=10, column=1, columnspan=1,  pady=(50, 50), padx=(75, 25), sticky="ew")
@@ -105,40 +116,3 @@ class BaseEditEvent:
         self.EntAddress.insert(0, object.address)
         self.EntContactNumber.insert(0, object.contactNo)
         self.CalDateOfEvent.insert(0, object.dateOfEvent)
-
-    # validation
-    def validation(self, object):
-        valpassed = True
-
-        if Validation.stringEmpty(self.savelist()):
-            valpassed = False
-            return messagebox.showinfo("Booking Failed", "All fields are required to be filled in.")
-
-        elif dbHelper.date_conflict_update("weddingTable", self.CalDateOfEvent.get(), self.eventRoomNo, object.id):
-            valpassed = False
-            return messagebox.showinfo('Booking Failed',
-                                       'Room is currently booked. Please select another room, or change the date of booking.')
-        elif Validation.min_number(self.EntnumberOfguest.get(), self.EntBedroomReserved.get()):
-            valpassed = False
-            return messagebox.showinfo("Booking Failed", "Must have entered more than one guest and room.")
-
-        if valpassed:
-            Events.Wedding.createwedding(
-                self.EntnumberOfguest.get(),
-                self.EntnameOfContact.get(),
-                self.EntAddress.get(),
-                self.EntContactNumber.get(),
-                self.eventRoomNo,
-                self.CalDateOfEvent.get(),
-                self.bandName,
-                self.EntBedroomReserved.get())
-
-    def savelist(self):
-        self.validationTestList = []
-        self.validationTestList.append(self.EntnumberOfguest.get())
-        self.validationTestList.append(self.EntnameOfContact.get())
-        self.validationTestList.append(self.EntAddress.get())
-        self.validationTestList.append(self.EntContactNumber.get())
-        self.validationTestList.append(self.eventRoomNo)
-        self.validationTestList.append(self.CalDateOfEvent.get())
-        return self.validationTestList

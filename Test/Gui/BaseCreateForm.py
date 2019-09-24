@@ -12,7 +12,7 @@ class BaseEvent:
     # setting default values for eventRoom and BandName as empty strings
     eventRoomNo = ''
 
-    def __init__(self, master, Rooms,):
+    def __init__(self, master, Rooms):
         # Creation of wedding form set title, size ect..
         self.master = master
         self.master.title("Hotel Booking System - Base booking form")
@@ -86,11 +86,12 @@ class BaseEvent:
 
         # Buttons for Add and Cancel on the wedding form
         self.btnCloseForm = Button(master, text="Cancel",bg="medium aquamarine",font=("arial", 11, "bold"),
-                                   width=30,height=3, command=lambda: [master.destroy(), DialogBoxes.not_saved(self)]) # calls destroy and message box
+                                   width=30,height=3, command=lambda: [DialogBoxes.not_saved(master), master.destroy()]) # calls destroy and message box
         self.btnAddBooking = Button(master, text="Add Booking", bg="medium aquamarine",font=("arial", 11, "bold"), width=30,height=3)
         # Buttons for Add and Cancel on the wedding form being placed using grid layout
         self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(50, 50), padx=(75, 25), sticky="ew")
         self.btnCloseForm.grid(row=10, column=3, columnspan=2, pady=(50, 50), padx=(75, 25), sticky="ew")
+
 
 
     # function to get room number from dropdown

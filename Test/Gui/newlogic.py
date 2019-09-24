@@ -13,36 +13,30 @@ data_list = []
 
 
 #  Opens update form for Wedding
-def call_update_wedding_popup(object, self, parent):
+def call_update_wedding_popup(object, self):
     top = Toplevel()
     ui = EditWeddingForm.EditWedding(top, object, self)
     top.grab_set()
     top.wait_window()
     top.destroy()
-    parent.grab_set()
-    parent.force_focus()
 
 
 #  Opens update form for Party
-def call_update_party_popup(object, self, parent):
+def call_update_party_popup(object, self):
     top = Toplevel()
     ui = EditPartyForm.EditParty(top, object, self)
     top.grab_set()
     top.wait_window()
     top.destroy()
-    parent.grab_set()
-    parent.force_focus()
 
 
 #  Opens update form for Conference
-def call_update_conference_popup(object, self, parent):
+def call_update_conference_popup(object, self):
     top = Toplevel()
     ui = EditConferenceForm.EditConference(top, object, self)
     top.grab_set()
     top.wait_window()
     top.destroy()
-    parent.grab_set()
-    parent.force_focus()
 
 
 # function to change the labels shown, depending on the event type selected in the treeview
@@ -306,7 +300,7 @@ def loadData(master):
                             object.netTotal())
 
     global data_list
-    data_list = datalist
+    data_list.append(datalist)
 
 
 #  function clears date from date entries fields
@@ -347,7 +341,7 @@ def get_selected_db_entry(self):
         for list in data_list:
             for object in list:
                 if types == "Wedding":
-                    if isinstance(object, Events.Wedding.Wedding):
+                    if type(object) == Wedding.Wedding:
                         if object.ID == RowID:
                             return object
                 elif types == "Party":
@@ -366,7 +360,7 @@ def get_selected_db_entry(self):
 def selectItem(a, self):
     # try except to make sure a row is selected
     try:
-        booking = get_selected_db_entry(self)
+        booking = get_selected_db_entry()
         # changes the labels depending on the ID and event type
         if type(booking) == Wedding.Wedding:
             return DetailsLabelChange(self, "Wedding", booking)
@@ -379,26 +373,27 @@ def selectItem(a, self):
 
 
 #  opens update form for selected row in treeview on form
-def update_selected(self, parent):
+def update_selected(self):
     try:
-        booking = get_selected_db_entry(self)
+        booking = get_selected_db_entry()
 
         if type(booking) == Wedding.Wedding:
-            return call_update_wedding_popup(booking, self, parent)
+            return call_update_wedding_popup(booking, self)
         elif type(booking) == Party.Party:
-            return call_update_party_popup(booking, self, parent)
+            return call_update_party_popup(booking, self)
         elif type(booking) == Conference.Conference:
-            return call_update_conference_popup(booking, self, parent)
+            return call_update_conference_popup(booking, self)
     except:
         print("please select a row first")
+        DialogBoxes.select_row(self.master2)
 
 
 # creates an invoice for selected row in form
 def Invoice(self):
-    booking = get_selected_db_entry(self)
+    booking = get_selected_db_entry()
 
     def load_file():
-        fname = asksaveasfile(defaultextension=".docx", filetypes=([("document file", "*.docx")]), parent=self)
+        fname = asksaveasfile(defaultextension=".docx", filetypes=([("document file", "*.docx")]))
         if fname:
             return fname.name
 
@@ -437,7 +432,7 @@ def select_first_row_(self):
         self.tree.selection_set(child_id[0])
         removeAllLabels(self)
 
-        booking = get_selected_db_entry(self)
+        booking = get_selected_db_entry()
 
         # changes the labels depending on the ID and event type
         if type(booking) == Wedding.Wedding:
