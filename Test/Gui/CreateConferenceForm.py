@@ -61,7 +61,7 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         self.chxProjectorRequired.grid(row=9, column=2, pady=(25, 0), padx=(0, 25))
 
         # Button config to override the parent button config
-        self.btnAddBooking.config(command=lambda: [self.validation(), master.destroy()])
+        self.btnAddBooking.config(command=lambda: [self.validation()])
 
     # validation
     def validation(self):
@@ -93,6 +93,9 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
                 self.EntCompanyName.get(),
                 self.EntNoOfDays.get(),
                 self.CheckVar1.get())
+
+            DialogBoxes.saved(self.master)
+            self.master.destroy()
 
     def savelist(self):
         self.validationTestList = []

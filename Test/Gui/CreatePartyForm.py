@@ -38,7 +38,7 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
         self.OpmBandName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
 
         # Button config to override the parent button config
-        self.btnAddBooking.config(command=lambda: [self.validation(), master.destroy()])
+        self.btnAddBooking.config(command=lambda: [self.validation()])
 
     # validation
     def validation(self):
@@ -65,6 +65,9 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
                 self.eventRoomNo,
                 self.CalDateOfEvent.get(),
                 self.bandName)
+
+            DialogBoxes.saved(self.master)
+            self.master.destroy()
 
     def savelist(self):
         self.validationTestList = []

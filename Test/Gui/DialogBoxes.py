@@ -34,7 +34,7 @@ def not_saved(self):
 
 # saved dialog message box
 def saved(self):
-    messagebox.showinfo("Successful", "These details have been successfully saved!")
+    messagebox.showinfo("Successful", "These details have been successfully saved!", parent=self)
 
 # table refreshed dialog message box
 def table_refreshed():
