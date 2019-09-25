@@ -70,7 +70,8 @@ class BaseEvent:
 
         self.OpmEventRoomNumber = OptionMenu(master, DefaultRoomNo, *Rooms, command=self.getRoomnumber)
 
-        self.CalDateOfEvent = Entry(master, font=("arial", 10), width=50)
+        self.display_date = StringVar()
+        self.CalDateOfEvent = Entry(master, font=("arial", 10), width=50, textvariable=self.display_date, state="readonly")
         self.CalDateOfEvent.bind("<Button-1>", lambda event: self.popup(event, master))
         self.data = {}
 
@@ -107,10 +108,10 @@ class BaseEvent:
         child.wait_window()
         child.grab_release()
         master.grab_set()
-        self.Get_selected_date()
+        self.Get_selected_date(master)
 
     # function to get the selected date from calendar widget and display it as a formatted string
-    def Get_selected_date(self):
+    def Get_selected_date(self, master):
         Day = self.data.get("day_selected", "date error")
         Month = self.data.get("month_selected", "date error")
         year = self.data.get("year_selected", "date error")
@@ -119,7 +120,7 @@ class BaseEvent:
         FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
 
         if FormtDate < datetime.datetime.now().date():
-            return messagebox.showinfo("Invalid Date", "Can not pick a past date.\n Please pick a new date.")
+            return messagebox.showinfo("Invalid Date", "Can not pick a past date.\n Please pick a new date.", parent=master)
         else:
-            self.CalDateOfEvent.delete(0, 'end')
-            self.CalDateOfEvent.insert([0], str(FormtDate))
+            self.display_date.set("")
+            self.display_date.set(FormtDate)

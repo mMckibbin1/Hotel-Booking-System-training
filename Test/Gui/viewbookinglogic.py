@@ -15,7 +15,7 @@ data_list = []
 #  Opens update form for Wedding
 def call_update_wedding_popup(object, self, parent):
     top = Toplevel()
-    ui = EditWeddingForm.EditWedding(top, object, self)
+    EditWeddingForm.EditWedding(top, object, self)
     top.grab_set()
     top.wait_window()
     top.destroy()
@@ -26,7 +26,7 @@ def call_update_wedding_popup(object, self, parent):
 #  Opens update form for Party
 def call_update_party_popup(object, self, parent):
     top = Toplevel()
-    ui = EditPartyForm.EditParty(top, object, self)
+    EditPartyForm.EditParty(top, object, self)
     top.grab_set()
     top.wait_window()
     top.destroy()
@@ -37,7 +37,7 @@ def call_update_party_popup(object, self, parent):
 #  Opens update form for Conference
 def call_update_conference_popup(object, self, parent):
     top = Toplevel()
-    ui = EditConferenceForm.EditConference(top, object, self)
+    EditConferenceForm.EditConference(top, object, self)
     top.grab_set()
     top.wait_window()
     top.destroy()
@@ -46,29 +46,29 @@ def call_update_conference_popup(object, self, parent):
 
 
 # function to change the labels shown, depending on the event type selected in the treeview
-def DetailsLabelChange(self, eventType, object):
+def details_label_change(self, eventType, object):
     if eventType == 'Wedding':
-        removeAllLabels(self)
-        addWeddingLabels(self, object)
-        updatePriceBreakdown(self, object)
+        remove_all_labels(self)
+        add_wedding_labels(self, object)
+        update_price_breakdown(self, object)
 
     elif eventType == 'Party':
-        removeAllLabels(self)
-        addPartyLabels(self, object)
-        updatePriceBreakdown(self, object)
+        remove_all_labels(self)
+        add_party_labels(self, object)
+        update_price_breakdown(self, object)
 
     elif eventType == 'Conference':
-        removeAllLabels(self)
-        addConferenceLables(self, object)
-        updatePriceBreakdown(self, object)
+        remove_all_labels(self)
+        add_conference_lables(self, object)
+        update_price_breakdown(self, object)
 
     else:
-        removeAllLabels(self)
+        remove_all_labels(self)
 
 
 # functions to allow the labels to change in the additional info labelframe
 # removes all labels stored within labelframe
-def removeAllLabels(self):
+def remove_all_labels(self):
     self.lblNoofGuests.grid_remove()
     self.lblDisNoofGuests.grid_remove()
     self.lblAddress.grid_remove()
@@ -112,7 +112,7 @@ def removeAllLabels(self):
 
 
 # adds the labels that are consistent throughout all event types
-def addBaseLables(self, object):
+def add_base_lables(self, object):
     self.lblNoofGuests.grid()
     self.lblDisNoofGuests.grid()
     self.lblAddress.grid()
@@ -130,8 +130,8 @@ def addBaseLables(self, object):
 
 
 # adds the labels that are used for weddings
-def addWeddingLabels(self, object):
-    addBaseLables(self, object)
+def add_wedding_labels(self, object):
+    add_base_lables(self, object)
     self.lblBandName.grid()
     self.lblDisBandName.grid()
     self.lblBandPrice.grid()
@@ -146,8 +146,8 @@ def addWeddingLabels(self, object):
 
 
 # adds the labels that are used for parties
-def addPartyLabels(self, object):
-    addBaseLables(self, object)
+def add_party_labels(self, object):
+    add_base_lables(self, object)
     self.lblBandName.grid()
     self.lblDisBandName.grid()
     self.lblBandPrice.grid()
@@ -159,8 +159,8 @@ def addPartyLabels(self, object):
 
 
 # adds the labels that are used for conferences
-def addConferenceLables(self, object):
-    addBaseLables(self, object)
+def add_conference_lables(self, object):
+    add_base_lables(self, object)
     self.lblCompanyName.grid()
     self.lblDisCompanyName.grid()
     self.lblNumberofDays.grid()
@@ -175,7 +175,7 @@ def addConferenceLables(self, object):
 
 
 # functions to allow the labels to change in the price breakdown labelframe
-def updatePriceBreakdown(self, object):
+def update_price_breakdown(self, object):
     # Label for guest price
     self.lblDisGuestPrice.config(text=object.guestsCost())
 
@@ -213,7 +213,7 @@ def updatePriceBreakdown(self, object):
 
 
 # function to display calendar widget for date of event
-def Calendarpopup(event, entryField, master, root):
+def calendar_popup(event, entry_field, master, root):
     child = Toplevel()
     child.title("Select A Date")
     cal = CalendarWidget.Calendar(child, master.data)
@@ -222,54 +222,54 @@ def Calendarpopup(event, entryField, master, root):
     child.wait_window()
     child.grab_release()
     root.grab_set()
-    Get_selected_date(master, event, entryField)
+    get_selected_date(master, event, entry_field)
 
 
 # function to get the selected date from calendar widget and display it as a formatted string
-def Get_selected_date(self, event, entryField):
-    Day = self.data.get("day_selected", "date error")
-    Month = self.data.get("month_selected", "date error")
+def get_selected_date(self, event, entry_field):
+    day = self.data.get("day_selected", "date error")
+    month = self.data.get("month_selected", "date error")
     year = self.data.get("year_selected", "date error")
-    Date = str(year) + "-" + str(Month) + "-" + str(Day)
+    date = str(year) + "-" + str(month) + "-" + str(day)
 
-    FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
+    formt_date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
 
-    if entryField == "EntStartDate":
+    if entry_field == "EntStartDate":
         self.EntStartDate.delete(0, 'end')
-        self.EntStartDate.insert([0], str(FormtDate))
+        self.EntStartDate.insert([0], str(formt_date))
     else:
         self.EntEndDate.delete(0, 'end')
-        self.EntEndDate.insert([0], str(FormtDate))
+        self.EntEndDate.insert([0], str(formt_date))
 
 
 # calculates the total income
-def CalIncome(master):
-    totalIncome = 0.0
+def cal_income(master):
+    total_income = 0.0
     # adds up the values in the total cost column
     for child in master.treeview.get_children():
-        totalIncome += float(master.treeview.item(child, "values")[5])
-        master.lblTotalIncome.config(text=totalIncome)
+        total_income += float(master.treeview.item(child, "values")[5])
+        master.lblTotalIncome.config(text=total_income)
 
 
 # adding data to treeview
-def insert_data(self, ID, EventType, nameOfContact, contactNo, dateOfEvent, eventRoomNo, netTotal):
-    self.treeview.insert('', 'end', text=ID,
-                         values=(EventType, nameOfContact, contactNo, dateOfEvent, eventRoomNo, netTotal))
+def insert_data(self, id, event_type, name_of_contact, contact_no, date_of_event, event_room_no, net_total):
+    self.treeview.insert('', 'end', text=id,
+                         values=(event_type, name_of_contact, contact_no, date_of_event, event_room_no, net_total))
 
 
 # function to search db
-def Search(self):
-    eventslist = []
+def search(self):
+    events_list = []
 
     if self.checkVarWedding.get() != "":
-        eventslist.append(self.checkVarWedding.get())
+        events_list.append(self.checkVarWedding.get())
     if self.checkVarParty.get() != "":
-        eventslist.append(self.checkVarParty.get())
+        events_list.append(self.checkVarParty.get())
     if self.checkVarConference.get() != "":
-        eventslist.append(self.checkVarConference.get())
+        events_list.append(self.checkVarConference.get())
 
     self.treeview.delete(*self.treeview.get_children())
-    for object in dbHelper.search(eventslist, self.EntStartDate.get(), self.EntEndDate.get()):
+    for object in dbHelper.search(events_list, self.EntStartDate.get(), self.EntEndDate.get()):
         if type(object) == Wedding.Wedding:
             insert_data(self, object.ID, "Wedding", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
@@ -283,14 +283,14 @@ def Search(self):
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
                         object.netTotal())
 
-    CalIncome(self)
+    cal_income(self)
 
 
 # function to load the data from the database into the table
-def loadData(master):
-    datalist = dbHelper.read_all_from_db()
+def load_data(master):
+    data_base_list = dbHelper.read_all_from_db()
 
-    for list in datalist:
+    for list in data_base_list:
         for object in list:
             if type(object) == Wedding.Wedding:
                 insert_data(master, object.ID, "Wedding", object.nameOfContact,
@@ -306,7 +306,7 @@ def loadData(master):
                             object.netTotal())
 
     global data_list
-    data_list = datalist
+    data_list = data_base_list
 
 
 #  function clears date from date entries fields
@@ -316,10 +316,10 @@ def clear_date(self):
 
 
 # function to reload the table
-def refreshData(master):
+def refresh_data(master):
     master.treeview.delete(*master.treeview.get_children())
-    loadData(master)
-    CalIncome(master)
+    load_data(master)
+    cal_income(master)
     select_first_row_(master)
     # dialog box to confirm refresh
     # DialogBoxes.table_refreshed()
@@ -328,7 +328,7 @@ def refreshData(master):
 #  function to return object for the selected row on treeview
 def get_selected_db_entry(self):
     try:
-        listofevents = []
+        list_of_events = []
         global data_list
 
         # sets the current item as the highlighted row in the treeview
@@ -339,9 +339,9 @@ def get_selected_db_entry(self):
 
         # adds the values in the tree view to a list
         for value in self.tree.item(curItem)['values']:
-            listofevents.append(value)
+            list_of_events.append(value)
 
-            types = listofevents[0]
+            types = list_of_events[0]
 
         # changes the labels depending on the ID and event type
         for list in data_list:
@@ -363,17 +363,17 @@ def get_selected_db_entry(self):
 
 
 # selects item from treeview
-def selectItem(a, self):
+def select_item(a, self):
     # try except to make sure a row is selected
     try:
         booking = get_selected_db_entry(self)
         # changes the labels depending on the ID and event type
         if type(booking) == Wedding.Wedding:
-            return DetailsLabelChange(self, "Wedding", booking)
+            return details_label_change(self, "Wedding", booking)
         elif type(booking) == Party.Party:
-            return DetailsLabelChange(self, "Party", booking)
+            return details_label_change(self, "Party", booking)
         elif type(booking) == Conference.Conference:
-            return DetailsLabelChange(self, "Conference", booking)
+            return details_label_change(self, "Conference", booking)
     except:
         print("Please select a row")
 
@@ -394,13 +394,13 @@ def update_selected(self, parent):
 
 
 # creates an invoice for selected row in form
-def Invoice(self):
+def invoice(self):
     booking = get_selected_db_entry(self)
 
     def load_file():
-        fname = asksaveasfile(defaultextension=".docx", filetypes=([("document file", "*.docx")]), parent=self)
-        if fname:
-            return fname.name
+        file_name = asksaveasfile(defaultextension=".docx", filetypes=([("document file", "*.docx")]), parent=self)
+        if file_name:
+            return file_name.name
 
     # changes the labels depending on the ID and event type
     if type(booking) == Wedding.Wedding:
@@ -435,33 +435,33 @@ def select_first_row_(self):
     if child_id:
         self.tree.focus(child_id[0])
         self.tree.selection_set(child_id[0])
-        removeAllLabels(self)
+        remove_all_labels(self)
 
         booking = get_selected_db_entry(self)
 
         # changes the labels depending on the ID and event type
         if type(booking) == Wedding.Wedding:
-            return DetailsLabelChange(self, "Wedding", booking)
+            return details_label_change(self, "Wedding", booking)
         elif type(object) == Party.Party:
-            return DetailsLabelChange(self, "Party", object)
+            return details_label_change(self, "Party", object)
         elif type(object) == Conference.Conference:
-            return DetailsLabelChange(self, "Conference", object)
+            return details_label_change(self, "Conference", object)
 
 
 # delete data from table and database
 def delete_data(self):
     # try catch to check if a row is selected
     try:
-        listofevents = []
-        curItem = self.tree.focus()
+        list_of_events = []
+        cur_item = self.tree.focus()
         # sets the id to the id in the row
-        RowID = self.tree.item(curItem)['text']
+        row_id = self.tree.item(cur_item)['text']
 
-        for value in self.tree.item(curItem)['values']:
-            listofevents.append(value)
-            Type = listofevents[0]
+        for value in self.tree.item(cur_item)['values']:
+            list_of_events.append(value)
+            type = list_of_events[0]
 
-        dbHelper.deleteBooking(RowID, Type)
+        dbHelper.deleteBooking(row_id, type)
 
     except:
         print("please select a row first")
@@ -471,16 +471,16 @@ def delete_data(self):
 
 def is_row_selected_delete(self, master):
     # function to check if a row is selected
-    listofevents = []
-    curItem = self.tree.focus()
+    list_of_events = []
+    cur_item = self.tree.focus()
     # sets the id to the id in the row
-    RowID = self.tree.item(curItem)['text']
+    row_id = self.tree.item(cur_item)['text']
 
-    for value in self.tree.item(curItem)['values']:
-        listofevents.append(value)
-        Type = listofevents[0]
+    for value in self.tree.item(cur_item)['values']:
+        list_of_events.append(value)
+        Type = list_of_events[0]
     # if the row is not empty then the delete functions will be run
-    if RowID != "":
+    if row_id != "":
         # asks user is there really want to delete or not
         DialogBoxes.Delete(self, master)
     # if it is empty user will be promted to select a row

@@ -63,7 +63,8 @@ class BaseEditEvent:
 
         self.OpmEventRoomNumber = OptionMenu(master, self.DefaultRoomNo, *Rooms, command=self.getRoomnumber)
 
-        self.CalDateOfEvent = Entry(master, font=("arial", 10), width=50)
+        self.display_date = StringVar()
+        self.CalDateOfEvent = Entry(master, font=("arial", 10), width=50, textvariable=self.display_date, state="readonly")
         self.CalDateOfEvent.bind("<Button-1>", lambda event: self.popup(event, master))
         self.data = {}
 
@@ -77,7 +78,9 @@ class BaseEditEvent:
 
         #Buttons for Add and Cancel on the base edit form
         self.btnUpdateBooking = Button(master, text="Update Booking", bg="medium aquamarine",font=("arial", 11, "bold"), width=30, height=3)
-        self.btnCloseForm = Button(master, text="Cancel", bg="medium aquamarine",font=("arial", 11, "bold"), width=30, height=3, command=lambda: [DialogBoxes.not_saved(master), master.destroy() ]) # calls destroy and message box
+        self.btnCloseForm = Button(master, text="Cancel", bg="medium aquamarine",font=("arial", 11, "bold"), width=30,
+                                   height=3, command=lambda: [DialogBoxes.not_saved(master),
+                                                              master.destroy()]) # calls destroy and message box
 
         ##Buttons for Add and Cancel on the base edit form being placed using grid layout
         self.btnUpdateBooking.grid(row=10, column=1, columnspan=1,  pady=(50, 50), padx=(75, 25), sticky="ew")
@@ -98,21 +101,26 @@ class BaseEditEvent:
         child.wait_window()
         child.grab_release()
         master.grab_set()
-        self.Get_selected_date()
+        self.Get_selected_date(master)
 
     #function to get the selected date from calander widget and display it as a formatted string
-    def Get_selected_date(self):
+    def Get_selected_date(self, master):
         Day = self.data.get("day_selected", "date error")
         Month = self.data.get("month_selected", "date error")
         year = self.data.get("year_selected", "date error")
         Date = str(year) + "-" + str(Month) + "-" + str(Day)
         FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
-        self.CalDateOfEvent.delete(0, 'end')
-        self.CalDateOfEvent.insert([0], str(FormtDate))
+
+        if FormtDate < datetime.datetime.now().date():
+            return messagebox.showinfo("Invalid Date", "Can not pick a past date.\n Please pick a new date.",
+                                       parent=master)
+        else:
+            self.display_date.set("")
+            self.display_date.set(FormtDate)
 
     def populateform(self, object):
         self.EntnumberOfguest.insert(0, object.noGuests)
         self.EntnameOfContact.insert(0, object.nameOfContact)
         self.EntAddress.insert(0, object.address)
         self.EntContactNumber.insert(0, object.contactNo)
-        self.CalDateOfEvent.insert(0, object.dateOfEvent)
+        self.display_date.set(object.dateOfEvent)

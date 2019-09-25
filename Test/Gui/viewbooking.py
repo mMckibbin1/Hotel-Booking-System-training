@@ -39,7 +39,7 @@ class frmViewBooking(Tkinter.Frame):
         self.tree.heading('#4', text='Event Date')
         self.tree.heading('#5', text='Room Number')
         self.tree.heading('#6', text='Total Cost')
-        self.tree.bind('<ButtonRelease-1>', lambda e :Gui.viewbookinglogic.selectItem(e,self))
+        self.tree.bind('<ButtonRelease-1>', lambda e :Gui.viewbookinglogic.select_item(e, self))
         self.tree.column('#0', width=100)  # column width auto size
         self.tree.column('#1', width=100)
         self.tree.column('#2', width=100)
@@ -96,7 +96,7 @@ class frmViewBooking(Tkinter.Frame):
 
         # button refresh
         btnRefresh = Button(self.parent, text="Refresh table", width=13, height=2, background="snow", font=("arial", 10),
-                            command=lambda :Gui.viewbookinglogic.refreshData(self.master2))
+                            command=lambda :Gui.viewbookinglogic.refresh_data(self.master2))
         btnRefresh.grid(row=3, column=0, sticky="nw", pady=(0, 20), padx=(10, 0))
         btnRefresh.bind("<Enter>", on_enterRefresh)
         btnRefresh.bind("<Leave>", on_leaveRefresh)
@@ -127,12 +127,12 @@ class frmViewBooking(Tkinter.Frame):
             .grid(row=2, column=0, sticky=W, columnspan=1, padx=10, pady=(0, 5))
         self.EntStartDate = ttk.Entry(self.Selectlabelframe, font=("arial", 10), width=30)
         self.EntStartDate.grid(row=3, column=0, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
-        self.EntStartDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.Calendarpopup(event,"EntStartDate",self.master2,master))
+        self.EntStartDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.calendar_popup(event, "EntStartDate", self.master2, master))
         ttk.Label(self.Selectlabelframe, text="To", font=("arial", 10, "bold"), background="#F0F7F4")\
             .grid(row=3, column=1, pady=(0, 20))
         self.EntEndDate = ttk.Entry(self.Selectlabelframe, font=("arial", 10), width=30)
         self.EntEndDate.grid(row=3, column=2, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
-        self.EntEndDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.Calendarpopup(event, "EntEndDate",self.master2,master))
+        self.EntEndDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.calendar_popup(event, "EntEndDate", self.master2, master))
         self.data = {}
         self.btn_clear_date = Button(self.Selectlabelframe,text="Clear Dates", width=13, height=2, background="snow",
                                      font=("arial", 10), command=lambda:Gui.viewbookinglogic.clear_date(self.master2))
@@ -166,7 +166,7 @@ class frmViewBooking(Tkinter.Frame):
 
         # button search
         btnSearchDate = Button(self.Selectlabelframe, text="Search",
-                               width=13, height=2, background="snow", font=("arial", 10), command=lambda :Gui.viewbookinglogic.Search(self.master2))
+                               width=13, height=2, background="snow", font=("arial", 10), command=lambda :Gui.viewbookinglogic.search(self.master2))
         btnSearchDate.grid(row=3, column=8, pady=(0, 20), padx=(8, 15))
         btnSearchDate.bind("<Enter>", on_enterSearch)
         btnSearchDate.bind("<Leave>", on_leaveSearch)
@@ -306,7 +306,7 @@ class frmViewBooking(Tkinter.Frame):
         self.lblDisTotal = Label(self.Totallabelframe, text="£", background="#70ABAF")
         self.lblDisTotal.grid(row=4, column=2)
 
-        self.btninvoice = Button(self.Totallabelframe, text="Save Invoice", command=lambda :Gui.viewbookinglogic.Invoice(self.master2))
+        self.btninvoice = Button(self.Totallabelframe, text="Save Invoice", command=lambda :Gui.viewbookinglogic.invoice(self.master2))
         self.btninvoice.grid(row=3, column=3, rowspan=2, columnspan=2)
 
         # setting weight for rows and columns
@@ -317,7 +317,7 @@ class frmViewBooking(Tkinter.Frame):
 
         # method calls
         self.master2 = self
-        Gui.viewbookinglogic.loadData(self.master2)
-        Gui.viewbookinglogic.CalIncome(self.master2)
-        Gui.viewbookinglogic.removeAllLabels(self.master2)
+        Gui.viewbookinglogic.load_data(self.master2)
+        Gui.viewbookinglogic.cal_income(self.master2)
+        Gui.viewbookinglogic.remove_all_labels(self.master2)
         Gui.viewbookinglogic.select_first_row_(self.master2)
