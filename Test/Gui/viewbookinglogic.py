@@ -232,14 +232,17 @@ def get_selected_date(self, event, entry_field):
     year = self.data.get("year_selected", "date error")
     date = str(year) + "-" + str(month) + "-" + str(day)
 
-    formt_date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
+    if day == "date error":
+        return
+
+    format_date = datetime.datetime.strptime(date, "%Y-%m-%d").date()
 
     if entry_field == "EntStartDate":
-        self.EntStartDate.delete(0, 'end')
-        self.EntStartDate.insert([0], str(formt_date))
+        self.display_start_date.set("")
+        self.display_start_date.set(format_date)
     else:
-        self.EntEndDate.delete(0, 'end')
-        self.EntEndDate.insert([0], str(formt_date))
+        self.display_end_date.set("")
+        self.display_end_date.set(format_date)
 
 
 # calculates the total income
@@ -311,8 +314,8 @@ def load_data(master):
 
 #  function clears date from date entries fields
 def clear_date(self):
-    self.EntStartDate.delete(0, 'end')
-    self.EntEndDate.delete(0, 'end')
+    self.display_start_date.set("")
+    self.display_end_date.set("")
 
 
 # function to reload the table

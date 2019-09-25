@@ -9,11 +9,9 @@ import datetime
 
 
 class bookConference(Gui.BaseCreateForm.BaseEvent):
-
     def __init__(self, master):
-        # room options available for event type
-        RoomOption = ['A', 'B', 'C']
-        super().__init__(master,RoomOption)
+
+        super().__init__(master)
 
         # Creation of wedding form set title, size ect..
         master.title("Hotel Booking System - Book a Conference")
@@ -41,7 +39,8 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         # Entry boxes, dropdowns and datepicker for conference form
         self.EntCompanyName = Entry(master, font=("arial", 10), width=50)
 
-        self.EntNoOfDays = Entry(master, font=("arial", 10), width=50)
+        self.number_of_days = StringVar()
+        self.EntNoOfDays = Entry(master, font=("arial", 10), width=50, textvariable=self.number_of_days)
         self.DaysVcmd = (self.EntNoOfDays.register(Validation.callback))
         self.EntNoOfDays.config(validate='all', validatecommand=(self.DaysVcmd, '%S'))
 
@@ -63,6 +62,31 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         # Button config to override the parent button config
         self.btnAddBooking.config(command=lambda: [self.validation()])
 
+        self.display_date.trace('w', lambda name, index, mode: self.conference_room_check())
+        self.number_of_days.trace('w', lambda name, index, mode: self.conference_room_check())
+
+        self.OpmEventRoomNumber.config(state="disabled")
+
+    def conference_room_check(self):
+
+        test =self.number_of_days.get()
+        test2 = test
+
+        test3 = self.display_date.get()
+        test4 = test3
+        if not self.number_of_days.get() or not self.display_date.get():
+            self.om_room_val.set("Pick a date and duration first")
+            self.OpmEventRoomNumber.config(state="disabled")
+            return
+
+        self.OpmEventRoomNumber.config(state="normal")
+
+        self.room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
+        self.room_option_menu_menu.delete(0, "end")
+        self.om_room_val.set("Pick a room")
+        for value in dbHelper.rooms_in_use("conferenceTable", self.display_date.get(), int(self.number_of_days.get())):
+            self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
+
     # validation
     def validation(self):
         valpassed = True
@@ -71,7 +95,7 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
             valpassed = False
             return messagebox.showinfo("Booking Failed",
                                        "All fields are required to be filled in.")
-        elif dbHelper.con_date_conflict("conferenceTable", self.CalDateOfEvent.get(), self.EntNoOfDays.get(), self.eventRoomNo):
+        elif dbHelper.con_date_conflict("conferenceTable", self.display_date.get(), self.EntNoOfDays.get(), self.om_room_val.get()):
             valpassed = False
             return messagebox.showinfo('Booking Failed',
                                        'Room is currently booked. Please select another room, or change the date of booking.')
@@ -86,8 +110,8 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
                 self.EntnameOfContact.get(),
                 self.EntAddress.get(),
                 self.EntContactNumber.get(),
-                self.eventRoomNo,
-                self.CalDateOfEvent.get(),
+                self.om_room_val.get(),
+                self.display_date.get(),
                 self.EntCompanyName.get(),
                 self.EntNoOfDays.get(),
                 self.CheckVar1.get())
@@ -101,8 +125,8 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         self.validationTestList.append(self.EntnameOfContact.get())
         self.validationTestList.append(self.EntAddress.get())
         self.validationTestList.append(self.EntContactNumber.get())
-        self.validationTestList.append(self.eventRoomNo)
-        self.validationTestList.append(self.CalDateOfEvent.get())
+        self.validationTestList.append(self.om_room_val.get())
+        self.validationTestList.append(self.display_date.get())
         self.validationTestList.append(self.EntCompanyName.get())
         self.validationTestList.append(self.EntNoOfDays.get())
         return self.validationTestList

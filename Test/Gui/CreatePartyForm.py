@@ -14,7 +14,7 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
     def __init__(self, master):
         # room options available for event type
         RoomOption = ['D', 'E', 'F', 'G']
-        super(bookParty, self).__init__(master,RoomOption)
+        super(bookParty, self).__init__(master)
 
         # Creation of wedding form set title, size ect..
         master.title("Hotel Booking System - Book a Party")
@@ -37,8 +37,21 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
         self.OpmBandName = OptionMenu(master, DefaultBandName, *BandNames, command=self.getBandName)
         self.OpmBandName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
 
+        self.OpmEventRoomNumber.config(state="disabled")
+
+        self.display_date.trace('w', lambda name, index, mode: self.party_room_check())
+
         # Button config to override the parent button config
         self.btnAddBooking.config(command=lambda: [self.validation()])
+
+    def party_room_check(self):
+        self.OpmEventRoomNumber.config(state="normal")
+
+        self.room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
+        self.room_option_menu_menu.delete(0, "end")
+        self.om_room_val.set("Pick a room")
+        for value in dbHelper.rooms_in_use("partyTable", self.display_date.get()):
+            self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
     # validation
     def validation(self):
@@ -47,7 +60,7 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
         if Validation.stringEmpty(self.savelist()):
             valpassed = False
             return messagebox.showinfo("Booking Failed", "All fields are required to be filled in.")
-        elif dbHelper.date_conflict("partyTable", self.CalDateOfEvent.get(), self.eventRoomNo):
+        elif dbHelper.date_conflict("partyTable", self.display_date.get(), self.eventRoomNo):
             valpassed = False
             return messagebox.showinfo('Booking Failed',
                                        'Room is currently booked. Please select another room, or change the date of booking.')
@@ -62,8 +75,8 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
                 self.EntnameOfContact.get(),
                 self.EntAddress.get(),
                 self.EntContactNumber.get(),
-                self.eventRoomNo,
-                self.CalDateOfEvent.get(),
+                self.om_room_val.get(),
+                self.display_date.get(),
                 self.bandName)
 
             DialogBoxes.saved(self.master)
@@ -75,11 +88,12 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
         self.validationTestList.append(self.EntnameOfContact.get())
         self.validationTestList.append(self.EntAddress.get())
         self.validationTestList.append(self.EntContactNumber.get())
-        self.validationTestList.append(self.eventRoomNo)
-        self.validationTestList.append(self.CalDateOfEvent.get())
+        self.validationTestList.append(self.om_room_val.get())
+        self.validationTestList.append(self.display_date.get())
         self.validationTestList.append(self.bandName)
         return self.validationTestList
 
     # function to get band name from dropdown
     def getBandName(self, value):
         self.bandName = value
+

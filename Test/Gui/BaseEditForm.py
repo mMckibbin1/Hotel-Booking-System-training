@@ -109,6 +109,10 @@ class BaseEditEvent:
         Month = self.data.get("month_selected", "date error")
         year = self.data.get("year_selected", "date error")
         Date = str(year) + "-" + str(Month) + "-" + str(Day)
+
+        if Day == "date error":
+            return
+
         FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
 
         if FormtDate < datetime.datetime.now().date():

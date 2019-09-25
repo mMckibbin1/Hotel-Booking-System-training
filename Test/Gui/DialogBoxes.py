@@ -30,13 +30,13 @@ def updated(self, master, view_booking):
 
 
 # not saved dialog message box
-def not_saved(self):
-    messagebox.showinfo("Aborted", "Action canceled, no details have been saved!", parent=self)
+def not_saved(master):
+    messagebox.showinfo("Aborted", "Action canceled, no details have been saved!", parent=master)
 
 
 # saved dialog message box
-def saved(self):
-    messagebox.showinfo("Successful", "These details have been successfully saved!", parent=self)
+def saved(master):
+    messagebox.showinfo("Successful", "These details have been successfully saved!", parent=master)
 
 
 # table refreshed dialog message box
@@ -45,5 +45,5 @@ def table_refreshed():
 
 
 # promt for user to select a row
-def select_row(self):
-    messagebox.showinfo("Nothing Selected", "Please Select a Row first!", parent=self)
+def select_row(master):
+    messagebox.showinfo("Nothing Selected", "Please Select a Row first!", parent=master)

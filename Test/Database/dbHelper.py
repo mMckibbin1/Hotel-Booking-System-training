@@ -1,6 +1,7 @@
 import datetime
 import sqlite3
 from Events import Conference, Wedding, Party
+import constances
 
 dbconn = sqlite3.connect('Database\events.db')
 
@@ -295,3 +296,43 @@ def con_date_conflict_update(table_name, start_date, duration, room, id):
     else:
         cursor.close()
         return False
+
+
+def rooms_in_use(event_type,date, number_of_days = 1):
+    date_1 = datetime.datetime.strptime(date, "%Y-%m-%d").date()
+    conn = dbconn
+    cursor = conn.cursor()
+
+    wedding_party_query = "SELECT Room FROM {} WHERE date(EventDate) = date('{}')".format(event_type, date)
+
+    conference_query = ("""select Room, date(EventDate, '+'||(Days - 1)||' days') as endDate 
+            from conferenceTable where date(EventDate) BETWEEN date('{startDate}') and date('{endDate}') or
+            endDate BETWEEN date('{startDate}') and date('{endDate}')""".format(startDate=date_1,
+                                                                                endDate=date_1 + datetime.timedelta
+                                                                                (days=number_of_days -1)))
+
+
+    unavailable_rooms = []
+    available_rooms = []
+    #room_options = []
+
+
+    if event_type == "weddingTable":
+        room_options = constances.WEDDING_ROOM_OPTION
+        cursor.execute(wedding_party_query)
+    elif event_type == "partyTable":
+        room_options = constances.PARTY_ROOM_OPTIONS
+        cursor.execute(wedding_party_query)
+    else:
+        room_options = constances.CONFERENCE_ROOM_OPTIONS
+        cursor.execute(conference_query)
+
+    for row in cursor.fetchall():
+        unavailable_rooms.append(row[0])
+
+    for room in room_options:
+        if room not in unavailable_rooms:
+            available_rooms.append(room)
+
+    cursor.close()
+    return available_rooms

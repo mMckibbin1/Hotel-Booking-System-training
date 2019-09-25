@@ -125,12 +125,17 @@ class frmViewBooking(Tkinter.Frame):
         # Search for dates
         ttk.Label(self.Selectlabelframe, text="Search by date", font=("arial", 11, "bold"), background="#F0F7F4")\
             .grid(row=2, column=0, sticky=W, columnspan=1, padx=10, pady=(0, 5))
-        self.EntStartDate = ttk.Entry(self.Selectlabelframe, font=("arial", 10), width=30)
+
+        self.display_start_date = StringVar()
+        self.EntStartDate = ttk.Entry(self.Selectlabelframe, font=("arial", 10), width=30, textvariable=self.display_start_date, state="readonly")
         self.EntStartDate.grid(row=3, column=0, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
         self.EntStartDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.calendar_popup(event, "EntStartDate", self.master2, master))
+
         ttk.Label(self.Selectlabelframe, text="To", font=("arial", 10, "bold"), background="#F0F7F4")\
             .grid(row=3, column=1, pady=(0, 20))
-        self.EntEndDate = ttk.Entry(self.Selectlabelframe, font=("arial", 10), width=30)
+
+        self.display_end_date = StringVar()
+        self.EntEndDate = ttk.Entry(self.Selectlabelframe, font=("arial", 10), width=30, textvariable=self.display_end_date, state="readonly")
         self.EntEndDate.grid(row=3, column=2, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
         self.EntEndDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.calendar_popup(event, "EntEndDate", self.master2, master))
         self.data = {}
