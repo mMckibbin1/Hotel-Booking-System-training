@@ -45,7 +45,7 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
 
         self.band_name_option_menu_menu = self.OpmBandName.children["menu"]
         self.band_name_option_menu_menu.delete(0, "end")
-        self.om_band_name.set("Pick a Band")
+        self.om_band_name.set("Pick a band")
         for value in dbHelper.bands_in_use(self.display_date.get()):
             self.band_name_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_band_name.set(v))
 
@@ -64,14 +64,14 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
 
         if Validation.stringEmpty(self.savelist()):
             valpassed = False
-            return messagebox.showinfo("Booking Failed", "All fields are required to be filled in.")
+            return messagebox.showinfo("Booking Failed", "All fields are required to be filled in.", parent=self.master)
         elif dbHelper.date_conflict("partyTable", self.display_date.get(), self.eventRoomNo):
             valpassed = False
             return messagebox.showinfo('Booking Failed',
-                                       'Room is currently booked. Please select another room, or change the date of booking.')
+                                       'Room is currently booked. Please select another room, or change the date of booking.', parent=self.master)
         elif Validation.min_number(self.EntnumberOfguest.get()):
             valpassed = False
-            return messagebox.showinfo("Booking Failed", "Must have more than one guest.")
+            return messagebox.showinfo("Booking Failed", "Must have more than one guest.", parent=self.master)
 
 
         if valpassed:

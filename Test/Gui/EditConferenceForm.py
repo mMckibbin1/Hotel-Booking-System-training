@@ -55,7 +55,6 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         self.EntCompanyName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
         self.EntNoOfDays.grid(row=8, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
-
         #checkbox.....
         self.chxProjectorRequired.grid(row=9, column=2, pady=(25, 0), padx=(0, 25))
         print(booking.dateOfBooking)
@@ -66,6 +65,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
         self.display_date.trace('w', lambda name, index, mode: self.conference_room_check())
         self.number_of_days.trace('w', lambda name, index, mode: self.conference_room_check())
+
 
 
     def conference_room_check(self):
@@ -103,14 +103,14 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         if Validation.stringEmpty(self.savelist()):
             valpassed = False
             return messagebox.showinfo("Booking Failed",
-                                       "All fields are required to be filled in.")
-        elif dbHelper.con_date_conflict_update("conferenceTable", self.CalDateOfEvent.get(), self.EntNoOfDays.get(), self.eventRoomNo, booking.Id):
+                                       "All fields are required to be filled in.", parent=self.master)
+        elif dbHelper.con_date_conflict_update("conferenceTable", self.CalDateOfEvent.get(), self.EntNoOfDays.get(), self.eventRoomNo, booking.ID):
             valpassed = False
             return messagebox.showinfo('Booking Failed',
-                                       'Room is currently booked. Please select another room, or change the date of booking.')
+                                       'Room is currently booked. Please select another room, or change the date of booking.', parent=self.master)
         elif Validation.min_number(self.EntnumberOfguest.get()):
             valpassed = False
-            return messagebox.showinfo("Booking Failed", "Must have more than one guest.")
+            return messagebox.showinfo("Booking Failed", "Must have more than one guest.", parent=self.master)
 
 
         if valpassed:
@@ -123,7 +123,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
                                                self.EntNoOfDays.get(),
                                                self.CheckVar1.get(), booking.ID)
 
-            DialogBoxes.updated(self, master=self.master)
+            DialogBoxes.updated(self, master=self.master, view_booking=self.viewbookingself)
             self.master.destroy()
 
 

@@ -66,6 +66,7 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         self.number_of_days.trace('w', lambda name, index, mode: self.conference_room_check())
 
         self.OpmEventRoomNumber.config(state="disabled")
+        self.om_room_val.set("Pick a date and duration first")
 
     def conference_room_check(self):
         if not self.number_of_days.get() or not self.display_date.get():
@@ -88,14 +89,14 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         if Validation.stringEmpty(self.savelist()):
             valpassed = False
             return messagebox.showinfo("Booking Failed",
-                                       "All fields are required to be filled in.")
+                                       "All fields are required to be filled in.", parent=self.master)
         elif dbHelper.con_date_conflict("conferenceTable", self.display_date.get(), self.EntNoOfDays.get(), self.om_room_val.get()):
             valpassed = False
             return messagebox.showinfo('Booking Failed',
-                                       'Room is currently booked. Please select another room, or change the date of booking.')
+                                       'Room is currently booked. Please select another room, or change the date of booking.', parent=self.master)
         elif Validation.min_number(self.EntnumberOfguest.get()):
             valpassed = False
-            return messagebox.showinfo("Booking Failed", "Must have more than one guest.")
+            return messagebox.showinfo("Booking Failed", "Must have more than one guest.", parent=self.master)
 
 
         if valpassed:

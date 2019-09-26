@@ -84,9 +84,9 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
                                       self.EntAddress.get(),
                                       self.EntContactNumber.get(), self.om_room_val.get(),
                                       self.display_date.get(), booking.dateOfBooking,
-                                      self.DefaultBandName.get(), booking.ID)
+                                      self.om_band_name.get(), booking.ID)
 
-            DialogBoxes.updated(self, master=self.master)
+            DialogBoxes.updated(self, master=self.master,  view_booking=self.viewbookingself)
             self.master.destroy()
 
 
@@ -98,7 +98,7 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
         self.validationTestList.append(self.EntContactNumber.get())
         self.validationTestList.append(self.om_room_val.get())
         self.validationTestList.append(self.display_date.get())
-        self.validationTestList.append(self.DefaultBandName.get())
+        self.validationTestList.append(self.om_band_name.get())
         return self.validationTestList
 
 
