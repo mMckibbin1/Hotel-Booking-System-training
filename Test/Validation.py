@@ -28,7 +28,7 @@ def charOnly(C):
 def min_number(list):
     val_failed = True
     for item in list:
-        if float(item) >= 1:
+        if int(item) >= 1:
             val_failed = False
         else:
             val_failed = True
