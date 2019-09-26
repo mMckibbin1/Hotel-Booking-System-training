@@ -14,20 +14,14 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
     bandName = ''
 
     def __init__(self, master, booking, viewbookingself):
-        RoomOption = ['H', 'I']
-        super().__init__(master, RoomOption, booking)
+        super().__init__(master, booking)
         #Creation of wedding form set title, size ect..
         master.title("Hotel Booking System - Update Selected Wedding")
         master.resizable(0, 0)
         master.config(background="#70ABAF")
 
         self.viewbookingself = viewbookingself
-
-        #defines options for dropdown boxes
-        BandNames = ["Lil' Febrezey", "Prawn Mendes", "AB/CD"]
-        self.DefaultBandName = StringVar(master)
-        self.DefaultBandName.set(booking.bandName)  # default value from db for selected item
-
+        self.booking = booking
 
         #Labels for Wedding booking form
         self.lblSubheading.config(text="Please update any details that you want to change")
@@ -39,7 +33,10 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
         self.lblNoofRoomsRes.grid(row=9, columnspan=2, pady=(25, 0), padx=(10, 10))
 
         #Entry boxes, dropdowns and datepicker for wedding form
-        self.OpmBandName = OptionMenu(master, self.DefaultBandName, *BandNames, command=self.getBandName)
+        self.om_band_name = StringVar()
+        self.om_band_name.set("Please Select a date first")
+        self.OpmBandName = OptionMenu(master, self.om_band_name, ())
+
         self.EntBedroomReserved = Entry(master, font=("arial", 10), width=50)
 
         # Entry boxes, dropdowns and datepicker for wedding form being placed using grid layout
@@ -52,19 +49,37 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
         #Buttons for Add and Cancel on the wedding for
         self.btnUpdateBooking.config(command=lambda: self.validation(booking)) # calls update ,destroy and message box
 
+        self.display_date.trace('w', lambda name, index, mode: [self.wedding_room_check(), self.band_name_check()])
+
         #Buttons for Add and Cancel on the wedding form being placed using grid layout
         self.populateform_wedding(booking)
 
-    #function to get room number from dropdown
-    def getRoomnumber(self, value):
-        self.eventRoomNo = value
+        self.band_name_option_menu_menu = self.OpmBandName.children["menu"]
+        self.band_name_option_menu_menu.delete(0, "end")
+        self.om_band_name.set(booking.bandName)
+        for value in dbHelper.bands_in_use_update(self.display_date.get(), self.booking.ID):
+            self.band_name_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_band_name.set(v))
 
-    # function to get band name from dropdown
-    def getBandName(self, value):
-        self.bandName = value
+    def band_name_check(self):
+        self.OpmBandName.config(state="normal")
+
+        self.band_name_option_menu_menu = self.OpmBandName.children["menu"]
+        self.band_name_option_menu_menu.delete(0, "end")
+        self.om_band_name.set("Pick a Band")
+        for value in dbHelper.bands_in_use_update(self.display_date.get(), self.booking.ID):
+            self.band_name_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_band_name.set(v))
+
+    def wedding_room_check(self):
+        self.OpmEventRoomNumber.config(state="normal")
+
+        self.room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
+        self.room_option_menu_menu.delete(0, "end")
+        self.om_room_val.set("Pick a room")
+        for value in dbHelper.rooms_in_use_update(event_type="weddingTable",id=self.booking.ID, date=self.display_date.get()):
+            self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
     def populateform_wedding(self, booking):
-
+        self.om_band_name.set(booking.bandName)
         self.EntBedroomReserved.insert(0, booking.noBedroomsReserved)
 
 # validation
@@ -75,7 +90,7 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
             valpassed = False
             return messagebox.showinfo("Booking Failed", "All fields are required to be filled in.")
 
-        elif dbHelper.date_conflict_update("weddingTable", self.CalDateOfEvent.get(), self.eventRoomNo, booking.ID):
+        elif dbHelper.date_conflict_update("weddingTable", self.display_date.get(), self.om_room_val.get(), booking.ID):
             valpassed = False
             return messagebox.showinfo('Booking Failed',
                                        'Room is currently booked. Please select another room, or change the date of booking.')
@@ -88,9 +103,9 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
                                          self.EntnameOfContact.get(),
                                          self.EntAddress.get(),
                                          self.EntContactNumber.get(),
-                                         self.DefaultRoomNo.get(),
-                                         self.CalDateOfEvent.get(), booking.dateOfBooking,
-                                         self.DefaultBandName.get(),
+                                         self.om_room_val.get(),
+                                         self.display_date.get(), booking.dateOfBooking,
+                                         self.om_band_name.get(),
                                          self.EntBedroomReserved.get(),
                                          booking.ID)
             DialogBoxes.updated(self, master=self.master, view_booking=self.viewbookingself)
@@ -103,8 +118,8 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
         self.validationTestList.append(self.EntnameOfContact.get())
         self.validationTestList.append(self.EntAddress.get())
         self.validationTestList.append(self.EntContactNumber.get())
-        self.validationTestList.append(self.DefaultRoomNo.get())
-        self.validationTestList.append(self.CalDateOfEvent.get())
-        self.validationTestList.append(self.DefaultBandName.get())
+        self.validationTestList.append(self.display_date.get())
+        self.validationTestList.append(self.om_room_val.get())
+        self.validationTestList.append(self.om_band_name.get())
         self.validationTestList.append(self.EntBedroomReserved.get())
         return self.validationTestList

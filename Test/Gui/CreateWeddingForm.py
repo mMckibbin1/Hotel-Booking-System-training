@@ -17,12 +17,6 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
         master.resizable(0, 0)
         master.config(background="#70ABAF")
 
-        # defines options for dropdown boxes
-        BandNames = ["Lil' Febrezey", "Prawn Mendes", "AB/CD"]
-        # variable to store selected band name from dropdown
-        DefaultBandName = StringVar(master)
-        DefaultBandName.set("Please Select a Band")  # default value
-
         # Labels for Wedding booking form
         self.lblSubheading.config(text="Please Fill in the Details for the Wedding")
 
@@ -34,10 +28,17 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
         self.lblNoofRoomsRes.grid(row=9, columnspan=2, pady=(25, 0), padx=(10, 10))
 
         # Entry boxes, dropdowns and datepicker for wedding form
-        # Entry boxes and dropdowns
-        self.OpmBandName = OptionMenu(master, DefaultBandName, *BandNames, command=self.getBandName)
 
-        self.OpmEventRoomNumber.config(state="disabled")
+
+        # Entry boxes and dropdowns
+
+
+        self.om_band_name = StringVar()
+        self.om_band_name.set("Please Select a date first")
+        self.OpmBandName = OptionMenu(master, self.om_band_name,() )
+        self.OpmBandName.config(state="disabled")
+
+
 
 
         self.EntBedroomReserved = Entry(master, font=("arial", 10), width=50)
@@ -51,7 +52,18 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
         # Button config to override the parent button config
         self.btnAddBooking.config(command=lambda: [self.validation()])
 
-        self.display_date.trace('w', lambda name, index, mode: self.wedding_room_check())
+        self.OpmEventRoomNumber.config(state="disabled")
+        self.display_date.trace('w', lambda name, index, mode: [self.wedding_room_check(), self.band_name_check()])
+
+    def band_name_check(self):
+        self.OpmBandName.config(state="normal")
+
+        self.band_name_option_menu_menu = self.OpmBandName.children["menu"]
+        self.band_name_option_menu_menu.delete(0, "end")
+        self.om_band_name.set("Pick a Band")
+        for value in dbHelper.bands_in_use(self.display_date.get()):
+            self.band_name_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_band_name.set(v))
+
 
     def wedding_room_check(self):
         self.OpmEventRoomNumber.config(state="normal")
@@ -86,7 +98,7 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
                 self.EntContactNumber.get(),
                 self.om_room_val.get(),
                 self.CalDateOfEvent.get(),
-                self.bandName,
+                self.om_band_name.get(),
                 self.EntBedroomReserved.get())
 
             DialogBoxes.saved(self.master)
@@ -100,10 +112,6 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
         self.validationTestList.append(self.EntContactNumber.get())
         self.validationTestList.append(self.om_room_val.get())
         self.validationTestList.append(self.display_date.get())
-        self.validationTestList.append(self.bandName)
+        self.validationTestList.append(self.om_band_name.get())
         self.validationTestList.append(self.EntBedroomReserved.get())
         return self.validationTestList
-
-    # function to get band name from dropdown
-    def getBandName(self, value):
-        self.bandName = value

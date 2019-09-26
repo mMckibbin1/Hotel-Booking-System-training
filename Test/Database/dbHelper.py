@@ -249,11 +249,12 @@ def date_conflict(table_name, date, room):
         cursor.close()
         return False
 
-def date_conflict_update(table_name, date, room,id):
+
+def date_conflict_update(table_name, date, room, id):
     conn = dbconn
     cursor = conn.cursor()
     query = "SELECT * FROM {} WHERE date(EventDate) = date('{}') AND Room = '{}' AND Id != {}".format(table_name, date,
-                                                                                                     room, id)
+                                                                                                      room, id)
     cursor.execute(query)
 
     if len(cursor.fetchall()) > 0:
@@ -265,13 +266,14 @@ def date_conflict_update(table_name, date, room,id):
 
 
 def con_date_conflict(table_name, start_date, duration, room):
-
     duration = int(duration) - 1
     date_1 = datetime.datetime.strptime(start_date, "%Y-%m-%d")
     end_date = date_1 + datetime.timedelta(duration)
     conn = dbconn
     cursor = conn.cursor()
-    cursor.execute("select *, date(EventDate, '+'||(Days - 1)||' days') as endDate from {} where endDate BETWEEN date('{}') and date('{}') and Room = '{}'".format(table_name, start_date, end_date, room))
+    cursor.execute(
+        "select *, date(EventDate, '+'||(Days - 1)||' days') as endDate from {} where endDate BETWEEN date('{}') and date('{}') and Room = '{}'".format(
+            table_name, start_date, end_date, room))
 
     if len(cursor.fetchall()) > 0:
         cursor.close()
@@ -282,13 +284,14 @@ def con_date_conflict(table_name, start_date, duration, room):
 
 
 def con_date_conflict_update(table_name, start_date, duration, room, id):
-
     duration = int(duration) - 1
     date_1 = datetime.datetime.strptime(start_date, "%Y-%m-%d")
     end_date = date_1 + datetime.timedelta(duration)
     conn = dbconn
     cursor = conn.cursor()
-    cursor.execute("select *, date(EventDate, '+'||(Days - 1)||' days') as endDate from {} where endDate BETWEEN date('{}') and date('{}') and Room = '{}' and Id != {}".format(table_name, start_date, end_date, room,id))
+    cursor.execute(
+        "select *, date(EventDate, '+'||(Days - 1)||' days') as endDate from {} where endDate BETWEEN date('{}') and date('{}') and Room = '{}' and Id != {}".format(
+            table_name, start_date, end_date, room, id))
 
     if len(cursor.fetchall()) > 0:
         cursor.close()
@@ -298,7 +301,7 @@ def con_date_conflict_update(table_name, start_date, duration, room, id):
         return False
 
 
-def rooms_in_use(event_type,date, number_of_days = 1):
+def rooms_in_use(event_type, date, number_of_days=1):
     date_1 = datetime.datetime.strptime(date, "%Y-%m-%d").date()
     conn = dbconn
     cursor = conn.cursor()
@@ -306,16 +309,14 @@ def rooms_in_use(event_type,date, number_of_days = 1):
     wedding_party_query = "SELECT Room FROM {} WHERE date(EventDate) = date('{}')".format(event_type, date)
 
     conference_query = ("""select Room, date(EventDate, '+'||(Days - 1)||' days') as endDate 
-            from conferenceTable where date(EventDate) BETWEEN date('{startDate}') and date('{endDate}') or
-            endDate BETWEEN date('{startDate}') and date('{endDate}')""".format(startDate=date_1,
-                                                                                endDate=date_1 + datetime.timedelta
-                                                                                (days=number_of_days -1)))
+    from conferenceTable where ((date('{startDate}') BETWEEN date(EventDate) and date(endDate) or date('{endDate}') BETWEEN 
+    date(EventDate) and date(endDate))) 	
+    or ((date(EventDate) BETWEEN date('{startDate}') and date('{endDate}') or date(endDate) BETWEEN date('{startDate}') and 
+    date('{endDate}'))) """.format(startDate=date_1,endDate=date_1 + datetime.timedelta(days=number_of_days - 1)))
 
 
     unavailable_rooms = []
     available_rooms = []
-    #room_options = []
-
 
     if event_type == "weddingTable":
         room_options = constances.WEDDING_ROOM_OPTION
@@ -336,3 +337,87 @@ def rooms_in_use(event_type,date, number_of_days = 1):
 
     cursor.close()
     return available_rooms
+
+
+def rooms_in_use_update(event_type, date, id, number_of_days=1):
+    date_1 = datetime.datetime.strptime(date, "%Y-%m-%d").date()
+    conn = dbconn
+    cursor = conn.cursor()
+
+    wedding_party_query = "SELECT Room FROM {} WHERE date(EventDate) = date('{}') and Id != {}".format(event_type, date,
+                                                                                                       id)
+
+    conference_query = ("""select Room, date(EventDate, '+'||(Days - 1)||' days') as endDate 
+    from conferenceTable where Id != {id} and (date('{startDate}') BETWEEN date(EventDate) and date(endDate) or date('{endDate}') BETWEEN 
+    date(EventDate) and date(endDate)
+    or date(EventDate) BETWEEN date('{startDate}') and date('{endDate}') or date(endDate) BETWEEN date('{startDate}') and 
+    date('{endDate}')) """.format(startDate=date_1,endDate=date_1 + datetime.timedelta(days=number_of_days - 1), id=id))
+
+    unavailable_rooms = []
+    available_rooms = []
+    # room_options = []
+
+    if event_type == "weddingTable":
+        room_options = constances.WEDDING_ROOM_OPTION
+        cursor.execute(wedding_party_query)
+    elif event_type == "partyTable":
+        room_options = constances.PARTY_ROOM_OPTIONS
+        cursor.execute(wedding_party_query)
+    else:
+        room_options = constances.CONFERENCE_ROOM_OPTIONS
+        cursor.execute(conference_query)
+
+    for row in cursor.fetchall():
+        unavailable_rooms.append(row[0])
+
+    for room in room_options:
+        if room not in unavailable_rooms:
+            available_rooms.append(room)
+
+    cursor.close()
+    return available_rooms
+
+
+def bands_in_use(date):
+    conn = dbconn
+    cursor = conn.cursor()
+
+    query = "SELECT Band FROM weddingTable partyTable WHERE date(EventDate) = date('{}')".format(date)
+
+    unavailable_bands = []
+    available_bands = []
+
+    room_options = constances.BAND_OPTIONS
+    cursor.execute(query)
+
+    for row in cursor.fetchall():
+        unavailable_bands.append(row[0])
+
+    for band in room_options :
+        if band not in unavailable_bands or band == "No band":
+            available_bands.append(band)
+
+    cursor.close()
+    return available_bands
+
+def bands_in_use_update(date,id):
+    conn = dbconn
+    cursor = conn.cursor()
+
+    query = "SELECT Band FROM weddingTable partyTable WHERE Id != {} and date(EventDate) = date('{}')".format(id,date)
+
+    unavailable_bands = []
+    available_bands = []
+
+    room_options = constances.BAND_OPTIONS
+    cursor.execute(query)
+
+    for row in cursor.fetchall():
+        unavailable_bands.append(row[0])
+
+    for band in room_options :
+        if band not in unavailable_bands or band == "No band":
+            available_bands.append(band)
+
+    cursor.close()
+    return available_bands

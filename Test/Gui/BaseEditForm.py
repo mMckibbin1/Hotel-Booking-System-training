@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import messagebox
 
 import Validation
+from Events import Wedding, Party, Conference
 from addtionalWidgets import CalendarWidget
 from Database import dbHelper
 from Gui import viewbooking, DialogBoxes
@@ -11,18 +12,12 @@ from Gui import viewbooking, DialogBoxes
 class BaseEditEvent:
     #setting default values for eventRoom and BandName as empty strings
     eventRoomNo = ''
-    def __init__(self, master, Rooms, object):
+    def __init__(self, master, object):
         #Creation of wedding form set title, size ect..
         self.master = master
         self.master.title("Hotel Booking System - Base edit form")
         self.master.resizable(0, 0)
         self.master.config(background="#70ABAF")
-
-        #defines options for dropdown boxes
-
-        self.DefaultRoomNo = StringVar(master)
-        self.DefaultRoomNo.set(object.eventRoomNo)  # default value set as what is stored already
-
 
         #Labels for Wedding booking form
         self.lblSubheading = Label(master, font=("arial", 20, "bold", "underline"), bg="#70ABAF")
@@ -41,10 +36,10 @@ class BaseEditEvent:
         self.lblContactNumber.grid(row=4, columnspan=2, pady=(25, 0), padx=(10, 10))
 
         self.lblEventRoomNo = Label(master, text="Event Room Number", font=("arial", 10, "bold"), bg="#70ABAF")
-        self.lblEventRoomNo.grid(row=5, columnspan=2, pady=(25, 0), padx=(10, 10))
+        self.lblEventRoomNo.grid(row=6, columnspan=2, pady=(25, 0), padx=(10, 10))
 
         self.lblDateofEvent = Label(master, text="Date of event", font=("arial", 10, "bold"), bg="#70ABAF")
-        self.lblDateofEvent.grid(row=6, columnspan=2, pady=(25, 0), padx=(10, 10))
+        self.lblDateofEvent.grid(row=5, columnspan=2, pady=(25, 0), padx=(10, 10))
 
         #Entry boxes, dropdowns and datepicker for edit form
         self.EntnumberOfguest = Entry(master, font=("arial", 10), width=50)
@@ -61,7 +56,9 @@ class BaseEditEvent:
         self.ContactVcmd = (self.EntContactNumber.register(Validation.callback))  # Validation
         self.EntContactNumber.config(validate='all', validatecommand=(self.ContactVcmd, '%P'))
 
-        self.OpmEventRoomNumber = OptionMenu(master, self.DefaultRoomNo, *Rooms, command=self.getRoomnumber)
+        self.om_room_val = StringVar()
+        self.om_room_val.set("Please select a date first")
+        self.OpmEventRoomNumber = OptionMenu(master, self.om_room_val, ())
 
         self.display_date = StringVar()
         self.CalDateOfEvent = Entry(master, font=("arial", 10), width=50, textvariable=self.display_date, state="readonly")
@@ -73,8 +70,8 @@ class BaseEditEvent:
         self.EntnameOfContact.grid(row=2, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
         self.EntAddress.grid(row=3, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
         self.EntContactNumber.grid(row=4, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
-        self.OpmEventRoomNumber.grid(row=5, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
-        self.CalDateOfEvent.grid(row=6, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
+        self.OpmEventRoomNumber.grid(row=6, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
+        self.CalDateOfEvent.grid(row=5, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
         #Buttons for Add and Cancel on the base edit form
         self.btnUpdateBooking = Button(master, text="Update Booking", bg="medium aquamarine",font=("arial", 11, "bold"), width=30, height=3)
@@ -88,9 +85,25 @@ class BaseEditEvent:
 
         self.populateform(object)
 
-    #function to get room number from dropdown
-    def getRoomnumber(self, value):
-        self.eventRoomNo = value
+        self.room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
+        self.room_option_menu_menu.delete(0, "end")
+        self.om_room_val.set(object.eventRoomNo)
+        if type(object) == Wedding.Wedding:
+            event_type = "weddingTable"
+            for value in dbHelper.rooms_in_use_update(event_type=event_type, id=object.ID,
+                                                      date=self.display_date.get()):
+                self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
+        elif type(object) == Party.Party:
+            event_type = "partyTable"
+            for value in dbHelper.rooms_in_use_update(event_type=event_type, id=object.ID,
+                                                      date=self.display_date.get()):
+                self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
+        elif type(object) == Conference.Conference:
+            event_type = "conferenceTable"
+            for value in dbHelper.rooms_in_use_update(event_type=event_type, id=object.ID,
+                                                      date=self.display_date.get(), number_of_days=object.noOfDays):
+                self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
+
 
     # function to display calander widget for date of event
     def popup(self, event, master):
@@ -119,7 +132,6 @@ class BaseEditEvent:
             return messagebox.showinfo("Invalid Date", "Can not pick a past date.\n Please pick a new date.",
                                        parent=master)
         else:
-            self.display_date.set("")
             self.display_date.set(FormtDate)
 
     def populateform(self, object):
@@ -128,3 +140,4 @@ class BaseEditEvent:
         self.EntAddress.insert(0, object.address)
         self.EntContactNumber.insert(0, object.contactNo)
         self.display_date.set(object.dateOfEvent)
+        self.om_room_val.set(object.eventRoomNo)

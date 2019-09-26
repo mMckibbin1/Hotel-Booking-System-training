@@ -68,12 +68,6 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         self.OpmEventRoomNumber.config(state="disabled")
 
     def conference_room_check(self):
-
-        test =self.number_of_days.get()
-        test2 = test
-
-        test3 = self.display_date.get()
-        test4 = test3
         if not self.number_of_days.get() or not self.display_date.get():
             self.om_room_val.set("Pick a date and duration first")
             self.OpmEventRoomNumber.config(state="disabled")
