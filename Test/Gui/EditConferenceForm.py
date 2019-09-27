@@ -104,11 +104,12 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
             valpassed = False
             return messagebox.showinfo("Booking Failed",
                                        "All fields are required to be filled in.", parent=self.master)
+
         elif dbHelper.con_date_conflict_update("conferenceTable", self.CalDateOfEvent.get(), self.EntNoOfDays.get(), self.eventRoomNo, booking.ID):
             valpassed = False
             return messagebox.showinfo('Booking Failed',
                                        'Room is currently booked. Please select another room, or change the date of booking.', parent=self.master)
-        elif Validation.min_number(self.EntnumberOfguest.get()):
+        elif Validation.min_number([self.EntnumberOfguest.get()]):
             valpassed = False
             return messagebox.showinfo("Booking Failed", "Must have more than one guest.", parent=self.master)
 

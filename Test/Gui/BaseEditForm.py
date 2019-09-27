@@ -48,7 +48,7 @@ class BaseEditEvent:
 
         self.EntnameOfContact = Entry(master, font=("arial", 10), width=50)
         self.NameVcmd = (self.EntnameOfContact.register(Validation.charOnly))  # Validation
-        self.EntnameOfContact.config(validate='all', validatecommand=(self.NameVcmd, '%P'))
+        self.EntnameOfContact.config(validate='all', validatecommand=(self.NameVcmd, '%S'))
 
         self.EntAddress = Entry(master, font=("arial", 10), width=50)
 
