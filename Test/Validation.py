@@ -19,10 +19,13 @@ def callback(P):
 
 # only allows characters to be entered into an entry box
 def charOnly(C):
-    if str.isalpha(C) or str.isspace(C) or C == "":
-        return True
-    else:
-        return False
+    val_passed = True
+    for item in C:
+        if str.isalpha(item) or str.isspace(item) or item=="":
+            val_passed = True
+        else:
+            val_passed = False
+    return val_passed
 
 
 def min_number(list):
