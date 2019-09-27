@@ -241,7 +241,7 @@ class frmViewBooking(Tkinter.Frame):
         self.lblDisNoOfBedsReserved.grid(row=7, column=2)
 
         # labels for Company Name in additional details label frame
-        self.lblCompanyName = Label(self.labelframe, text="Company Name ", background="#70ABAF")
+        self.lblCompanyName = Label(self.labelframe, text="Company Name: ", background="#70ABAF")
         self.lblCompanyName.grid(row=5, column=1)
         self.lblDisCompanyName = Label(self.labelframe, text='SERC', background="#70ABAF")
         self.lblDisCompanyName.grid(row=5, column=2)
