@@ -19,6 +19,20 @@ class BaseEditEvent:
         self.master.resizable(0, 0)
         self.master.config(background="#70ABAF")
 
+        # button hover colour - close update
+        def on_enterCloseUpdate(e):
+            self.btnCloseForm['background'] = "aquamarine4"
+
+        def on_leaveCloseUpdate(e):
+            self.btnCloseForm['background'] = "medium aquamarine"
+
+        # button hover colour - close update
+        def on_enterUpdate(e):
+            self.btnUpdateBooking['background'] = "aquamarine4"
+
+        def on_leaveUpdate(e):
+            self.btnUpdateBooking['background'] = "medium aquamarine"
+
         #Labels for Wedding booking form
         self.lblSubheading = Label(master, font=("arial", 20, "bold", "underline"), bg="#70ABAF")
         self.lblSubheading.grid(row=0, pady=(35, 25), padx=(10, 10), columnspan=4)
@@ -75,9 +89,13 @@ class BaseEditEvent:
 
         #Buttons for Add and Cancel on the base edit form
         self.btnUpdateBooking = Button(master, text="Update Booking", bg="medium aquamarine",font=("arial", 11, "bold"), width=30, height=3)
+        self.btnUpdateBooking.bind("<Enter>", on_enterUpdate)
+        self.btnUpdateBooking.bind("<Leave>", on_leaveUpdate)
         self.btnCloseForm = Button(master, text="Cancel", bg="medium aquamarine",font=("arial", 11, "bold"), width=30,
                                    height=3, command=lambda: [DialogBoxes.not_saved(master),
-                                                              master.destroy()]) # calls destroy and message box
+                                                              master.destroy()])  # calls destroy and message box
+        self.btnCloseForm.bind("<Enter>", on_enterCloseUpdate)
+        self.btnCloseForm.bind("<Leave>", on_leaveCloseUpdate)
 
         ##Buttons for Add and Cancel on the base edit form being placed using grid layout
         self.btnUpdateBooking.grid(row=10, column=1, columnspan=1,  pady=(50, 50), padx=(75, 25), sticky="ew")

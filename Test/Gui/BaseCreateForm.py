@@ -18,6 +18,20 @@ class BaseEvent:
         self.master.resizable(0, 0)
         self.master.config(background="#70ABAF")
 
+        # button hover colour - close
+        def on_enterClose(e):
+            self.btnCloseForm['background'] = "aquamarine4"
+
+        def on_leaveClose(e):
+            self.btnCloseForm['background'] = "medium aquamarine"
+
+        # button hover colour - add booking
+        def on_enterAddBooking(e):
+            self.btnAddBooking['background'] = "aquamarine4"
+
+        def on_leaveAddBooking(e):
+            self.btnAddBooking['background'] = "medium aquamarine"
+
         # Labels for Wedding booking form
 
         self.lblSubheading = Label(master,text="Please fill in the details for the wedding event you are booking",
@@ -77,7 +91,11 @@ class BaseEvent:
         # Buttons for Add and Cancel on the wedding form
         self.btnCloseForm = Button(master, text="Cancel",bg="medium aquamarine",font=("arial", 11, "bold"),
                                    width=30,height=3, command=lambda: [DialogBoxes.not_saved(master), master.destroy()]) # calls destroy and message box
+        self.btnCloseForm.bind("<Enter>", on_enterClose)
+        self.btnCloseForm.bind("<Leave>", on_leaveClose)
         self.btnAddBooking = Button(master, text="Add Booking", bg="medium aquamarine",font=("arial", 11, "bold"), width=30,height=3)
+        self.btnAddBooking.bind("<Enter>", on_enterAddBooking)
+        self.btnAddBooking.bind("<Leave>", on_leaveAddBooking)
         # Buttons for Add and Cancel on the wedding form being placed using grid layout
         self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(50, 50), padx=(75, 25), sticky="ew")
         self.btnCloseForm.grid(row=10, column=3, columnspan=2, pady=(50, 50), padx=(75, 25), sticky="ew")

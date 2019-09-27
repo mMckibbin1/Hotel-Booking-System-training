@@ -60,7 +60,7 @@ class frmViewBooking(Tkinter.Frame):
         # BUTTONS #
         # button hover colour - update
         def on_enterUpdate(e):
-            btnUpdate['background'] = "#F0F704"
+            btnUpdate['background'] = "snow2" #"#F0F704"
 
         def on_leaveUpdate(e):
             btnUpdate['background'] = "snow"
@@ -74,10 +74,17 @@ class frmViewBooking(Tkinter.Frame):
 
         # button hover colour - refresh
         def on_enterRefresh(e):
-            btnRefresh['background'] = "#42A2FF"
+            btnRefresh['background'] = "snow2" #"#42A2FF"
 
         def on_leaveRefresh(e):
             btnRefresh['background'] = "snow"
+
+        # button hover colour - clear
+        def on_enterClear(e):
+            self.btn_clear_date['background'] = "snow2"
+
+        def on_leaveClear(e):
+            self.btn_clear_date['background'] = "snow"
 
 
         # button update
@@ -142,6 +149,8 @@ class frmViewBooking(Tkinter.Frame):
         self.btn_clear_date = Button(self.Selectlabelframe,text="Clear Dates", width=13, height=2, background="snow",
                                      font=("arial", 10), command=lambda:Gui.viewbookinglogic.clear_date(self.master2))
         self.btn_clear_date.grid(row=4, column=0, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
+        self.btn_clear_date.bind("<Enter>", on_enterClear)
+        self.btn_clear_date.bind("<Leave>", on_leaveClear)
 
         # check boxes
 
@@ -164,10 +173,17 @@ class frmViewBooking(Tkinter.Frame):
 
         # button hover colour - search
         def on_enterSearch(e):
-            btnSearchDate['background'] = "#57FFA5"
+            btnSearchDate['background'] = "snow2" #"#57FFA5"
 
         def on_leaveSearch(e):
             btnSearchDate['background'] = "snow"
+
+        # button hover colour - main menu
+        def on_enterMainMenu(e):
+            btn_main_menu['background'] = "snow2"  # "#57FFA5"
+
+        def on_leaveMainMenu(e):
+            btn_main_menu['background'] = "snow"
 
         # button search
         btnSearchDate = Button(self.Selectlabelframe, text="Search",
@@ -179,6 +195,8 @@ class frmViewBooking(Tkinter.Frame):
         btn_main_menu = Button(self.Selectlabelframe, text="Main Menu", width=13, height=2, background="snow",
                                font=("arial", 10),command=lambda :self.master.destroy())
         btn_main_menu.grid(row=4, column=8, pady=(0, 20), padx=(8, 15), sticky="WE")
+        btn_main_menu.bind("<Enter>", on_enterMainMenu)
+        btn_main_menu.bind("<Leave>", on_leaveMainMenu)
 
         # labelframe for additional info box
         self.labelframe = LabelFrame(self.parent, text="Additional Information", width=324, height=167,
@@ -269,7 +287,7 @@ class frmViewBooking(Tkinter.Frame):
         self.Totallabelframe = LabelFrame(self.parent, text="Price Breakdown", width=324, height=100,
                                           background="#70ABAF", font=("arial", 9, "bold"))
         self.Totallabelframe.grid(row=1, column=7, columnspan=3, padx=(10, 20), pady=(0, 20))
-#70ABAF # columns
+        #70ABAF # columns
         self.Totallabelframe.grid_columnconfigure(1, minsize=80)
         self.Totallabelframe.grid_columnconfigure(2, minsize=80)
         self.Totallabelframe.grid_columnconfigure(3, minsize=80)
@@ -311,8 +329,17 @@ class frmViewBooking(Tkinter.Frame):
         self.lblDisTotal = Label(self.Totallabelframe, text="£", background="#70ABAF")
         self.lblDisTotal.grid(row=4, column=2)
 
+        # button hover colour - invoice
+        def on_enterSaveInvoice(e):
+            self.btninvoice['background'] = "snow2"
+
+        def on_leaveSaveInvoice(e):
+            self.btninvoice['background'] = "snow"
+
         self.btninvoice = Button(self.Totallabelframe, text="Save Invoice", command=lambda :Gui.viewbookinglogic.invoice(self.master2))
         self.btninvoice.grid(row=3, column=3, rowspan=2, columnspan=2)
+        self.btninvoice.bind("<Enter>", on_enterSaveInvoice)
+        self.btninvoice.bind("<Leave>", on_leaveSaveInvoice)
 
         # setting weight for rows and columns
         self.Totallabelframe.grid_rowconfigure(0, weight=1)
