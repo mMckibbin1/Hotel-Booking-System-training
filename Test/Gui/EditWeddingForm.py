@@ -94,9 +94,9 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
             valpassed = False
             return messagebox.showinfo('Booking Failed',
                                        'Room is currently booked. Please select another room, or change the date of booking.', parent=self.master)
-        elif Validation.min_number([self.EntnumberOfguest.get(), self.EntBedroomReserved.get()]):
+        elif Validation.min_number([self.EntnumberOfguest.get()]):
             valpassed = False
-            return messagebox.showinfo("Booking Failed", "Must have entered more than one guest and room.", parent=self.master)
+            return messagebox.showinfo("Booking Failed", "Must have entered more than one guest.", parent=self.master)
 
         if valpassed:
             Events.Wedding.updateWedding(self.EntnumberOfguest.get(),

@@ -109,9 +109,9 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
             valpassed = False
             return messagebox.showinfo('Booking Failed',
                                        'Room is currently booked. Please select another room, or change the date of booking.', parent=self.master)
-        elif Validation.min_number([self.EntnumberOfguest.get()]):
+        elif Validation.min_number([self.EntnumberOfguest.get(), self.EntNoOfDays.get()]):
             valpassed = False
-            return messagebox.showinfo("Booking Failed", "Must have more than one guest.", parent=self.master)
+            return messagebox.showinfo("Booking Failed", "Must have more than one guest.\nThe duration of the event must be at least one day.", parent=self.master)
 
 
         if valpassed:
