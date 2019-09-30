@@ -44,8 +44,8 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
         self.number_of_days = StringVar()
         self.EntNoOfDays = Entry(master, font=("arial", 10), width=50,textvariable=self.number_of_days)
-        self.DaysVcmd = (self.EntNoOfDays.register(Validation.callback))
-        self.EntNoOfDays.config(validate='all', validatecommand=(self.DaysVcmd, '%P'))
+        self.DaysVcmd = (self.EntNoOfDays.register(lambda P: Validation.max_size_31(P,master)))
+        self.EntNoOfDays.config(validate='key', validatecommand=(self.DaysVcmd, '%P'))
 
         #checkbox now works :)
         self.CheckVar1 = IntVar()
@@ -112,7 +112,6 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         elif Validation.min_number([self.EntnumberOfguest.get(), self.EntNoOfDays.get()]):
             valpassed = False
             return messagebox.showinfo("Booking Failed", "Must have more than one guest.\nThe duration of the event must be at least one day.", parent=self.master)
-
 
         if valpassed:
             Events.Conference.updateConference(self.EntnumberOfguest.get(),

@@ -58,17 +58,19 @@ class BaseEvent:
 
         # Entry boxes, dropdowns and datepicker for wedding form
         self.EntnumberOfguest = Entry(master, font=("arial", 10), width=50)
-        self.GuestsVcmd = (self.EntnumberOfguest.register(Validation.callback))  # Validation
-        self.EntnumberOfguest.config(validate='all', validatecommand=(self.GuestsVcmd, '%S'))
+        self.GuestsVcmd = (self.EntnumberOfguest.register(lambda P:Validation.max_size_200(P,master)))  # Validation
+        self.EntnumberOfguest.config(validate='key', validatecommand=(self.GuestsVcmd, '%P'))
 
         self.EntnameOfContact = Entry(master, font=("arial", 10), width=50)
-        self.NameVcmd = (self.EntnameOfContact.register(Validation.charOnly))  # Validation
-        self.EntnameOfContact.config(validate='all', validatecommand=(self.NameVcmd, '%S'))
+        self.NameVcmd = (self.EntnameOfContact.register(lambda P:Validation.max_character_length_50(P,master)))  # Validation
+        self.EntnameOfContact.config(validate='key', validatecommand=(self.NameVcmd, '%P'))
 
         self.EntAddress = Entry(master, font=("arial", 10), width=50)
+        self.AddVcmd = (self.EntAddress.register(lambda P: Validation.max_character_length_150(P, master)))
+        self.EntAddress.config(validate='key', validatecommand=(self.AddVcmd,'%P'))
 
         self.EntContactNumber = Entry(master, font=("arial", 10), width=50)
-        self.ContactVcmd = (self.EntContactNumber.register(Validation.callback))  # Validation
+        self.ContactVcmd = (self.EntContactNumber.register(Validation.digits_only))  # Validation
         self.EntContactNumber.config(validate='all', validatecommand=(self.ContactVcmd, '%S'))
 
         self.display_date = StringVar()

@@ -1,4 +1,5 @@
-from tkinter.messagebox import *
+from tkinter import messagebox
+
 
 # tests for empty entry boxes
 def stringEmpty(test):
@@ -11,17 +12,18 @@ def stringEmpty(test):
 
 
 # only allows numbers to be entered into an entry box
-def callback(P):
-        if str.isdigit(P) or P == "":
-            return True
-        else:
-            return False
+def digits_only(P):
+    if str.isdigit(P) or P == "":
+        return True
+    else:
+        return False
+
 
 # only allows characters to be entered into an entry box
 def charOnly(C):
     val_passed = True
     for item in C:
-        if str.isalpha(item) or str.isspace(item) or item=="":
+        if str.isalpha(item) or str.isspace(item) or item == "":
             val_passed = True
         else:
             val_passed = False
@@ -37,3 +39,53 @@ def min_number(list):
             val_failed = True
             return val_failed
     return val_failed
+
+
+def max_character_length_50(input_string, master):
+    if len(input_string) >= 50:
+        messagebox.showinfo("Character limited Reached", "You have hit the maximum number of characters", parent=master)
+        return False
+    if not charOnly(input_string):
+        return False
+    return True
+
+
+def max_character_length_150(input_string, master):
+    if len(input_string) >= 150:
+        messagebox.showinfo("Character limited Reached", "You have hit the maximum number of characters", parent=master)
+        return False
+    return True
+
+
+def max_size_200(input_string, master):
+    if input_string =="":
+        return True
+    if not digits_only(input_string):
+        return False
+    if int(input_string) > 200:
+        messagebox.showinfo("Input to large", "The input that you have entered is over 200", parent=master)
+        return False
+    return True
+
+
+def max_size_50(input_string, master):
+    print("testing")
+    if input_string =="":
+        return True
+    if not digits_only(input_string):
+        return False
+    if int(input_string) > 50:
+        messagebox.showinfo("Input to large", "The input that you have entered is over 50", parent=master)
+        return False
+    return True
+
+
+def max_size_31(input_string, master):
+    if input_string =="":
+        return True
+    if not digits_only(input_string):
+        return False
+    if int(input_string) > 31:
+        messagebox.showinfo("Input to large", "The input that you have entered is over 31", parent=master)
+        return False
+    return True

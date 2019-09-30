@@ -42,8 +42,8 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
 
 
         self.EntBedroomReserved = Entry(master, font=("arial", 10), width=50)
-        self.BedsVcmd = (self.EntBedroomReserved.register(Validation.callback))
-        self.EntBedroomReserved.config(validate='all', validatecommand=(self.BedsVcmd, '%S'))
+        self.BedsVcmd = (self.EntBedroomReserved.register(lambda P:Validation.max_size_50(P,master)))
+        self.EntBedroomReserved.config(validate='key', validatecommand=(self.BedsVcmd, '%P'))
 
         self.OpmBandName.grid(row=8, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
         self.EntBedroomReserved.grid(row=9, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
