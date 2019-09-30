@@ -127,6 +127,6 @@ class BaseEvent:
         FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
 
         if FormtDate < datetime.datetime.now().date():
-            return messagebox.showinfo("Invalid Date", "Can not pick a past date.\n Please pick a new date.", parent=master)
+            return messagebox.showinfo("Invalid Date", "Can not pick a past date.\nPlease pick a new date.", parent=master)
         else:
             self.display_date.set(FormtDate)
