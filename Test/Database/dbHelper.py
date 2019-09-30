@@ -56,8 +56,14 @@ def read_conference_db():
     cursor.execute('SELECT * FROM conferenceTable')
     list = []
     for row in cursor.fetchall():
+
+        if row[10] == 1:
+            projectory_required = "Yes"
+        else:
+            projectory_required = "No"
+
         conference = Conference.Conference(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9],
-                                           row[10], row[0])
+                                           projectory_required, row[0])
 
         list.append(conference)
 
@@ -154,7 +160,7 @@ def search(EventsList, StartDate, EndDate):
     elif StartDate != "":
         Date = " Where date(EventDate) >= date('{}')".format(StartDate)
     elif EndDate != "":
-        Date = " Where date(EventDate) =< date('{}')".format(EndDate)
+        Date = " Where date(EventDate) <= date('{}')".format(EndDate)
     else:
         Date = ""
 
