@@ -43,8 +43,8 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
         self.OpmBandName.grid(row=8, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
 
         self.EntBedroomReserved.grid(row=9, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
-        self.BedsVcmd = (self.EntBedroomReserved.register(Validation.callback))
-        self.EntBedroomReserved.config(validate='all', validatecommand=(self.BedsVcmd, '%P'))
+        self.BedsVcmd = (self.EntBedroomReserved.register(lambda P: Validation.max_size_50(P, master)))
+        self.EntBedroomReserved.config(validate='key', validatecommand=(self.BedsVcmd, '%P'))
 
         #Buttons for Add and Cancel on the wedding for
         self.btnUpdateBooking.config(command=lambda: self.validation(booking)) # calls update ,destroy and message box

@@ -41,8 +41,8 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
 
         self.number_of_days = StringVar()
         self.EntNoOfDays = Entry(master, font=("arial", 10), width=50, textvariable=self.number_of_days)
-        self.DaysVcmd = (self.EntNoOfDays.register(Validation.callback))
-        self.EntNoOfDays.config(validate='all', validatecommand=(self.DaysVcmd, '%S'))
+        self.DaysVcmd = (self.EntNoOfDays.register(lambda P: Validation.max_size_31(P,master)))
+        self.EntNoOfDays.config(validate='key', validatecommand=(self.DaysVcmd, '%P'))
 
         # checkbox now works :)
         # checkbox
