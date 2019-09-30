@@ -10,10 +10,11 @@ from Gui import viewbooking, DialogBoxes
 
 
 class BaseEditEvent:
-    #setting default values for eventRoom and BandName as empty strings
+    # setting default values for eventRoom and BandName as empty strings
     eventRoomNo = ''
+
     def __init__(self, master, object):
-        #Creation of wedding form set title, size ect..
+        # Creation of wedding form set title, size ect..
         self.master = master
         self.master.title("Hotel Booking System - Base edit form")
         self.master.resizable(0, 0)
@@ -33,7 +34,7 @@ class BaseEditEvent:
         def on_leaveUpdate(e):
             self.btnUpdateBooking['background'] = "medium aquamarine"
 
-        #Labels for Wedding booking form
+        # Labels for Wedding booking form
         self.lblSubheading = Label(master, font=("arial", 20, "bold", "underline"), bg="#70ABAF")
         self.lblSubheading.grid(row=0, pady=(35, 25), padx=(10, 10), columnspan=4)
 
@@ -55,7 +56,7 @@ class BaseEditEvent:
         self.lblDateofEvent = Label(master, text="Date of event", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblDateofEvent.grid(row=5, columnspan=2, pady=(25, 0), padx=(10, 10))
 
-        #Entry boxes, dropdowns and datepicker for edit form
+        # Entry boxes, dropdowns and datepicker for edit form
         self.EntnumberOfguest = Entry(master, font=("arial", 10), width=50)
         self.GuestsVcmd = (self.EntnumberOfguest.register(Validation.callback))  # Validation
         self.EntnumberOfguest.config(validate='all', validatecommand=(self.GuestsVcmd, '%P'))
@@ -87,7 +88,7 @@ class BaseEditEvent:
         self.OpmEventRoomNumber.grid(row=6, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
         self.CalDateOfEvent.grid(row=5, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
-        #Buttons for Add and Cancel on the base edit form
+        # Buttons for Add and Cancel on the base edit form
         self.btnUpdateBooking = Button(master, text="Update Booking", bg="medium aquamarine",font=("arial", 11, "bold"), width=30, height=3)
         self.btnUpdateBooking.bind("<Enter>", on_enterUpdate)
         self.btnUpdateBooking.bind("<Leave>", on_leaveUpdate)
@@ -97,7 +98,7 @@ class BaseEditEvent:
         self.btnCloseForm.bind("<Enter>", on_enterCloseUpdate)
         self.btnCloseForm.bind("<Leave>", on_leaveCloseUpdate)
 
-        ##Buttons for Add and Cancel on the base edit form being placed using grid layout
+        # Buttons for Add and Cancel on the base edit form being placed using grid layout
         self.btnUpdateBooking.grid(row=10, column=1, columnspan=1,  pady=(50, 50), padx=(75, 25), sticky="ew")
         self.btnCloseForm.grid(row=10, column=3, columnspan=2,  pady=(50, 50), padx=(75, 25), sticky="ew")
 
@@ -134,7 +135,7 @@ class BaseEditEvent:
         master.grab_set()
         self.Get_selected_date(master)
 
-    #function to get the selected date from calander widget and display it as a formatted string
+    # function to get the selected date from calander widget and display it as a formatted string
     def Get_selected_date(self, master):
         Day = self.data.get("day_selected", "date error")
         Month = self.data.get("month_selected", "date error")
