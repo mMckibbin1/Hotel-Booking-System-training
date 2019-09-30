@@ -1,3 +1,24 @@
 
+Test/__pycache__/constances.cpython-37.pyc
+Test/__pycache__/Validation.cpython-37.pyc
+Test/addtionalWidgets/__pycache__/CalendarWidget.cpython-37.pyc
+Test/Database/__pycache__/dbHelper.cpython-37.pyc
+Test/Events/__pycache__/BaseEvent.cpython-37.pyc
+Test/Events/__pycache__/Conference.cpython-37.pyc
+Test/Events/__pycache__/Invoice.cpython-37.pyc
+Test/Events/__pycache__/Party.cpython-37.pyc
+Test/Events/__pycache__/Wedding.cpython-37.pyc
+Test/Gui/__pycache__/BaseCreateForm.cpython-37.pyc
+Test/Gui/__pycache__/BaseEditForm.cpython-37.pyc
+Test/Gui/__pycache__/CreateConferenceForm.cpython-37.pyc
+Test/Gui/__pycache__/CreatePartyForm.cpython-37.pyc
+Test/Gui/__pycache__/CreateWeddingForm.cpython-37.pyc
+Test/Gui/__pycache__/DialogBoxes.cpython-37.pyc
+Test/Gui/__pycache__/EditConferenceForm.cpython-37.pyc
+Test/Gui/__pycache__/EditPartyForm.cpython-37.pyc
+Test/Gui/__pycache__/EditWeddingForm.cpython-37.pyc
+Test/Gui/__pycache__/MainMenu.cpython-37.pyc
+Test/Gui/__pycache__/viewbooking.cpython-37.pyc
+Test/Gui/__pycache__/viewbookinglogic.cpython-37.pyc
 *.pyc
-*.pyc
+Test/__pycache__/Validation.cpython-37.pyc
