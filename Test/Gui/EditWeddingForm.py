@@ -57,7 +57,7 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
         self.band_name_option_menu_menu = self.OpmBandName.children["menu"]
         self.band_name_option_menu_menu.delete(0, "end")
         self.om_band_name.set(booking.bandName)
-        for value in dbHelper.bands_in_use_update(self.display_date.get(), self.booking.ID):
+        for value in dbHelper.bands_in_use_update("Wedding",self.display_date.get(), self.booking.ID):
             self.band_name_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_band_name.set(v))
 
     def band_name_check(self):
@@ -66,7 +66,7 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
         self.band_name_option_menu_menu = self.OpmBandName.children["menu"]
         self.band_name_option_menu_menu.delete(0, "end")
         self.om_band_name.set("Pick a Band")
-        for value in dbHelper.bands_in_use_update(self.display_date.get(), self.booking.ID):
+        for value in dbHelper.bands_in_use_update("Wedding",self.display_date.get(), self.booking.ID):
             self.band_name_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_band_name.set(v))
 
     def wedding_room_check(self):

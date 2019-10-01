@@ -406,15 +406,18 @@ def bands_in_use(date):
     cursor.close()
     return available_bands
 
-def bands_in_use_update(date,id):
+def bands_in_use_update(event_type,date,id):
     conn = dbconn
     cursor = conn.cursor()
 
-    query_list = [
-        "SELECT Band FROM weddingTable WHERE Id != {} and date(EventDate) = date('{}')".format(id, date),
-        "SELECT Band FROM partyTable WHERE Id != {} and date(EventDate) = date('{}')".format(id, date),
-        "SELECT Band FROM weddingTable WHERE date(EventDate) = date('{}')".format(date),
-        "SELECT Band FROM partyTable WHERE date(EventDate) = date('{}')".format(date)]
+    if event_type == "Wedding":
+        query_list = [
+            "SELECT Band FROM weddingTable WHERE Id != {} and date(EventDate) = date('{}')".format(id, date),
+            "SELECT Band FROM partyTable WHERE date(EventDate) = date('{}')".format(date)]
+    elif event_type == "Party":
+        query_list = [
+            "SELECT Band FROM partyTable WHERE Id != {} and date(EventDate) = date('{}')".format(id, date),
+            "SELECT Band FROM weddingTable WHERE date(EventDate) = date('{}')".format(date)]
 
     unavailable_bands = []
     available_bands = []

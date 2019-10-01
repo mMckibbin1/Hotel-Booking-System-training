@@ -90,9 +90,9 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
         value = booking.projectorRequired
 
-        if value == 1:
+        if value == "Yes":
             self.chxProjectorRequired.select()
-        elif value == 0:
+        elif value == "No":
             self.chxProjectorRequired.deselect()
 
 
