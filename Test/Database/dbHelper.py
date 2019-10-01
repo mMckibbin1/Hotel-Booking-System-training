@@ -388,16 +388,22 @@ def bands_in_use(date):
     conn = dbconn
     cursor = conn.cursor()
 
-    query = "SELECT Band FROM weddingTable partyTable WHERE date(EventDate) = date('{}')".format(date)
+    query_list = [
+    "SELECT Band FROM weddingTable WHERE date(EventDate) = date('{}')".format(date),
+    "SELECT Band FROM partyTable WHERE date(EventDate) = date('{}')".format(date)]
 
     unavailable_bands = []
     available_bands = []
 
     room_options = constances.BAND_OPTIONS
-    cursor.execute(query)
 
-    for row in cursor.fetchall():
-        unavailable_bands.append(row[0])
+    for query in query_list:
+        cursor.execute(query)
+
+        for row in cursor.fetchall():
+            unavailable_bands.append(row[0])
+
+    list(set(unavailable_bands))
 
     for band in room_options :
         if band not in unavailable_bands or band == "No band":
