@@ -161,15 +161,18 @@ class frmViewBooking(Tkinter.Frame):
         self.CbxWedding = Checkbutton(self.Selectlabelframe, text='Weddings', variable=self.checkVarWedding, onvalue="weddingTable",
                                       offvalue="", font=("arial", 10),background="#F0F7F4")
         self.CbxWedding.grid(row=3, column=4, padx=(0, 20), sticky=W, pady=(0, 20))
+        self.CbxWedding.select()
 
         self.CbxConference = Checkbutton(self.Selectlabelframe, text='Conference', font=("arial", 10),
                                          background="#F0F7F4",variable=self.checkVarConference, onvalue="conferenceTable",
                                          offvalue="")
         self.CbxConference.grid(row=3, column=5, padx=(0, 20), pady=(0, 20))
+        self.CbxConference.select()
 
         self.CbxParties = Checkbutton(self.Selectlabelframe, text='Parties', font=("arial", 10),
                                       background="#F0F7F4", variable=self.checkVarParty, onvalue="partyTable", offvalue="")
         self.CbxParties.grid(row=3, column=6, padx=(0, 0), pady=(0, 20))
+        self.CbxParties.select()
 
         # button hover colour - search
         def on_enterSearch(e):

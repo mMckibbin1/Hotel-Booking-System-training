@@ -4,6 +4,7 @@ from Database import dbHelper
 from Events import Wedding, Party, Conference
 from tkinter import *
 from Gui import DialogBoxes
+from tkinter import messagebox
 from addtionalWidgets import CalendarWidget
 from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
 import Events.Invoice
@@ -248,10 +249,13 @@ def get_selected_date(self, event, entry_field):
 # calculates the total income
 def cal_income(master):
     total_income = 0.0
+    master.lblTotalIncome.config(text=total_income)
     # adds up the values in the total cost column
     for child in master.treeview.get_children():
         total_income += float(master.treeview.item(child, "values")[5])
         master.lblTotalIncome.config(text=total_income)
+
+
 
 
 # adding data to treeview
@@ -272,7 +276,13 @@ def search(self):
         events_list.append(self.checkVarConference.get())
 
     self.treeview.delete(*self.treeview.get_children())
-    for object in dbHelper.search(events_list, self.EntStartDate.get(), self.EntEndDate.get()):
+    search_results_list = dbHelper.search(events_list, self.EntStartDate.get(), self.EntEndDate.get())
+    if len(search_results_list) == 0:
+        cal_income(self)
+        select_first_row_(self)
+        return messagebox.showinfo('No Results',
+                                   'No results found.', parent=self.master2)
+    for object in search_results_list:
         if type(object) == Wedding.Wedding:
             insert_data(self, object.ID, "Wedding", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
@@ -287,6 +297,7 @@ def search(self):
                         object.netTotal())
 
     cal_income(self)
+    select_first_row_(self)
 
 
 # function to load the data from the database into the table
@@ -445,10 +456,12 @@ def select_first_row_(self):
         # changes the labels depending on the ID and event type
         if type(booking) == Wedding.Wedding:
             return details_label_change(self, "Wedding", booking)
-        elif type(object) == Party.Party:
-            return details_label_change(self, "Party", object)
-        elif type(object) == Conference.Conference:
-            return details_label_change(self, "Conference", object)
+        elif type(booking) == Party.Party:
+            return details_label_change(self, "Party", booking)
+        elif type(booking) == Conference.Conference:
+            return details_label_change(self, "Conference", booking)
+    else:
+        remove_all_labels(self)
 
 
 # delete data from table and database

@@ -86,7 +86,7 @@ class mainMenu:
             .grid(row=1, pady=(25, 0), padx=(10,10))
 
         # Main menu buttons with styling that redirect to our other windows
-        btnbookWedding = Button(self.main_menu, text="Add wedding Booking", font=("arial", 12, "bold"), width=30,height=4, bg="medium aquamarine",
+        btnbookWedding = Button(self.main_menu, text="Add Wedding Booking", font=("arial", 12, "bold"), width=30,height=4, bg="medium aquamarine",
                                 command=call_wedding_popup)
         btnbookWedding.bind("<Enter>", on_enterWedding)
         btnbookWedding.bind("<Leave>", on_leaveWedding)
