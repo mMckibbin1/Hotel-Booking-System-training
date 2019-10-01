@@ -12,6 +12,7 @@ class Calendar:
     def __init__(self, parent, values):
         self.values = values
         self.parent = parent
+        self.parent.resizable(0, 0)
         self.cal = calendar.TextCalendar(calendar.SUNDAY)
         self.year = datetime.date.today().year
         self.month = datetime.date.today().month

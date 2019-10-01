@@ -300,6 +300,7 @@ def search(self):
     select_first_row_(self)
 
 
+
 # function to load the data from the database into the table
 def load_data(master):
     data_base_list = dbHelper.read_all_from_db()
