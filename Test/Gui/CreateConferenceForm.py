@@ -81,7 +81,8 @@ class BookConference(Gui.BaseCreateForm.BaseEvent):
             self.om_room_val.set("No Rooms Free")
             return
         for value in rooms_free:
-            self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
+            room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
+
 
     # validation
     def validation(self):
