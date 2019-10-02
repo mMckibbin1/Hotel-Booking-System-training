@@ -1,3 +1,5 @@
+"""module used to create UI for create Party form"""
+
 import Gui.BaseCreateForm
 from tkinter import *
 import Events.Party

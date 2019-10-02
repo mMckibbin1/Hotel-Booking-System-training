@@ -1,3 +1,5 @@
+"""Contains function used to mail-merge an invoice using template"""
+
 from __future__ import print_function
 import datetime
 from mailmerge import MailMerge

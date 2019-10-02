@@ -1,3 +1,5 @@
+"""Module contains class used to create main menu UI and functions used to open other forms from the main menu"""
+
 from tkinter import *
 from Gui import viewbooking
 import Gui.CreateWeddingForm

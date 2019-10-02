@@ -1,3 +1,5 @@
+"""Module contains the functions used by the viewbookings form"""
+
 import datetime
 from tkinter.filedialog import asksaveasfile
 from Database import dbHelper
@@ -13,8 +15,9 @@ import Events.Invoice
 data_list = []
 
 
-#  Opens update form for Wedding
+
 def call_update_wedding_popup(object, self, parent):
+    """Opens update form for Wedding"""
     top = Toplevel()
     EditWeddingForm.EditWedding(top, object, self)
     top.grab_set()
@@ -23,8 +26,8 @@ def call_update_wedding_popup(object, self, parent):
     parent.grab_set()
 
 
-#  Opens update form for Party
 def call_update_party_popup(object, self, parent):
+    """Opens update form for Party"""
     top = Toplevel()
     EditPartyForm.EditParty(top, object, self)
     top.grab_set()
@@ -33,8 +36,8 @@ def call_update_party_popup(object, self, parent):
     parent.grab_set()
 
 
-#  Opens update form for Conference
 def call_update_conference_popup(object, self, parent):
+    """Opens update form for Conference"""
     top = Toplevel()
     EditConferenceForm.EditConference(top, object, self)
     top.grab_set()

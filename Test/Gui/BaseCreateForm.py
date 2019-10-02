@@ -1,3 +1,5 @@
+"""module contains the base class used to create the UI for the create forms used in the program"""
+
 import datetime
 from tkinter import *
 from tkinter import messagebox

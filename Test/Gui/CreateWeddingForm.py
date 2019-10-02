@@ -1,3 +1,5 @@
+"""module used to create UI for create Wedding form"""
+
 from tkinter import *
 import Events.Wedding
 import Gui.BaseCreateForm

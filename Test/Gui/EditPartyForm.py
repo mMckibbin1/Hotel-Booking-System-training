@@ -1,3 +1,5 @@
+"""module contains class used to create the UI for the update Party form"""
+
 from tkinter import messagebox
 import Gui.BaseEditForm
 from tkinter import *

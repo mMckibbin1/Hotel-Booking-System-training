@@ -1,10 +1,11 @@
+"""conference object used for conference bookings"""
+
+
 import datetime
 import Events.BaseEvent
 from Database import dbHelper
 
-"""
-conference object used for conference bookings
-"""
+
 
 
 class Conference(Events.BaseEvent.BaseEventObj):

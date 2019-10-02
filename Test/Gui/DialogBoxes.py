@@ -1,3 +1,5 @@
+"""Module contains function for different dialog boxes used in the program"""
+
 from tkinter.messagebox import *
 from Gui import viewbookinglogic
 from tkinter import messagebox
