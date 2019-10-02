@@ -71,7 +71,7 @@ class BaseEditEvent:
 
         self.EntContactNumber = Entry(master, font=("arial", 10), width=50)
         self.ContactVcmd = (self.EntContactNumber.register(lambda P: Validation.contact_number_val(P, self.EntContactNumber, master)))  # Validation
-        self.EntContactNumber.config(validate='all', validatecommand=(self.ContactVcmd, '%P'))
+        self.EntContactNumber.config(validate='focusout', validatecommand=(self.ContactVcmd, '%P'))
 
         self.om_room_val = StringVar()
         self.om_room_val.set("Please select a date first")

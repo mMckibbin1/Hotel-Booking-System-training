@@ -57,8 +57,8 @@ def max_character_length_150(input_string, master):
     return True
 
 
-def max_character_length_25(input_string, master):
-    if input_string == "":
+def max_character_length_25_digits_only(input_string, master):
+    if input_string =="":
         return True
     if not digits_only(input_string):
         return False
