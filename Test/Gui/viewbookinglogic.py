@@ -60,7 +60,7 @@ def details_label_change(self, eventType, object):
 
     elif eventType == 'Conference':
         remove_all_labels(self)
-        add_conference_lables(self, object)
+        add_conference_labels(self, object)
         update_price_breakdown(self, object)
 
     else:
@@ -113,7 +113,7 @@ def remove_all_labels(self):
 
 
 # adds the labels that are consistent throughout all event types
-def add_base_lables(self, object):
+def add_base_labels(self, object):
     self.lblNoofGuests.grid()
     self.lblDisNoofGuests.grid()
     self.lblAddress.grid()
@@ -132,7 +132,7 @@ def add_base_lables(self, object):
 
 # adds the labels that are used for weddings
 def add_wedding_labels(self, object):
-    add_base_lables(self, object)
+    add_base_labels(self, object)
     self.lblBandName.grid()
     self.lblDisBandName.grid()
     self.lblBandPrice.grid()
@@ -148,7 +148,7 @@ def add_wedding_labels(self, object):
 
 # adds the labels that are used for parties
 def add_party_labels(self, object):
-    add_base_lables(self, object)
+    add_base_labels(self, object)
     self.lblBandName.grid()
     self.lblDisBandName.grid()
     self.lblBandPrice.grid()
@@ -160,8 +160,8 @@ def add_party_labels(self, object):
 
 
 # adds the labels that are used for conferences
-def add_conference_lables(self, object):
-    add_base_lables(self, object)
+def add_conference_labels(self, object):
+    add_base_labels(self, object)
     self.lblCompanyName.grid()
     self.lblDisCompanyName.grid()
     self.lblNumberofDays.grid()

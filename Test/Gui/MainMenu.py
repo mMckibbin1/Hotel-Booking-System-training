@@ -5,7 +5,7 @@ import Gui.CreatePartyForm
 import Gui.CreateConferenceForm
 import Gui.viewbooking
 
-# # Functions to call various pop-ups
+# Functions to call various pop-ups
 def call_wedding_popup():
     top = Toplevel()
     ui = Gui.CreateWeddingForm.bookwedding(top)
@@ -46,7 +46,6 @@ class mainMenu:
         self.main_menu.resizable(0, 0)
         self.main_menu.title("Hotel Booking System - Main Menu")
         self.main_menu.config(background="#70ABAF")
-
 
         # button hover colour - wedding
         def on_enterWedding(e):
