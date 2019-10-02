@@ -102,18 +102,18 @@ def max_size_31(input_string, master):
     return True
 
 
-def contact_number_val(input_string, entry_filed, parent):
+def contact_number_val(input_string, entry_field, parent):
     if not digits_only(input_string):
         messagebox.showinfo("Error", "Contact Number can only contain digits", parent=parent)
-        entry_filed.focus()
+        entry_field.focus()
         return False
     elif len(input_string) > 25:
         messagebox.showinfo("Error", "Contact Number too long max input of 25", parent=parent)
-        entry_filed.focus()
+        entry_field.focus()
         return False
     elif len(input_string) < 4:
         messagebox.showinfo("Error", "Contact Number too short minimum input of 4", parent=parent)
-        entry_filed.focus()
+        entry_field.focus()
         return False
     else:
         return True

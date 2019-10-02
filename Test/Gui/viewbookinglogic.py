@@ -5,10 +5,9 @@ from Events import Wedding, Party, Conference
 from tkinter import *
 from Gui import DialogBoxes
 from tkinter import messagebox
-from addtionalWidgets import CalendarWidget
+from addtionalWidgets import CalendarWidget, CurrencyConvert
 from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
 import Events.Invoice
-
 # global to store data from database so all functions can use it and reduce calls on the database
 data_list = []
 
@@ -124,7 +123,7 @@ def add_base_lables(self, object):
     self.lblDisNoofGuests.config(text=object.noGuests)
     self.lblDisAddress.config(text=object.address)
     self.lblDisDateofBooking.config(text=object.dateOfBooking)
-    self.lblDisCostPerHead.config(text=object.costPerHead)
+    self.lblDisCostPerHead.config(text=CurrencyConvert.pound_string(object.costPerHead))
 
 
 # adds the labels that are used for weddings
@@ -139,7 +138,7 @@ def add_wedding_labels(self, object):
 
     # additional info labels
     self.lblDisBandName.config(text=object.bandName)
-    self.lblDisBandPrice.config(text=object.bandPrice)
+    self.lblDisBandPrice.config(text=CurrencyConvert.pound_string(object.bandPrice))
     self.lblDisNoOfBedsReserved.config(text=object.noBedroomsReserved)
 
 
@@ -153,7 +152,7 @@ def add_party_labels(self, object):
 
     # additional info labels
     self.lblDisBandName.config(text=object.bandName)
-    self.lblDisBandPrice.config(text=object.bandPrice)
+    self.lblDisBandPrice.config(text=CurrencyConvert.pound_string(object.bandPrice))
 
 
 # adds the labels that are used for conferences
@@ -175,7 +174,7 @@ def add_conference_lables(self, object):
 # functions to allow the labels to change in the price breakdown labelframe
 def update_price_breakdown(self, object):
     # Label for guest price
-    self.lblDisGuestPrice.config(text=object.guestsCost())
+    self.lblDisGuestPrice.config(text=CurrencyConvert.pound_string(object.guestsCost()))
 
     self.lblGuestPrice.grid()
     self.lblDisGuestPrice.grid()
@@ -199,15 +198,15 @@ def update_price_breakdown(self, object):
     # changes the labels if the event type is a conference
     if type(object) == Conference.Conference:
         self.lblBandCost.config(text="Cost Per Day:")
-        self.lblDisBandCost.config(text=str(object.guestsCost()) + '   ( * ' + str(object.noOfDays) + " days)")
+        self.lblDisBandCost.config(text=CurrencyConvert.pound_string(object.guestsCost()) + '   ( * ' + str(object.noOfDays) + " days)")
     else:
         self.lblBandCost.config(text="Band Price")
-        self.lblDisBandCost.config(text=object.bandPrice)
+        self.lblDisBandCost.config(text=CurrencyConvert.pound_string(object.bandPrice))
 
     # labels for totals
-    self.lblDisSubTotal.config(text=object.grosstotal())
-    self.lblDisVat.config(text=object.VAT())
-    self.lblDisTotal.config(text=object.netTotal())
+    self.lblDisSubTotal.config(text=CurrencyConvert.pound_string(object.grosstotal()))
+    self.lblDisVat.config(text=CurrencyConvert.pound_string(object.VAT()))
+    self.lblDisTotal.config(text=CurrencyConvert.pound_string(object.netTotal()))
 
 
 # function to display calendar widget for date of event
@@ -249,8 +248,10 @@ def cal_income(master):
     master.lblTotalIncome.config(text=total_income)
     # adds up the values in the total cost column
     for child in master.treeview.get_children():
-        total_income += float(master.treeview.item(child, "values")[5])
-        master.lblTotalIncome.config(text=total_income)
+        #costs = master.treeview.item(child, "values")[5]
+        total_income += float(CurrencyConvert.remove_pound_string(master.treeview.item(child, "values")[5]))
+        CurrencyConvert.pound_string(total_income)
+        master.lblTotalIncome.config(text=CurrencyConvert.pound_string(total_income))
 
 
 
@@ -283,15 +284,15 @@ def search(self):
         if type(object) == Wedding.Wedding:
             insert_data(self, object.ID, "Wedding", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                        object.netTotal())
+                        CurrencyConvert.pound_string(object.netTotal()))
         elif type(object) == Party.Party:
             insert_data(self, object.ID, "Party", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                        object.netTotal())
+                        CurrencyConvert.pound_string(object.netTotal()))
         elif type(object) == Conference.Conference:
             insert_data(self, object.ID, "Conference", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                        object.netTotal())
+                        CurrencyConvert.pound_string(object.netTotal()))
 
     cal_income(self)
     select_first_row_(self)
@@ -307,15 +308,15 @@ def load_data(master):
             if type(object) == Wedding.Wedding:
                 insert_data(master, object.ID, "Wedding", object.nameOfContact,
                             object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                            object.netTotal())
+                            CurrencyConvert.pound_string(object.netTotal()))
             elif type(object) == Party.Party:
                 insert_data(master, object.ID, "Party", object.nameOfContact,
                             object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                            object.netTotal())
+                            CurrencyConvert.pound_string(object.netTotal()))
             elif type(object) == Conference.Conference:
                 insert_data(master, object.ID, "Conference", object.nameOfContact,
                             object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                            object.netTotal())
+                            CurrencyConvert.pound_string(object.netTotal()))
 
     global data_list
     data_list = data_base_list
@@ -422,28 +423,33 @@ def invoice(self):
         # changes the labels depending on the ID and event type
         if type(booking) == Wedding.Wedding:
             return Events.Invoice.Invoice(address=booking.address, invoice_type="Wedding",
-                                          cost_per_head=booking.costPerHead,
+                                          cost_per_head=CurrencyConvert.pound_string(booking.costPerHead),
                                           number_of_guests=booking.noGuests,
-                                          band_name=booking.bandName, band_cost=booking.bandPrice,
-                                          number_of_days="N/A", guests_cost=booking.guestsCost(),
-                                          cost_per_day="N/A", sub_total=booking.grosstotal(),
-                                          VAT=booking.VAT(), total=booking.netTotal(), file_name=load_file())
+                                          band_name=booking.bandName, band_cost=CurrencyConvert.pound_string(booking.bandPrice),
+                                          number_of_days="N/A", guests_cost=CurrencyConvert.pound_string(booking.guestsCost()),
+                                          cost_per_day="N/A", sub_total=CurrencyConvert.pound_string(booking.grosstotal()),
+                                          VAT=CurrencyConvert.pound_string(booking.VAT()),
+                                          total=CurrencyConvert.pound_string(booking.netTotal()), file_name=load_file())
         elif type(booking) == Party.Party:
             return Events.Invoice.Invoice(address=booking.address, invoice_type="Party",
-                                          cost_per_head=booking.costPerHead,
+                                          cost_per_head=CurrencyConvert.pound_string(booking.costPerHead),
                                           number_of_guests=booking.noGuests,
-                                          band_name=booking.bandName, band_cost=booking.bandPrice,
-                                          number_of_days="N/A", guests_cost=booking.guestsCost(),
-                                          cost_per_day="N/A", sub_total=booking.grosstotal(),
-                                          VAT=booking.VAT(), total=booking.netTotal(), file_name=load_file())
+                                          band_name=booking.bandName, band_cost=CurrencyConvert.pound_string(booking.bandPrice),
+                                          number_of_days="N/A", guests_cost=CurrencyConvert.pound_string(booking.guestsCost()),
+                                          cost_per_day="N/A", sub_total=CurrencyConvert.pound_string(booking.grosstotal()),
+                                          VAT=CurrencyConvert.pound_string(booking.VAT()),
+                                          total=CurrencyConvert.pound_string(booking.netTotal()),
+                                          file_name=load_file())
         elif type(booking) == Conference.Conference:
             return Events.Invoice.Invoice(address=booking.address, invoice_type="Conference",
-                                          cost_per_head=booking.costPerHead,
+                                          cost_per_head=CurrencyConvert.pound_string(booking.costPerHead),
                                           number_of_guests=booking.noGuests,
                                           band_name="N/A", band_cost="N/A",
-                                          number_of_days=booking.noOfDays, guests_cost=booking.guestsCost(),
-                                          cost_per_day=booking.guestsCost(), sub_total=booking.grosstotal(),
-                                          VAT=booking.VAT(), total=booking.netTotal(), file_name=load_file())
+                                          number_of_days=booking.noOfDays, guests_cost=CurrencyConvert.pound_string(booking.guestsCost()),
+                                          cost_per_day=CurrencyConvert.pound_string(booking.guestsCost()),
+                                          sub_total=CurrencyConvert.pound_string(booking.grosstotal()),
+                                          VAT=CurrencyConvert.pound_string(booking.VAT()),
+                                          total=CurrencyConvert.pound_string(booking.netTotal()), file_name=load_file())
     except:
         return DialogBoxes.select_row(self)
 
