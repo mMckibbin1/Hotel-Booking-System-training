@@ -1,7 +1,6 @@
 import datetime
 from tkinter import *
 from tkinter import messagebox
-
 from Gui import DialogBoxes
 from addtionalWidgets import CalendarWidget
 import Validation
@@ -102,7 +101,6 @@ class BaseEvent:
         self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(50, 50), padx=(75, 25), sticky="ew")
         self.btnCloseForm.grid(row=10, column=3, columnspan=2, pady=(50, 50), padx=(75, 25), sticky="ew")
 
-
     # function to display calendar widget for date of event
     def popup(self, event, master):
         child = Toplevel()
@@ -124,9 +122,9 @@ class BaseEvent:
         if Day == "date error":
             return
 
-        FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
+        FormatDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
 
-        if FormtDate < datetime.datetime.now().date():
+        if FormatDate < datetime.datetime.now().date():
             return messagebox.showinfo("Invalid Date", "Can not pick a past date.\nPlease pick a new date.", parent=master)
         else:
-            self.display_date.set(FormtDate)
+            self.display_date.set(FormatDate)

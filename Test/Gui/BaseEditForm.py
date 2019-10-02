@@ -1,12 +1,11 @@
 import datetime
 from tkinter import *
 from tkinter import messagebox
-
 import Validation
 from Events import Wedding, Party, Conference
 from addtionalWidgets import CalendarWidget
 from Database import dbHelper
-from Gui import viewbooking, DialogBoxes
+from Gui import DialogBoxes
 
 
 class BaseEditEvent:
@@ -125,7 +124,6 @@ class BaseEditEvent:
                                                       date=self.display_date.get(), number_of_days=object.noOfDays):
                 self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
-
     # function to display calander widget for date of event
     def popup(self, event, master):
         child = Toplevel()
@@ -147,13 +145,13 @@ class BaseEditEvent:
         if Day == "date error":
             return
 
-        FormtDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
+        FormatDate = datetime.datetime.strptime(Date, "%Y-%m-%d").date()
 
-        if FormtDate < datetime.datetime.now().date():
+        if FormatDate < datetime.datetime.now().date():
             return messagebox.showinfo("Invalid Date", "Can not pick a past date.\nPlease pick a new date.",
                                        parent=master)
         else:
-            self.display_date.set(FormtDate)
+            self.display_date.set(FormatDate)
 
     def populateform(self, object):
         self.EntnumberOfguest.insert(0, object.noGuests)

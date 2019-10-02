@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import messagebox
-
 import Events.Conference
 import Gui.BaseEditForm
 import Validation
@@ -38,7 +37,6 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         self.lblProjectorReq = Label(master, text="Projector Required", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblProjectorReq.grid(row=9, columnspan=2,pady=(25,0),padx=(10,10))
 
-
         # Entry boxes, dropdowns and datepicker for conference form
         self.EntCompanyName = Entry(master, font=("arial", 10), width=50)
         self.CompanyNameVcmd = (self.EntCompanyName.register(lambda P: Validation.max_character_length_150(P, master)))
@@ -49,7 +47,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         self.DaysVcmd = (self.EntNoOfDays.register(lambda P: Validation.max_size_31(P,master)))
         self.EntNoOfDays.config(validate='key', validatecommand=(self.DaysVcmd, '%P'))
 
-        #checkbox now works :)
+        # checkbox
         self.CheckVar1 = IntVar()
         self.chxProjectorRequired = Checkbutton(master, text='', variable=self.CheckVar1, onvalue=True, offvalue=False, bg="#70ABAF", command=ch_box_sel)
 
@@ -57,7 +55,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         self.EntCompanyName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
         self.EntNoOfDays.grid(row=8, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
-        #checkbox.....
+        # checkbox
         self.chxProjectorRequired.grid(row=9, column=2, pady=(25, 0), padx=(0, 25))
         print(booking.dateOfBooking)
         # Buttons for Add and Cancel on the conference form
@@ -68,8 +66,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         self.display_date.trace('w', lambda name, index, mode: self.conference_room_check())
         self.number_of_days.trace('w', lambda name, index, mode: self.conference_room_check())
 
-
-
+    # functions
     def conference_room_check(self):
         if not self.number_of_days.get() or not self.display_date.get():
             self.om_room_val.set("Pick a date and duration first")
@@ -84,8 +81,6 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         for value in dbHelper.rooms_in_use_update("conferenceTable", self.display_date.get(),id=self.booking.ID, number_of_days=int(self.number_of_days.get())):
             self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
-
-
     def populateform_conference(self, booking):
         self.EntCompanyName.insert(0, booking.companyName)
         self.EntNoOfDays.insert(0, booking.noOfDays)
@@ -96,7 +91,6 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
             self.chxProjectorRequired.select()
         elif value == "No":
             self.chxProjectorRequired.deselect()
-
 
 # validation
     def validation(self, booking):
@@ -127,7 +121,6 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
             DialogBoxes.updated(self, master=self.master, view_booking=self.viewbookingself)
             self.master.destroy()
-
 
     def savelist(self):
         self.validationTestList = []

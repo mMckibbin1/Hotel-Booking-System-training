@@ -27,19 +27,12 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
                                      bg="#70ABAF")
         self.lblNoofRoomsRes.grid(row=9, columnspan=2, pady=(25, 0), padx=(10, 10))
 
-        # Entry boxes, dropdowns and datepicker for wedding form
-
-
         # Entry boxes and dropdowns
-
 
         self.om_band_name = StringVar()
         self.om_band_name.set("Please Select a date first")
         self.OpmBandName = OptionMenu(master, self.om_band_name,() )
         self.OpmBandName.config(state="disabled")
-
-
-
 
         self.EntBedroomReserved = Entry(master, font=("arial", 10), width=50)
         self.BedsVcmd = (self.EntBedroomReserved.register(lambda P:Validation.max_size_50(P,master)))
@@ -48,7 +41,7 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
         self.OpmBandName.grid(row=8, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
         self.EntBedroomReserved.grid(row=9, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
-        # Buttons for Add and Cancel on the wedding for
+        # Buttons for Add and Cancel on the wedding form
         # Button config to override the parent button config
         self.btnAddBooking.config(command=lambda: [self.validation()])
 
@@ -63,7 +56,6 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
         self.om_band_name.set("Pick a Band")
         for value in dbHelper.bands_in_use(self.display_date.get()):
             self.band_name_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_band_name.set(v))
-
 
     def wedding_room_check(self):
         self.OpmEventRoomNumber.config(state="normal")

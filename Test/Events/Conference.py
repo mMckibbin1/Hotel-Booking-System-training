@@ -1,9 +1,12 @@
 import datetime
 import Events.BaseEvent
 from Database import dbHelper
+
 """
 conference object used for conference bookings
 """
+
+
 class Conference(Events.BaseEvent.BaseEventobj):
 
     def __init__(self, noGuests, nameOfContact, address, contactNo, eventRoomNo, dateOfEvent, dateOfBooking,
@@ -27,6 +30,7 @@ class Conference(Events.BaseEvent.BaseEventobj):
     def netTotal(self):
         VAT = self.grosstotal() / 5
         return self.grosstotal() + VAT
+
 
 # method to take data from form and add additional required data in order to create object to save to database
 def createConference(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, CompanyName, NoOfDays, projectorRequired):

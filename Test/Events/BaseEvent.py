@@ -2,6 +2,8 @@
 Event object used as base for all other event objects in the program
 It contains the attributes shared by all event objects
 """
+
+
 class BaseEventobj:
     def __init__(self, noGuests: object, nameOfContact: object, address: object, contactNo: object, eventRoomNo: object, dateOfEvent: object, dateOfBooking: object,ID,
                  costPerHead: object) -> object:
@@ -14,6 +16,7 @@ class BaseEventobj:
         self.dateOfBooking = dateOfBooking
         self.costPerHead = costPerHead
         self.ID = ID
+
 
 # method used to set band price depending on what band is selected by user
 def CalbandPrice(bandName):
