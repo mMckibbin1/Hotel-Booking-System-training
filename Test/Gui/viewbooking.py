@@ -227,7 +227,7 @@ class FrmViewBooking(Tkinter.Frame):
         # labels for Address in additional details label frame
         self.lblAddress = Label(self.labelframe, text="Address: ", background="#70ABAF")
         self.lblAddress.grid(row=2, column=1)
-        self.lblDisAddress = Label(self.labelframe, text='SERC', background="#70ABAF")
+        self.lblDisAddress = Label(self.labelframe, text='SERC', background="#70ABAF", width=22)
         self.lblDisAddress.grid(row=2, column=2)
 
         # labels for Date of Booking in additional details label frame

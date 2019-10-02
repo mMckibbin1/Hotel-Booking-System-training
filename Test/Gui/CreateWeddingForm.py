@@ -65,7 +65,7 @@ class BookWedding(Gui.BaseCreateForm.BaseEvent):
         self.om_room_val.set("Pick a room")
 
         rooms_free = dbHelper.rooms_in_use("weddingTable", self.display_date.get())
-        if len(rooms_free <1):
+        if len(rooms_free) < 1:
             self.om_room_val.set("No Rooms Free")
             return
         for value in rooms_free:
