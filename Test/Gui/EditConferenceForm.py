@@ -41,6 +41,8 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
         # Entry boxes, dropdowns and datepicker for conference form
         self.EntCompanyName = Entry(master, font=("arial", 10), width=50)
+        self.CompanyNameVcmd = (self.EntCompanyName.register(lambda P: Validation.max_character_length_150(P, master)))
+        self.EntCompanyName.config(validate='key', validatecommand=(self.CompanyNameVcmd, '%P'))
 
         self.number_of_days = StringVar()
         self.EntNoOfDays = Entry(master, font=("arial", 10), width=50,textvariable=self.number_of_days)

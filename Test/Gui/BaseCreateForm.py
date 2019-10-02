@@ -70,7 +70,7 @@ class BaseEvent:
         self.EntAddress.config(validate='key', validatecommand=(self.AddVcmd,'%P'))
 
         self.EntContactNumber = Entry(master, font=("arial", 10), width=50)
-        self.ContactVcmd = (self.EntContactNumber.register(lambda P: Validation.max_character_length_25(P, master)))  # Validation
+        self.ContactVcmd = (self.EntContactNumber.register(lambda P: Validation.max_character_length_25_digits_only(P, master)))  # Validation
         self.EntContactNumber.config(validate='all', validatecommand=(self.ContactVcmd, '%P'))
 
         self.display_date = StringVar()
