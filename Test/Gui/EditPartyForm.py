@@ -8,14 +8,14 @@ from Gui import DialogBoxes
 
 
 class EditParty(Gui.BaseEditForm.BaseEditEvent):
-    def __init__(self, master, booking, viewbookingself):
+    def __init__(self, master, booking, view_booking_self):
         super().__init__(master, booking)
         # Creation of wedding form set title, size ect..
         master.title("Hotel Booking System - Update Selected Party")
         master.resizable(0, 0)
         master.config(background="#70ABAF")
 
-        self.viewbookingself = viewbookingself
+        self.view_booking_self = view_booking_self
         self.booking = booking
 
         # Labels for Party booking form
@@ -24,12 +24,12 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
         self.lblBandName = Label(master, text="Band Name", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblBandName.grid(row=7, columnspan=2,pady=(25, 0), padx=(10, 10))
 
-        # Entry boxes, dropdowns and datepicker for party form
+        # Entry boxes, drop downs and date picker for party form
         self.om_band_name = StringVar()
         self.om_band_name.set("Please Select a date first")
         self.OpmBandName = OptionMenu(master, self.om_band_name, ())
 
-        # Entry boxes, dropdowns and datepicker for party form being placed using grid layout
+        # Entry boxes, drop downs and date picker for party form being placed using grid layout
         self.OpmBandName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25), sticky="ew")
 
         self.display_date.trace('w', lambda name, index, mode: [self.party_room_check(), self.band_name_check()])
@@ -40,7 +40,7 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
         self.band_name_option_menu_menu = self.OpmBandName.children["menu"]
         self.band_name_option_menu_menu.delete(0, "end")
         self.om_band_name.set(booking.bandName)
-        for value in dbHelper.bands_in_use_update("Party",self.display_date.get(), self.booking.ID):
+        for value in dbHelper.bands_in_use_update("Party", self.display_date.get(), self.booking.ID):
             self.band_name_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_band_name.set(v))
 
     def band_name_check(self):
@@ -63,40 +63,36 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
                                                   id=self.booking.ID):
             self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
-    def validation(self,booking):
-        valpassed = True
+    def validation(self, booking):
+        val_passed = True
 
-        if Validation.stringEmpty(self.savelist()):
-            valpassed = False
+        if Validation.string_empty(self.save_list()):
+            val_passed = False
             return messagebox.showinfo("Booking Failed", "All fields are required to be filled in.", parent=self.master)
-        elif dbHelper.date_conflict_update("partyTable", self.display_date.get(), self.om_room_val, booking.ID ):
-            valpassed = False
+        elif dbHelper.date_conflict_update("partyTable", self.display_date.get(), self.om_room_val, booking.ID):
+            val_passed = False
             return messagebox.showinfo('Booking Failed',
-                                       'Room is currently booked. Please select another room, or change the date of booking.', parent=self.master)
-        elif Validation.min_number([self.EntnumberOfguest.get()]):
-            valpassed = False
+                                       'Room is currently booked.\n'
+                                       'Please select another room, or change the date of booking.', parent=self.master)
+        elif Validation.min_number([self.EntNumberOfGuest.get()]):
+            val_passed = False
             return messagebox.showinfo("Booking Failed", "Must have more than one guest.", parent=self.master)
 
-        if valpassed:
-            Events.Party.update_party(self.EntnumberOfguest.get(),
-                                      self.EntnameOfContact.get(),
+        if val_passed:
+            Events.Party.update_party(self.EntNumberOfGuest.get(),
+                                      self.EntNameOfContact.get(),
                                       self.EntAddress.get(),
                                       self.EntContactNumber.get(), self.om_room_val.get(),
                                       self.display_date.get(), booking.dateOfBooking,
                                       self.om_band_name.get(), booking.ID)
 
-            DialogBoxes.updated(self, master=self.master,  view_booking=self.viewbookingself)
+            DialogBoxes.updated(self, master=self.master, view_booking=self.view_booking_self)
             self.master.destroy()
 
-    def savelist(self):
-        self.validationTestList = []
-        self.validationTestList.append(self.EntnumberOfguest.get())
-        self.validationTestList.append(self.EntnameOfContact.get())
-        self.validationTestList.append(self.EntAddress.get())
-        self.validationTestList.append(self.EntContactNumber.get())
-        self.validationTestList.append(self.om_room_val.get())
-        self.validationTestList.append(self.display_date.get())
-        self.validationTestList.append(self.om_band_name.get())
-        return self.validationTestList
+    def save_list(self):
+        validation_test_list = [self.EntNumberOfGuest.get(), self.EntNameOfContact.get(), self.EntAddress.get(),
+                                self.EntContactNumber.get(), self.om_room_val.get(), self.display_date.get(),
+                                self.om_band_name.get()]
+        return validation_test_list
 
 

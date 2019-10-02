@@ -7,12 +7,12 @@ from tkinter import messagebox
 # classes to display and accept response from a dialog box
 class Delete:
     # dialog to confirm that user wants to delete booking from database
-    def __init__(self, vbself, master):
+    def __init__(self, vb_self, master):
 
         # dialog box pops up
         if askyesno('Delete', 'Do you want to delete this booking?', parent=master):
             # deletes booking
-            viewbookinglogic.delete_data(vbself)
+            viewbookinglogic.delete_data(vb_self)
             # informs user that booking is deleted
             showinfo('Deleted', 'Booking Deleted', parent=master)
             viewbookinglogic.refresh_data(master=master)

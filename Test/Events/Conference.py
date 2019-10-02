@@ -52,8 +52,6 @@ def create_conference(no_of_guest, name_of_contact, address, contact_no, event_r
 def update_conference(no_of_guest, name_of_contact, address, contact_no, event_room_number, date_of_event,
                       date_of_booking, company_name, no_of_days, projector_required, ID):
 
-
-
     if projector_required == True:
         projector_required = 1
     else:

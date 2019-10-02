@@ -9,6 +9,7 @@ else:
 
 
 class Calendar:
+    """Calendar widget"""
     def __init__(self, parent, values):
         self.values = values
         self.parent = parent

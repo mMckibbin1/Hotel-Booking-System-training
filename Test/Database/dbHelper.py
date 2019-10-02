@@ -8,6 +8,7 @@ dbconn = sqlite3.connect('Database\events.db')
 
 ##set up sqlite
 def connect():
+    """Creates the database tables if they do not exists in the database"""
     db = dbconn
     cursor = db.cursor()
     ##Create a table if none exists
@@ -22,6 +23,7 @@ def connect():
 
 
 def read_wedding_db():
+    """function to read the wedding table on database and return a list of the wedding objects"""
     db = dbconn
     cursor = db.cursor()
     cursor.execute('SELECT * FROM weddingTable')
@@ -37,6 +39,7 @@ def read_wedding_db():
 
 
 def read_party_db():
+    """function to read the party table on database and return a list of the party objects"""
     db = dbconn
     cursor = db.cursor()
     cursor.execute('SELECT * FROM partyTable')
@@ -51,12 +54,13 @@ def read_party_db():
 
 
 def read_conference_db():
+    """function to read the conference table on database and return a list of the conference objects"""
     db = dbconn
     cursor = db.cursor()
     cursor.execute('SELECT * FROM conferenceTable')
     list = []
     for row in cursor.fetchall():
-
+        # change projector required from 1/0 to yes/no
         if row[10] == 1:
             projectory_required = "Yes"
         else:
@@ -72,7 +76,8 @@ def read_conference_db():
 
 
 def read_all_from_db():
-    list = []
+    """function to call all funcation to read all tables from the databse and return a combied list of each
+    funcation returned list"""
     listdbWedding = []
     listdbParty = []
     listdbConference = []
@@ -87,6 +92,7 @@ def read_all_from_db():
 ##### Insert #####
 # Wedding
 def insertwedding(wedding):
+    """function used to insert a new wedding object into wedding table on the database """
     conn = dbconn
     with conn:
         cursor = conn.cursor()

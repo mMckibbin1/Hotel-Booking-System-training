@@ -7,7 +7,7 @@ from Database import dbHelper
 from tkinter import messagebox
 
 
-class bookConference(Gui.BaseCreateForm.BaseEvent):
+class BookConference(Gui.BaseCreateForm.BaseEvent):
     def __init__(self, master):
 
         super().__init__(master)
@@ -24,24 +24,24 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         # Labels for Conference booking form
         self.lblSubheading.config(text="Please Fill in the Details for the Conference")
 
-        self.lblCompanyname = Label(master, text="Company Name",font=("arial", 10, "bold"), bg="#70ABAF")
-        self.lblCompanyname.grid(row=7,columnspan=2,pady=(25, 0),padx=(10, 10))
+        self.lblCompanyName = Label(master, text="Company Name", font=("arial", 10, "bold"), bg="#70ABAF")
+        self.lblCompanyName.grid(row=7, columnspan=2, pady=(25, 0), padx=(10, 10))
 
-        self.lblNoofDays = Label(master, text="Number of Days",font=("arial", 10, "bold"), bg="#70ABAF")
-        self.lblNoofDays.grid(row=8,columnspan=2, pady=(25, 0),padx=(10, 10))
+        self.lblNoOfDays = Label(master, text="Number of Days", font=("arial", 10, "bold"), bg="#70ABAF")
+        self.lblNoOfDays.grid(row=8, columnspan=2, pady=(25, 0), padx=(10, 10))
 
         self.lblProjectorReq = Label(master, text="Projector Required", font=("arial", 10, "bold"), bg="#70ABAF")
-        self.lblProjectorReq.grid(row=9, columnspan=2,pady=(25,0),padx=(10,10))
+        self.lblProjectorReq.grid(row=9, columnspan=2, pady=(25, 0), padx=(10, 10))
 
-        # Entry boxes, dropdowns and datepicker for conference form
+        # Entry boxes, drop downs and date picker for conference form
         self.EntCompanyName = Entry(master, font=("arial", 10), width=50)
-        self.CompanyNameVcmd = (self.EntCompanyName.register(lambda P: Validation.max_character_length_150(P, master)))
-        self.EntCompanyName.config(validate='key', validatecommand=(self.CompanyNameVcmd, '%P'))
+        self.CompanyName_VCMD = (self.EntCompanyName.register(lambda p: Validation.max_character_length_150(p, master)))
+        self.EntCompanyName.config(validate='key', validatecommand=(self.CompanyName_VCMD, '%P'))
 
         self.number_of_days = StringVar()
         self.EntNoOfDays = Entry(master, font=("arial", 10), width=50, textvariable=self.number_of_days)
-        self.DaysVcmd = (self.EntNoOfDays.register(lambda P: Validation.max_size_31(P,master)))
-        self.EntNoOfDays.config(validate='key', validatecommand=(self.DaysVcmd, '%P'))
+        self.Days_VCMD = (self.EntNoOfDays.register(lambda p: Validation.max_size_31(p, master)))
+        self.EntNoOfDays.config(validate='key', validatecommand=(self.Days_VCMD, '%P'))
 
         # checkbox
         self.CheckVar1 = IntVar()
@@ -72,33 +72,37 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
 
         self.OpmEventRoomNumber.config(state="normal")
 
-        self.room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
-        self.room_option_menu_menu.delete(0, "end")
+        room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
+        room_option_menu_menu.delete(0, "end")
         self.om_room_val.set("Pick a room")
         for value in dbHelper.rooms_in_use("conferenceTable", self.display_date.get(), int(self.number_of_days.get())):
-            self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
+            room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
     # validation
     def validation(self):
-        valpassed = True
+        val_passed = True
 
-        if Validation.stringEmpty(self.savelist()):
-            valpassed = False
+        if Validation.string_empty(self.save_list()):
+            val_passed = False
             return messagebox.showinfo("Booking Failed",
                                        "All fields are required to be filled in.", parent=self.master)
 
-        elif dbHelper.con_date_conflict("conferenceTable", self.display_date.get(), self.EntNoOfDays.get(), self.om_room_val.get()):
-            valpassed = False
+        elif dbHelper.con_date_conflict("conferenceTable", self.display_date.get(), self.EntNoOfDays.get(),
+                                        self.om_room_val.get()):
+            val_passed = False
             return messagebox.showinfo('Booking Failed',
-                                       'Room is currently booked. Please select another room, or change the date of booking.', parent=self.master)
+                                       'Room is currently booked.\n'
+                                       'Please select another room, or change the date of booking.', parent=self.master)
         elif Validation.min_number([self.EntNumberOfGuest.get(), self.EntNoOfDays.get()]):
-            valpassed = False
-            return messagebox.showinfo("Booking Failed", "Must have more than one guest.\nThe duration of the event must be at least one day.", parent=self.master)
+            val_passed = False
+            return messagebox.showinfo("Booking Failed", "Must have more than one guest.\n"
+                                                         "The duration of the event must be at least one day.",
+                                       parent=self.master)
 
-        if valpassed:
+        if val_passed:
             Events.Conference.create_conference(
                 self.EntNumberOfGuest.get(),
-                self.EntnameOfContact.get(),
+                self.EntNameOfContact.get(),
                 self.EntAddress.get(),
                 self.EntContactNumber.get(),
                 self.om_room_val.get(),
@@ -110,14 +114,8 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
             DialogBoxes.saved(self.master)
             self.master.destroy()
 
-    def savelist(self):
-        self.validationTestList = []
-        self.validationTestList.append(self.EntNumberOfGuest.get())
-        self.validationTestList.append(self.EntnameOfContact.get())
-        self.validationTestList.append(self.EntAddress.get())
-        self.validationTestList.append(self.EntContactNumber.get())
-        self.validationTestList.append(self.om_room_val.get())
-        self.validationTestList.append(self.display_date.get())
-        self.validationTestList.append(self.EntCompanyName.get())
-        self.validationTestList.append(self.EntNoOfDays.get())
-        return self.validationTestList
+    def save_list(self):
+        validation_test_list = [self.EntNumberOfGuest.get(), self.EntNameOfContact.get(), self.EntAddress.get(),
+                                self.EntContactNumber.get(), self.om_room_val.get(), self.display_date.get(),
+                                self.EntCompanyName.get(), self.EntNoOfDays.get()]
+        return validation_test_list

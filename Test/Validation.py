@@ -2,27 +2,27 @@ from tkinter import messagebox
 
 
 # tests for empty entry boxes
-def stringEmpty(test):
-    validationfailed = False
+def string_empty(test):
+    validation_failed = False
     for strings in test:
         if strings == "" or strings == "Pick a room" or str.upper(strings) == "PICK A BAND" or str.isspace(strings):
-            validationfailed = True
+            validation_failed = True
 
-    return validationfailed
+    return validation_failed
 
 
 # only allows numbers to be entered into an entry box
-def digits_only(P):
-    if str.isdigit(P) or P == "":
+def digits_only(p):
+    if str.isdigit(p) or p == "":
         return True
     else:
         return False
 
 
 # only allows characters to be entered into an entry box
-def charOnly(C):
+def char_only(c):
     val_passed = True
-    for item in C:
+    for item in c:
         if str.isalpha(item) or str.isspace(item) or item == "":
             val_passed = True
         else:
@@ -45,7 +45,7 @@ def max_character_length_50(input_string, master):
     if len(input_string) > 50:
         messagebox.showinfo("Character limit Reached", "You have hit the maximum number of characters", parent=master)
         return False
-    if not charOnly(input_string):
+    if not char_only(input_string):
         return False
     return True
 
@@ -58,7 +58,7 @@ def max_character_length_150(input_string, master):
 
 
 def max_character_length_25_digits_only(input_string, master):
-    if input_string =="":
+    if input_string == "":
         return True
     if not digits_only(input_string):
         return False
@@ -102,18 +102,18 @@ def max_size_31(input_string, master):
     return True
 
 
-def contact_number_val(input_string, entry_filed, parent):
+def contact_number_val(input_string, entry_field, parent):
     if not digits_only(input_string):
         messagebox.showinfo("Error", "Contact Number can only contain digits", parent=parent)
-        entry_filed.focus()
+        entry_field.focus()
         return False
     elif len(input_string) > 25:
         messagebox.showinfo("Error", "Contact Number too long max input of 25", parent=parent)
-        entry_filed.focus()
+        entry_field.focus()
         return False
     elif len(input_string) < 4:
         messagebox.showinfo("Error", "Contact Number too short minimum input of 4", parent=parent)
-        entry_filed.focus()
+        entry_field.focus()
         return False
     else:
         return True
