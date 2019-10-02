@@ -21,7 +21,6 @@ def call_update_wedding_popup(object, self, parent):
     top.wait_window()
     top.destroy()
     parent.grab_set()
-    parent.force_focus()
 
 
 #  Opens update form for Party
@@ -32,7 +31,6 @@ def call_update_party_popup(object, self, parent):
     top.wait_window()
     top.destroy()
     parent.grab_set()
-    parent.force_focus()
 
 
 #  Opens update form for Conference
@@ -43,7 +41,6 @@ def call_update_conference_popup(object, self, parent):
     top.wait_window()
     top.destroy()
     parent.grab_set()
-    parent.force_focus()
 
 
 # function to change the labels shown, depending on the event type selected in the treeview
@@ -374,7 +371,9 @@ def get_selected_db_entry(self):
                         if object.ID == RowID:
                             return object
     except:
-        DialogBoxes.select_row(self.master2)
+        print("")
+        raise
+        #DialogBoxes.select_row(self.master2)
 
 
 # selects item from treeview
@@ -395,6 +394,7 @@ def select_item(a, self):
 
 #  opens update form for selected row in treeview on form
 def update_selected(self, parent):
+    print("fdskjdskjhfdskjhfdsiuh")
     try:
         booking = get_selected_db_entry(self)
 
@@ -411,38 +411,41 @@ def update_selected(self, parent):
 
 # creates an invoice for selected row in form
 def invoice(self):
-    booking = get_selected_db_entry(self)
+    try:
+        booking = get_selected_db_entry(self)
 
-    def load_file():
-        file_name = asksaveasfile(defaultextension=".docx", filetypes=([("document file", "*.docx")]), parent=self)
-        if file_name:
-            return file_name.name
+        def load_file():
+            file_name = asksaveasfile(defaultextension=".docx", filetypes=([("document file", "*.docx")]), parent=self)
+            if file_name:
+                return file_name.name
 
-    # changes the labels depending on the ID and event type
-    if type(booking) == Wedding.Wedding:
-        return Events.Invoice.Invoice(address=booking.address, invoice_type="Wedding",
-                                      cost_per_head=booking.costPerHead,
-                                      number_of_guests=booking.noGuests,
-                                      band_name=booking.bandName, band_cost=booking.bandPrice,
-                                      number_of_days="N/A", guests_cost=booking.guestsCost(),
-                                      cost_per_day="N/A", sub_total=booking.grosstotal(),
-                                      VAT=booking.VAT(), total=booking.netTotal(), file_name=load_file())
-    elif type(booking) == Party.Party:
-        return Events.Invoice.Invoice(address=booking.address, invoice_type="Party",
-                                      cost_per_head=booking.costPerHead,
-                                      number_of_guests=booking.noGuests,
-                                      band_name=booking.bandName, band_cost=booking.bandPrice,
-                                      number_of_days="N/A", guests_cost=booking.guestsCost(),
-                                      cost_per_day="N/A", sub_total=booking.grosstotal(),
-                                      VAT=booking.VAT(), total=booking.netTotal(), file_name=load_file())
-    elif type(booking) == Conference.Conference:
-        return Events.Invoice.Invoice(address=booking.address, invoice_type="Conference",
-                                      cost_per_head=booking.costPerHead,
-                                      number_of_guests=booking.noGuests,
-                                      band_name="N/A", band_cost="N/A",
-                                      number_of_days=booking.noOfDays, guests_cost=booking.guestsCost(),
-                                      cost_per_day=booking.guestsCost(), sub_total=booking.grosstotal(),
-                                      VAT=booking.VAT(), total=booking.netTotal(), file_name=load_file())
+        # changes the labels depending on the ID and event type
+        if type(booking) == Wedding.Wedding:
+            return Events.Invoice.Invoice(address=booking.address, invoice_type="Wedding",
+                                          cost_per_head=booking.costPerHead,
+                                          number_of_guests=booking.noGuests,
+                                          band_name=booking.bandName, band_cost=booking.bandPrice,
+                                          number_of_days="N/A", guests_cost=booking.guestsCost(),
+                                          cost_per_day="N/A", sub_total=booking.grosstotal(),
+                                          VAT=booking.VAT(), total=booking.netTotal(), file_name=load_file())
+        elif type(booking) == Party.Party:
+            return Events.Invoice.Invoice(address=booking.address, invoice_type="Party",
+                                          cost_per_head=booking.costPerHead,
+                                          number_of_guests=booking.noGuests,
+                                          band_name=booking.bandName, band_cost=booking.bandPrice,
+                                          number_of_days="N/A", guests_cost=booking.guestsCost(),
+                                          cost_per_day="N/A", sub_total=booking.grosstotal(),
+                                          VAT=booking.VAT(), total=booking.netTotal(), file_name=load_file())
+        elif type(booking) == Conference.Conference:
+            return Events.Invoice.Invoice(address=booking.address, invoice_type="Conference",
+                                          cost_per_head=booking.costPerHead,
+                                          number_of_guests=booking.noGuests,
+                                          band_name="N/A", band_cost="N/A",
+                                          number_of_days=booking.noOfDays, guests_cost=booking.guestsCost(),
+                                          cost_per_day=booking.guestsCost(), sub_total=booking.grosstotal(),
+                                          VAT=booking.VAT(), total=booking.netTotal(), file_name=load_file())
+    except:
+        return DialogBoxes.select_row(self)
 
 
 # selects the first row on the treeview when form loads
