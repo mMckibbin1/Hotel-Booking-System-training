@@ -63,8 +63,13 @@ class BookWedding(Gui.BaseCreateForm.BaseEvent):
         room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
         room_option_menu_menu.delete(0, "end")
         self.om_room_val.set("Pick a room")
-        for value in dbHelper.rooms_in_use("weddingTable", self.display_date.get()):
-            room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
+
+        rooms_free = dbHelper.rooms_in_use("weddingTable", self.display_date.get())
+        if len(rooms_free <1):
+            self.om_room_val.set("No Rooms Free")
+            return
+        for value in rooms_free:
+            self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
     # validation
     def validation(self):
