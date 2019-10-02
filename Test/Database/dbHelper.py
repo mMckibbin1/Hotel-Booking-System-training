@@ -1,3 +1,5 @@
+"""Module contains functions required to interacted with the Database"""
+
 import datetime
 import sqlite3
 from Events import Conference, Wedding, Party
@@ -76,8 +78,8 @@ def read_conference_db():
 
 
 def read_all_from_db():
-    """function to call all funcation to read all tables from the databse and return a combied list of each
-    funcation returned list"""
+    """function to call all function to read all tables from the database and return a combined list of each
+    function returned list"""
     listdbWedding = []
     listdbParty = []
     listdbConference = []
@@ -107,6 +109,7 @@ def insertwedding(wedding):
 
 # Party
 def insertParty(party):
+    """function used to insert a new party object into party table on the database """
     conn = dbconn
     with conn:
         cursor = conn.cursor()
@@ -119,6 +122,7 @@ def insertParty(party):
 
 # Conference
 def insertConference(conference):
+    """function used to insert a new conference object into conference table on the database """
     conn = dbconn
     with conn:
         cursor = conn.cursor()
@@ -135,6 +139,7 @@ def insertConference(conference):
 
 ##### Delete #####
 def deleteBooking(ID, Type):
+    """function to delete booking that has been selected by the user"""
     db = dbconn
     cursor = db.cursor()
 
@@ -158,8 +163,11 @@ def deleteBooking(ID, Type):
 
 ###### Search #####
 def search(EventsList, StartDate, EndDate):
+    """function used to query database based on the user criteria"""
     db = dbconn
     cursor = db.cursor()
+
+    # sets the where clause of the SQL query depending on user input
     Date = None
     if StartDate != "" and EndDate != "":
         Date = " Where date(EventDate) between date('{}') and date('{}')".format(StartDate, EndDate)
@@ -174,6 +182,7 @@ def search(EventsList, StartDate, EndDate):
     partylist = []
     conferencelist = []
 
+    # Runs query for each of the table selected by the user and returns a list of each event object
     for string in EventsList:
         query = "select * from " + string + Date
         cursor.execute(query)
@@ -201,6 +210,7 @@ def search(EventsList, StartDate, EndDate):
 ##### Update #####
 # Conference
 def updateConference(conference):
+    """function updates conference saved on database"""
     conn = dbconn
     with conn:
         cursor = conn.cursor()
@@ -218,6 +228,7 @@ def updateConference(conference):
 
 # Wedding
 def updateWedding(wedding):
+    """function updates Wedding saved on database"""
     conn = dbconn
     with conn:
         cursor = conn.cursor()
@@ -234,6 +245,7 @@ def updateWedding(wedding):
 
 # Party
 def updateParty(party):
+    """function updates Party saved on database"""
     conn = dbconn
     with conn:
         cursor = conn.cursor()
@@ -249,6 +261,7 @@ def updateParty(party):
 
 ##### Validation #####
 def date_conflict(table_name, date, room):
+    """function checks for date conflict when creating new Wedding or party booking"""
     conn = dbconn
     cursor = conn.cursor()
     query = "SELECT * FROM {} WHERE date(EventDate) = date('{}') AND Room = '{}'".format(table_name, date, room)
@@ -263,6 +276,7 @@ def date_conflict(table_name, date, room):
 
 
 def date_conflict_update(table_name, date, room, id):
+    """function checks for date conflict when updating new Wedding or party booking"""
     conn = dbconn
     cursor = conn.cursor()
     query = "SELECT * FROM {} WHERE date(EventDate) = date('{}') AND Room = '{}' AND Id != {}".format(table_name, date,
@@ -278,6 +292,7 @@ def date_conflict_update(table_name, date, room, id):
 
 
 def con_date_conflict(table_name, start_date, duration, room):
+    """function checks for date conflict when creating new conference booking"""
     duration = int(duration) - 1
     date_1 = datetime.datetime.strptime(start_date, "%Y-%m-%d")
     end_date = date_1 + datetime.timedelta(duration)
@@ -296,6 +311,7 @@ def con_date_conflict(table_name, start_date, duration, room):
 
 
 def con_date_conflict_update(table_name, start_date, duration, room, id):
+    """function checks for date conflict when updating new conference booking"""
     duration = int(duration) - 1
     date_1 = datetime.datetime.strptime(start_date, "%Y-%m-%d")
     end_date = date_1 + datetime.timedelta(duration)
@@ -314,6 +330,7 @@ def con_date_conflict_update(table_name, start_date, duration, room, id):
 
 
 def rooms_in_use(event_type, date, number_of_days=1):
+    """function checks if room is in use on date of the event when creating a new booking """
     date_1 = datetime.datetime.strptime(date, "%Y-%m-%d").date()
     conn = dbconn
     cursor = conn.cursor()

@@ -5,7 +5,7 @@ from tkinter import messagebox
 def stringEmpty(test):
     validationfailed = False
     for strings in test:
-        if strings == "" or strings == "Pick a room" or str.upper(strings) == "PICK A BAND" or str.isspace(strings):
+        if strings == "" or strings == "Pick a room" or strings == "No Rooms Free" or str.upper(strings) == "PICK A BAND" or str.isspace(strings):
             validationfailed = True
 
     return validationfailed

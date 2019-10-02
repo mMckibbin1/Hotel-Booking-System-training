@@ -59,8 +59,13 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
         self.room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
         self.room_option_menu_menu.delete(0, "end")
         self.om_room_val.set("Pick a room")
-        for value in dbHelper.rooms_in_use_update(event_type="partyTable", date=self.display_date.get(),
-                                                  id=self.booking.ID):
+
+        rooms_free = dbHelper.rooms_in_use_update(event_type="partyTable", date=self.display_date.get(),
+                                                  id=self.booking.ID)
+        if len(rooms_free) < 1:
+            self.om_room_val.set("No Rooms Free")
+            return
+        for value in rooms_free:
             self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
     def validation(self,booking):

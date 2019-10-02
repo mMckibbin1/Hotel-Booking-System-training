@@ -78,7 +78,13 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         self.room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
         self.room_option_menu_menu.delete(0, "end")
         self.om_room_val.set("Pick a room")
-        for value in dbHelper.rooms_in_use_update("conferenceTable", self.display_date.get(),id=self.booking.ID, number_of_days=int(self.number_of_days.get())):
+
+        rooms_free = dbHelper.rooms_in_use_update("conferenceTable", self.display_date.get(),id=self.booking.ID,
+                                                  number_of_days=int(self.number_of_days.get()))
+        if len(rooms_free) < 1:
+            self.om_room_val.set("No Rooms Free")
+            return
+        for value in rooms_free:
             self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
     def populateform_conference(self, booking):
