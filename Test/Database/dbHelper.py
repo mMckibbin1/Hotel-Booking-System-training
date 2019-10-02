@@ -341,8 +341,7 @@ def rooms_in_use(event_type, date, number_of_days=1):
     from conferenceTable where ((date('{startDate}') BETWEEN date(EventDate) and date(endDate) or date('{endDate}') BETWEEN 
     date(EventDate) and date(endDate))) 	
     or ((date(EventDate) BETWEEN date('{startDate}') and date('{endDate}') or date(endDate) BETWEEN date('{startDate}') and 
-    date('{endDate}'))) """.format(startDate=date_1,endDate=date_1 + datetime.timedelta(days=number_of_days - 1)))
-
+    date('{endDate}'))) """.format(startDate=date_1, endDate=date_1 + datetime.timedelta(days=number_of_days - 1)))
 
     unavailable_rooms = []
     available_rooms = []
@@ -369,6 +368,7 @@ def rooms_in_use(event_type, date, number_of_days=1):
 
 
 def rooms_in_use_update(event_type, date, id, number_of_days=1):
+    """function checks if room is in use on date of the event when updating a new booking """
     date_1 = datetime.datetime.strptime(date, "%Y-%m-%d").date()
     conn = dbconn
     cursor = conn.cursor()
@@ -380,7 +380,8 @@ def rooms_in_use_update(event_type, date, id, number_of_days=1):
     from conferenceTable where Id != {id} and (date('{startDate}') BETWEEN date(EventDate) and date(endDate) or date('{endDate}') BETWEEN 
     date(EventDate) and date(endDate)
     or date(EventDate) BETWEEN date('{startDate}') and date('{endDate}') or date(endDate) BETWEEN date('{startDate}') and 
-    date('{endDate}')) """.format(startDate=date_1,endDate=date_1 + datetime.timedelta(days=number_of_days - 1), id=id))
+    date('{endDate}')) """.format(startDate=date_1, endDate=date_1 + datetime.timedelta(days=number_of_days - 1),
+                                  id=id))
 
     unavailable_rooms = []
     available_rooms = []
@@ -408,12 +409,13 @@ def rooms_in_use_update(event_type, date, id, number_of_days=1):
 
 
 def bands_in_use(date):
+    """function checks if band is in use on date of the event when creating a new booking """
     conn = dbconn
     cursor = conn.cursor()
 
     query_list = [
-    "SELECT Band FROM weddingTable WHERE date(EventDate) = date('{}')".format(date),
-    "SELECT Band FROM partyTable WHERE date(EventDate) = date('{}')".format(date)]
+        "SELECT Band FROM weddingTable WHERE date(EventDate) = date('{}')".format(date),
+        "SELECT Band FROM partyTable WHERE date(EventDate) = date('{}')".format(date)]
 
     unavailable_bands = []
     available_bands = []
@@ -428,14 +430,16 @@ def bands_in_use(date):
 
     list(set(unavailable_bands))
 
-    for band in room_options :
+    for band in room_options:
         if band not in unavailable_bands or band == "No band":
             available_bands.append(band)
 
     cursor.close()
     return available_bands
 
-def bands_in_use_update(event_type,date,id):
+
+def bands_in_use_update(event_type, date, id):
+    """function checks if room is in use on date of the event when updating a new booking """
     conn = dbconn
     cursor = conn.cursor()
 
@@ -461,7 +465,7 @@ def bands_in_use_update(event_type,date,id):
 
     list(set(unavailable_bands))
 
-    for band in room_options :
+    for band in room_options:
         if band not in unavailable_bands or band == "No band":
             available_bands.append(band)
 
