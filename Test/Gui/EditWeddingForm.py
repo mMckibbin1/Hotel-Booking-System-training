@@ -98,15 +98,15 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
             return messagebox.showinfo("Booking Failed", "Must have entered more than one guest.", parent=self.master)
 
         if valpassed:
-            Events.Wedding.updateWedding(self.EntnumberOfguest.get(),
-                                         self.EntnameOfContact.get(),
-                                         self.EntAddress.get(),
-                                         self.EntContactNumber.get(),
-                                         self.om_room_val.get(),
-                                         self.display_date.get(), booking.dateOfBooking,
-                                         self.om_band_name.get(),
-                                         self.EntBedroomReserved.get(),
-                                         booking.ID)
+            Events.Wedding.update_wedding(self.EntnumberOfguest.get(),
+                                          self.EntnameOfContact.get(),
+                                          self.EntAddress.get(),
+                                          self.EntContactNumber.get(),
+                                          self.om_room_val.get(),
+                                          self.display_date.get(), booking.dateOfBooking,
+                                          self.om_band_name.get(),
+                                          self.EntBedroomReserved.get(),
+                                          booking.ID)
             DialogBoxes.updated(self, master=self.master, view_booking=self.viewbookingself)
             self.master.destroy()
 

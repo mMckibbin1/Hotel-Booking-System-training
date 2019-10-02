@@ -91,13 +91,13 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
             valpassed = False
             return messagebox.showinfo('Booking Failed',
                                        'Room is currently booked. Please select another room, or change the date of booking.', parent=self.master)
-        elif Validation.min_number([self.EntnumberOfguest.get(), self.EntNoOfDays.get()]):
+        elif Validation.min_number([self.EntNumberOfGuest.get(), self.EntNoOfDays.get()]):
             valpassed = False
             return messagebox.showinfo("Booking Failed", "Must have more than one guest.\nThe duration of the event must be at least one day.", parent=self.master)
 
         if valpassed:
-            Events.Conference.createConference(
-                self.EntnumberOfguest.get(),
+            Events.Conference.create_conference(
+                self.EntNumberOfGuest.get(),
                 self.EntnameOfContact.get(),
                 self.EntAddress.get(),
                 self.EntContactNumber.get(),
@@ -112,7 +112,7 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
 
     def savelist(self):
         self.validationTestList = []
-        self.validationTestList.append(self.EntnumberOfguest.get())
+        self.validationTestList.append(self.EntNumberOfGuest.get())
         self.validationTestList.append(self.EntnameOfContact.get())
         self.validationTestList.append(self.EntAddress.get())
         self.validationTestList.append(self.EntContactNumber.get())

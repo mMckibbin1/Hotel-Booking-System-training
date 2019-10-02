@@ -7,49 +7,54 @@ Wedding object used for wedding bookings
 """
 
 
-class Wedding(Events.BaseEvent.BaseEventobj):
+class Wedding(Events.BaseEvent.BaseEventObj):
 
     bandPrice = 0
 
-    def __init__(self, noGuests, nameOfContact, address, contactNo, eventRoomNo, dateOfEvent, dateOfBooking,
-                 bandName, noBedroomsReserved, bandPrice, ID):
-        super().__init__(noGuests, nameOfContact, address, contactNo, eventRoomNo, dateOfEvent, dateOfBooking, ID,
-                         costPerHead=0)
+    def __init__(self, no_guests, name_of_contact, address, contact_no, event_room_no, date_of_event, date_of_booking,
+                 band_name, no_bedrooms_reserved, band_price, ID):
+        super().__init__(no_guests, name_of_contact, address, contact_no, event_room_no, date_of_event, date_of_booking,
+                         ID, cost_per_head=0)
 
-        self.bandName = bandName
+        self.bandName = band_name
         self.costPerHead = 30.0
-        self.noBedroomsReserved = noBedroomsReserved
-        self.bandPrice = Events.BaseEvent.CalbandPrice(bandName)
+        self.noBedroomsReserved = no_bedrooms_reserved
+        self.bandPrice = Events.BaseEvent.cal_band_price(band_name)
 
-    def guestsCost(self):
+    def guests_cost(self):
         return self.costPerHead * self.noGuests
 
-    def VAT(self):
-        return self.grosstotal() / 5
+    def vat(self):
+        return self.gross_total() / 5
 
-    def grosstotal(self):
-        return float (self.costPerHead * self.noGuests) + self.bandPrice
+    def gross_total(self):
+        return float(self.costPerHead * self.noGuests) + self.bandPrice
 
-    def netTotal(self):
-        return self.grosstotal() + self.VAT()
+    def net_total(self):
+        return self.gross_total() + self.vat()
 
 
 # method to take data from form and add additional required data in order to create object to save to database
-def createwedding(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, BandName, bedRoomsRes):
+def create_wedding(no_of_guest, name_of_contact, address, contact_no, event_room_number, date_of_event, band_name,
+                   bedrooms_res):
 
     ID = None
-    bandPrice = 0
-    DateofBooking = datetime.datetime.now()
+    band_price = 0
+    date_of_booking = datetime.datetime.now()
 
-    Newwedding = Wedding(int(noOfGuest), nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, DateofBooking,
-                         BandName, bedRoomsRes, bandPrice, ID)
-    return dbHelper.insertwedding(Newwedding)
+    new_wedding = Wedding(int(no_of_guest), name_of_contact, address, contact_no, event_room_number, date_of_event,
+                          date_of_booking, band_name, bedrooms_res, band_price, ID)
+    return dbHelper.insertwedding(new_wedding)
 
 
 # method to take data from form and update the selected booking
-def updateWedding(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateOfBooking, BandName, bedRoomsRes, ID):
-    BandPrice = 0
+def update_wedding(no_of_guest, name_of_contact, address, contact_no, event_room_number, date_of_event, date_of_booking,
+                   band_name, bedrooms_res, ID):
 
-    editWedding = Wedding(noGuests=int(noOfGuest),nameOfContact=nameOfContact, address=address, contactNo=contactNo, eventRoomNo=eventRoomNumber, dateOfEvent=DateofEvent, dateOfBooking=dateOfBooking ,
-                      bandName=BandName, bandPrice=BandPrice, noBedroomsReserved=bedRoomsRes, ID=ID)
-    dbHelper.updateWedding(editWedding)
+    band_price = 0
+
+    edit_wedding = Wedding(no_guests=int(no_of_guest), name_of_contact=name_of_contact, address=address,
+                           contact_no=contact_no, event_room_no=event_room_number, date_of_event=date_of_event,
+                           date_of_booking=date_of_booking, band_name=band_name, band_price=band_price,
+                           no_bedrooms_reserved=bedrooms_res, ID=ID)
+    dbHelper.updateWedding(edit_wedding)

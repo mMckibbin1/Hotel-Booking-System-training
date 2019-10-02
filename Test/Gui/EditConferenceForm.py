@@ -110,14 +110,14 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
             return messagebox.showinfo("Booking Failed", "Must have more than one guest.\nThe duration of the event must be at least one day.", parent=self.master)
 
         if valpassed:
-            Events.Conference.updateConference(self.EntnumberOfguest.get(),
-                                               self.EntnameOfContact.get(),
-                                               self.EntAddress.get(),
-                                               self.EntContactNumber.get(), self.om_room_val.get(),
-                                               self.display_date.get(), booking.dateOfBooking,
-                                               self.EntCompanyName.get(),
-                                               self.EntNoOfDays.get(),
-                                               self.CheckVar1.get(), booking.ID)
+            Events.Conference.update_conference(self.EntnumberOfguest.get(),
+                                                self.EntnameOfContact.get(),
+                                                self.EntAddress.get(),
+                                                self.EntContactNumber.get(), self.om_room_val.get(),
+                                                self.display_date.get(), booking.dateOfBooking,
+                                                self.EntCompanyName.get(),
+                                                self.EntNoOfDays.get(),
+                                                self.CheckVar1.get(), booking.ID)
 
             DialogBoxes.updated(self, master=self.master, view_booking=self.viewbookingself)
             self.master.destroy()

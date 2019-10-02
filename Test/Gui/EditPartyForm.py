@@ -78,7 +78,7 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
             return messagebox.showinfo("Booking Failed", "Must have more than one guest.", parent=self.master)
 
         if valpassed:
-            Events.Party.updateParty(self.EntnumberOfguest.get(),
+            Events.Party.update_party(self.EntnumberOfguest.get(),
                                       self.EntnameOfContact.get(),
                                       self.EntAddress.get(),
                                       self.EntContactNumber.get(), self.om_room_val.get(),

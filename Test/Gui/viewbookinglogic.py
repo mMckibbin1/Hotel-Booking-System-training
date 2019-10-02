@@ -175,7 +175,7 @@ def add_conference_labels(self, object):
 # functions to allow the labels to change in the price breakdown labelframe
 def update_price_breakdown(self, object):
     # Label for guest price
-    self.lblDisGuestPrice.config(text=object.guestsCost())
+    self.lblDisGuestPrice.config(text=object.guests_cost())
 
     self.lblGuestPrice.grid()
     self.lblDisGuestPrice.grid()
@@ -199,15 +199,15 @@ def update_price_breakdown(self, object):
     # changes the labels if the event type is a conference
     if type(object) == Conference.Conference:
         self.lblBandCost.config(text="Cost Per Day:")
-        self.lblDisBandCost.config(text=str(object.guestsCost()) + '   ( * ' + str(object.noOfDays) + " days)")
+        self.lblDisBandCost.config(text=str(object.guests_cost()) + '   ( * ' + str(object.noOfDays) + " days)")
     else:
         self.lblBandCost.config(text="Band Price")
         self.lblDisBandCost.config(text=object.bandPrice)
 
     # labels for totals
-    self.lblDisSubTotal.config(text=object.grosstotal())
-    self.lblDisVat.config(text=object.VAT())
-    self.lblDisTotal.config(text=object.netTotal())
+    self.lblDisSubTotal.config(text=object.gross_total())
+    self.lblDisVat.config(text=object.vat())
+    self.lblDisTotal.config(text=object.net_total())
 
 
 # function to display calendar widget for date of event
@@ -283,15 +283,15 @@ def search(self):
         if type(object) == Wedding.Wedding:
             insert_data(self, object.ID, "Wedding", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                        object.netTotal())
+                        object.net_total())
         elif type(object) == Party.Party:
             insert_data(self, object.ID, "Party", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                        object.netTotal())
+                        object.net_total())
         elif type(object) == Conference.Conference:
             insert_data(self, object.ID, "Conference", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                        object.netTotal())
+                        object.net_total())
 
     cal_income(self)
     select_first_row_(self)
@@ -307,15 +307,15 @@ def load_data(master):
             if type(object) == Wedding.Wedding:
                 insert_data(master, object.ID, "Wedding", object.nameOfContact,
                             object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                            object.netTotal())
+                            object.net_total())
             elif type(object) == Party.Party:
                 insert_data(master, object.ID, "Party", object.nameOfContact,
                             object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                            object.netTotal())
+                            object.net_total())
             elif type(object) == Conference.Conference:
                 insert_data(master, object.ID, "Conference", object.nameOfContact,
                             object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                            object.netTotal())
+                            object.net_total())
 
     global data_list
     data_list = data_base_list
@@ -421,29 +421,29 @@ def invoice(self):
 
         # changes the labels depending on the ID and event type
         if type(booking) == Wedding.Wedding:
-            return Events.Invoice.Invoice(address=booking.address, invoice_type="Wedding",
+            return Events.Invoice.invoice(address=booking.address, invoice_type="Wedding",
                                           cost_per_head=booking.costPerHead,
                                           number_of_guests=booking.noGuests,
                                           band_name=booking.bandName, band_cost=booking.bandPrice,
-                                          number_of_days="N/A", guests_cost=booking.guestsCost(),
-                                          cost_per_day="N/A", sub_total=booking.grosstotal(),
-                                          VAT=booking.VAT(), total=booking.netTotal(), file_name=load_file())
+                                          number_of_days="N/A", guests_cost=booking.guests_cost(),
+                                          cost_per_day="N/A", sub_total=booking.gross_total(),
+                                          VAT=booking.vat(), total=booking.net_total(), file_name=load_file())
         elif type(booking) == Party.Party:
-            return Events.Invoice.Invoice(address=booking.address, invoice_type="Party",
+            return Events.Invoice.invoice(address=booking.address, invoice_type="Party",
                                           cost_per_head=booking.costPerHead,
                                           number_of_guests=booking.noGuests,
                                           band_name=booking.bandName, band_cost=booking.bandPrice,
-                                          number_of_days="N/A", guests_cost=booking.guestsCost(),
-                                          cost_per_day="N/A", sub_total=booking.grosstotal(),
-                                          VAT=booking.VAT(), total=booking.netTotal(), file_name=load_file())
+                                          number_of_days="N/A", guests_cost=booking.guests_cost(),
+                                          cost_per_day="N/A", sub_total=booking.gross_total(),
+                                          VAT=booking.vat(), total=booking.net_total(), file_name=load_file())
         elif type(booking) == Conference.Conference:
-            return Events.Invoice.Invoice(address=booking.address, invoice_type="Conference",
+            return Events.Invoice.invoice(address=booking.address, invoice_type="Conference",
                                           cost_per_head=booking.costPerHead,
                                           number_of_guests=booking.noGuests,
                                           band_name="N/A", band_cost="N/A",
-                                          number_of_days=booking.noOfDays, guests_cost=booking.guestsCost(),
-                                          cost_per_day=booking.guestsCost(), sub_total=booking.grosstotal(),
-                                          VAT=booking.VAT(), total=booking.netTotal(), file_name=load_file())
+                                          number_of_days=booking.noOfDays, guests_cost=booking.guests_cost(),
+                                          cost_per_day=booking.guests_cost(), sub_total=booking.gross_total(),
+                                          VAT=booking.vat(), total=booking.net_total(), file_name=load_file())
     except:
         return DialogBoxes.select_row(self)
 

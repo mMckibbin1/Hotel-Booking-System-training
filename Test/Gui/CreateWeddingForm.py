@@ -78,13 +78,13 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
             valpassed = False
             return messagebox.showinfo('Booking Failed',
                                        'Room is currently booked. Please select another room, or change the date of booking.', parent=self.master)
-        elif Validation.min_number([self.EntnumberOfguest.get()]):
+        elif Validation.min_number([self.EntNumberOfGuest.get()]):
             valpassed = False
             return messagebox.showinfo("Booking Failed", "Must have entered more than one guest.", parent=self.master)
 
         if valpassed:
-            Events.Wedding.createwedding(
-                self.EntnumberOfguest.get(),
+            Events.Wedding.create_wedding(
+                self.EntNumberOfGuest.get(),
                 self.EntnameOfContact.get(),
                 self.EntAddress.get(),
                 self.EntContactNumber.get(),
@@ -98,7 +98,7 @@ class bookwedding(Gui.BaseCreateForm.BaseEvent):
 
     def savelist(self):
         self.validationTestList = []
-        self.validationTestList.append(self.EntnumberOfguest.get())
+        self.validationTestList.append(self.EntNumberOfGuest.get())
         self.validationTestList.append(self.EntnameOfContact.get())
         self.validationTestList.append(self.EntAddress.get())
         self.validationTestList.append(self.EntContactNumber.get())

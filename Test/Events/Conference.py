@@ -7,54 +7,58 @@ conference object used for conference bookings
 """
 
 
-class Conference(Events.BaseEvent.BaseEventobj):
+class Conference(Events.BaseEvent.BaseEventObj):
 
-    def __init__(self, noGuests, nameOfContact, address, contactNo, eventRoomNo, dateOfEvent, dateOfBooking,
-                 companyName, noOfDays, projectorRequired, ID):
-        super().__init__(noGuests, nameOfContact, address, contactNo, eventRoomNo, dateOfEvent, dateOfBooking, ID,
-                         costPerHead=0)
-        self.companyName = companyName
-        self.noOfDays = noOfDays
-        self.projectorRequired = projectorRequired
+    def __init__(self, no_guests, name_of_contact, address, contact_no, event_room_no, date_of_event, date_of_booking,
+                 company_name, no_of_days, projector_required, ID):
+        super().__init__(no_guests, name_of_contact, address, contact_no, event_room_no, date_of_event, date_of_booking,
+                         ID, cost_per_head=0)
+        self.companyName = company_name
+        self.noOfDays = no_of_days
+        self.projectorRequired = projector_required
         self.costPerHead = 20.0
 
-    def guestsCost(self):
+    def guests_cost(self):
         return self.costPerHead * self.noGuests
 
-    def grosstotal(self):
+    def gross_total(self):
         return float(self.costPerHead * self.noGuests) * self.noOfDays
 
-    def VAT(self):
-        return self.grosstotal() / 5
+    def vat(self):
+        return self.gross_total() / 5
 
-    def netTotal(self):
-        VAT = self.grosstotal() / 5
-        return self.grosstotal() + VAT
+    def net_total(self):
+        vat = self.gross_total() / 5
+        return self.gross_total() + vat
 
 
 # method to take data from form and add additional required data in order to create object to save to database
-def createConference(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, CompanyName, NoOfDays, projectorRequired):
+def create_conference(no_of_guest, name_of_contact, address, contact_no, event_room_number, date_of_event, company_name,
+                      no_of_days, projector_required):
 
-    dateofBooking = datetime.datetime.now()
-    ID=None
-    if projectorRequired == True:
-        projectorRequired = 1
+    date_of_booking = datetime.datetime.now()
+    ID = None
+    if projector_required == True:
+        projector_required = 1
     else:
-        projectorRequired = 0
+        projector_required = 0
 
-    newconference = Conference(int(noOfGuest), nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateofBooking, CompanyName, NoOfDays, projectorRequired, ID)
-    return dbHelper.insertConference(newconference)
+    new_conference = Conference(int(no_of_guest), name_of_contact, address, contact_no, event_room_number,
+                                date_of_event, date_of_booking, company_name, no_of_days, projector_required, ID)
+    return dbHelper.insertConference(new_conference)
 
 
 # method to take data from form and update the selected booking
-def updateConference(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateofBooking, CompanyName, NoOfDays, projectorRequired, ID):
+def update_conference(no_of_guest, name_of_contact, address, contact_no, event_room_number, date_of_event,
+                      date_of_booking, company_name, no_of_days, projector_required, ID):
 
 
 
-    if projectorRequired == True:
-        projectorRequired = 1
+    if projector_required == True:
+        projector_required = 1
     else:
-        projectorRequired = 0
+        projector_required = 0
 
-    editConference = Conference(int(noOfGuest), nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateofBooking, CompanyName, NoOfDays, projectorRequired, ID)
-    dbHelper.updateConference(editConference)
+    edit_conference = Conference(int(no_of_guest), name_of_contact, address, contact_no, event_room_number,
+                                 date_of_event, date_of_booking, company_name, no_of_days, projector_required, ID)
+    dbHelper.updateConference(edit_conference)
