@@ -15,12 +15,12 @@ class Delete:
             # deletes booking
             viewbookinglogic.delete_data(vbself)
             # informs user that booking is deleted
-            showinfo('Yes', 'Booking Deleted', parent=master)
+            showinfo('Deleted', 'Booking Deleted', parent=master)
             viewbookinglogic.refresh_data(master=master)
 
         else:
             # informs user that booking is not deleted
-            showinfo('No', 'Booking Not Deleted', parent=master)
+            showinfo('Not Deleted', 'Booking Not Deleted', parent=master)
 
 
 # updated dialog message box
@@ -31,17 +31,12 @@ def updated(self, master, view_booking):
 
 # not saved dialog message box
 def not_saved(master):
-    messagebox.showinfo("Aborted", "Action canceled, no details have been saved!", parent=master)
+    messagebox.showinfo("Aborted", "Action cancelled, no details have been saved!", parent=master)
 
 
 # saved dialog message box
 def saved(master):
     messagebox.showinfo("Successful", "These details have been successfully saved!", parent=master)
-
-
-# table refreshed dialog message box
-def table_refreshed():
-    messagebox.showinfo("Successful", "The table has been refreshed and is now up to date.")
 
 
 # promt for user to select a row

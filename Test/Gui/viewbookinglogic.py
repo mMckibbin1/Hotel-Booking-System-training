@@ -374,7 +374,7 @@ def get_selected_db_entry(self):
                         if object.ID == RowID:
                             return object
     except:
-        print("Please select a row")
+        DialogBoxes.select_row(self.master2)
 
 
 # selects item from treeview
@@ -406,6 +406,7 @@ def update_selected(self, parent):
             return call_update_conference_popup(booking, self, parent)
     except:
         print("please select a row first")
+        DialogBoxes.select_row(self.master2)
 
 
 # creates an invoice for selected row in form
