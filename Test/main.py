@@ -35,5 +35,5 @@ from Events import Conference, Wedding, Party
 
 
 dbHelper.connect()
-MainMenu.mainMenu()
+MainMenu.MainMenu()
 

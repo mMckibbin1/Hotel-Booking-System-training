@@ -4,7 +4,7 @@ from mailmerge import MailMerge
 from addtionalWidgets import CurrencyConvert
 
 
-def Invoice(address, invoice_type, cost_per_head, number_of_guests, band_name, band_cost, number_of_days,
+def invoice(address, invoice_type, cost_per_head, number_of_guests, band_name, band_cost, number_of_days,
             guests_cost, cost_per_day, sub_total, VAT, total, file_name):
     try:
         template = "M:\GitHub\Hotel-Booking-System-training\Test\Invoice Template\invoiceTemplate.docx"

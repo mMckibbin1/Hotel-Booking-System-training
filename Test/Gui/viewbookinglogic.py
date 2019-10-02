@@ -8,6 +8,7 @@ from tkinter import messagebox
 from addtionalWidgets import CalendarWidget, CurrencyConvert
 from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
 import Events.Invoice
+
 # global to store data from database so all functions can use it and reduce calls on the database
 data_list = []
 
@@ -42,19 +43,19 @@ def call_update_conference_popup(object, self, parent):
     parent.grab_set()
 
 
-# function to change the labels shown, depending on the event type selected in the treeview
-def details_label_change(self, eventType, object):
-    if eventType == 'Wedding':
+# function to change the labels shown, depending on the event type selected in the tree view
+def details_label_change(self, event_type, object):
+    if event_type == 'Wedding':
         remove_all_labels(self)
         add_wedding_labels(self, object)
         update_price_breakdown(self, object)
 
-    elif eventType == 'Party':
+    elif event_type == 'Party':
         remove_all_labels(self)
         add_party_labels(self, object)
         update_price_breakdown(self, object)
 
-    elif eventType == 'Conference':
+    elif event_type == 'Conference':
         remove_all_labels(self)
         add_conference_labels(self, object)
         update_price_breakdown(self, object)
@@ -66,12 +67,12 @@ def details_label_change(self, eventType, object):
 # functions to allow the labels to change in the additional info labelframe
 # removes all labels stored within labelframe
 def remove_all_labels(self):
-    self.lblNoofGuests.grid_remove()
-    self.lblDisNoofGuests.grid_remove()
+    self.lblNoOfGuests.grid_remove()
+    self.lblDisNoOfGuests.grid_remove()
     self.lblAddress.grid_remove()
     self.lblDisAddress.grid_remove()
-    self.lblDateofBooking.grid_remove()
-    self.lblDisDateofBooking.grid_remove()
+    self.lblDateOfBooking.grid_remove()
+    self.lblDisDateOfBooking.grid_remove()
     self.lblCostPerHead.grid_remove()
     self.lblDisCostPerHead.grid_remove()
     self.lblBandName.grid_remove()
@@ -80,8 +81,8 @@ def remove_all_labels(self):
     self.lblDisBandPrice.grid_remove()
     self.lblCompanyName.grid_remove()
     self.lblDisCompanyName.grid_remove()
-    self.lblNumberofDays.grid_remove()
-    self.lblDisNumberofDays.grid_remove()
+    self.lblNumberOfDays.grid_remove()
+    self.lblDisNumberOfDays.grid_remove()
     self.lblProjectorRequired.grid_remove()
     self.lblDisProjectorRequired.grid_remove()
     self.lblNoOfBedsReserved.grid_remove()
@@ -110,19 +111,19 @@ def remove_all_labels(self):
 
 # adds the labels that are consistent throughout all event types
 def add_base_labels(self, object):
-    self.lblNoofGuests.grid()
-    self.lblDisNoofGuests.grid()
+    self.lblNoOfGuests.grid()
+    self.lblDisNoOfGuests.grid()
     self.lblAddress.grid()
     self.lblDisAddress.grid()
-    self.lblDateofBooking.grid()
-    self.lblDisDateofBooking.grid()
+    self.lblDateOfBooking.grid()
+    self.lblDisDateOfBooking.grid()
     self.lblCostPerHead.grid()
     self.lblDisCostPerHead.grid()
 
     # additional info labels
-    self.lblDisNoofGuests.config(text=object.noGuests)
+    self.lblDisNoOfGuests.config(text=object.noGuests)
     self.lblDisAddress.config(text=object.address)
-    self.lblDisDateofBooking.config(text=object.dateOfBooking)
+    self.lblDisDateOfBooking.config(text=object.dateOfBooking)
     self.lblDisCostPerHead.config(text=CurrencyConvert.pound_string(object.costPerHead))
 
 
@@ -160,21 +161,21 @@ def add_conference_labels(self, object):
     add_base_labels(self, object)
     self.lblCompanyName.grid()
     self.lblDisCompanyName.grid()
-    self.lblNumberofDays.grid()
-    self.lblDisNumberofDays.grid()
+    self.lblNumberOfDays.grid()
+    self.lblDisNumberOfDays.grid()
     self.lblProjectorRequired.grid()
     self.lblDisProjectorRequired.grid()
 
     # additional info labels
     self.lblDisCompanyName.config(text=object.companyName)
-    self.lblDisNumberofDays.config(text=object.noOfDays)
+    self.lblDisNumberOfDays.config(text=object.noOfDays)
     self.lblDisProjectorRequired.config(text=object.projectorRequired)
 
 
 # functions to allow the labels to change in the price breakdown labelframe
 def update_price_breakdown(self, object):
     # Label for guest price
-    self.lblDisGuestPrice.config(text=CurrencyConvert.pound_string(object.guestsCost()))
+    self.lblDisGuestPrice.config(text=CurrencyConvert.pound_string(object.guests_cost()))
 
     self.lblGuestPrice.grid()
     self.lblDisGuestPrice.grid()
@@ -198,15 +199,17 @@ def update_price_breakdown(self, object):
     # changes the labels if the event type is a conference
     if type(object) == Conference.Conference:
         self.lblBandCost.config(text="Cost Per Day:")
-        self.lblDisBandCost.config(text=CurrencyConvert.pound_string(object.guestsCost()) + '   ( * ' + str(object.noOfDays) + " days)")
+
+        self.lblDisBandCost.config(text=CurrencyConvert.pound_string(object.guests_cost()) + '   ( * ' +
+                                   str(object.noOfDays) + " days)")
     else:
         self.lblBandCost.config(text="Band Price")
         self.lblDisBandCost.config(text=CurrencyConvert.pound_string(object.bandPrice))
 
     # labels for totals
-    self.lblDisSubTotal.config(text=CurrencyConvert.pound_string(object.grosstotal()))
-    self.lblDisVat.config(text=CurrencyConvert.pound_string(object.VAT()))
-    self.lblDisTotal.config(text=CurrencyConvert.pound_string(object.netTotal()))
+    self.lblDisSubTotal.config(text=CurrencyConvert.pound_string(object.gross_total()))
+    self.lblDisVat.config(text=CurrencyConvert.pound_string(object.vat()))
+    self.lblDisTotal.config(text=CurrencyConvert.pound_string(object.net_total()))
 
 
 # function to display calendar widget for date of event
@@ -248,17 +251,15 @@ def cal_income(master):
     master.lblTotalIncome.config(text=total_income)
     # adds up the values in the total cost column
     for child in master.treeview.get_children():
-        #costs = master.treeview.item(child, "values")[5]
+        # costs = master.treeview.item(child, "values")[5]
         total_income += float(CurrencyConvert.remove_pound_string(master.treeview.item(child, "values")[5]))
         CurrencyConvert.pound_string(total_income)
         master.lblTotalIncome.config(text=CurrencyConvert.pound_string(total_income))
 
 
-
-
 # adding data to treeview
-def insert_data(self, id, event_type, name_of_contact, contact_no, date_of_event, event_room_no, net_total):
-    self.treeview.insert('', 'end', text=id,
+def insert_data(self, ID, event_type, name_of_contact, contact_no, date_of_event, event_room_no, net_total):
+    self.treeview.insert('', 'end', text=ID,
                          values=(event_type, name_of_contact, contact_no, date_of_event, event_room_no, net_total))
 
 
@@ -284,19 +285,18 @@ def search(self):
         if type(object) == Wedding.Wedding:
             insert_data(self, object.ID, "Wedding", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                        CurrencyConvert.pound_string(object.netTotal()))
+                        CurrencyConvert.pound_string(object.net_total()))
         elif type(object) == Party.Party:
             insert_data(self, object.ID, "Party", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                        CurrencyConvert.pound_string(object.netTotal()))
+                        CurrencyConvert.pound_string(object.net_total()))
         elif type(object) == Conference.Conference:
             insert_data(self, object.ID, "Conference", object.nameOfContact,
                         object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                        CurrencyConvert.pound_string(object.netTotal()))
+                        CurrencyConvert.pound_string(object.net_total()))
 
     cal_income(self)
     select_first_row_(self)
-
 
 
 # function to load the data from the database into the table
@@ -308,15 +308,15 @@ def load_data(master):
             if type(object) == Wedding.Wedding:
                 insert_data(master, object.ID, "Wedding", object.nameOfContact,
                             object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                            CurrencyConvert.pound_string(object.netTotal()))
+                            CurrencyConvert.pound_string(object.net_total()))
             elif type(object) == Party.Party:
                 insert_data(master, object.ID, "Party", object.nameOfContact,
                             object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                            CurrencyConvert.pound_string(object.netTotal()))
+                            CurrencyConvert.pound_string(object.net_total()))
             elif type(object) == Conference.Conference:
                 insert_data(master, object.ID, "Conference", object.nameOfContact,
                             object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                            CurrencyConvert.pound_string(object.netTotal()))
+                            CurrencyConvert.pound_string(object.net_total()))
 
     global data_list
     data_list = data_base_list
@@ -338,13 +338,13 @@ def refresh_data(master):
     # DialogBoxes.table_refreshed()
 
 
-#  function to return object for the selected row on treeview
+#  function to return object for the selected row on tree view
 def get_selected_db_entry(self):
     try:
         list_of_events = []
         global data_list
 
-        # sets the current item as the highlighted row in the treeview
+        # sets the current item as the highlighted row in the tree view
         curItem = self.tree.focus()
 
         # sets the id
@@ -374,7 +374,7 @@ def get_selected_db_entry(self):
     except:
         print("")
         raise
-        #DialogBoxes.select_row(self.master2)
+        # DialogBoxes.select_row(self.master2)
 
 
 # selects item from treeview
@@ -393,9 +393,8 @@ def select_item(a, self):
         print("Please select a row")
 
 
-#  opens update form for selected row in treeview on form
+#  opens update form for selected row in tree view on form
 def update_selected(self, parent):
-    print("fdskjdskjhfdskjhfdsiuh")
     try:
         booking = get_selected_db_entry(self)
 
@@ -422,39 +421,47 @@ def invoice(self):
 
         # changes the labels depending on the ID and event type
         if type(booking) == Wedding.Wedding:
-            return Events.Invoice.Invoice(address=booking.address, invoice_type="Wedding",
+            return Events.Invoice.invoice(address=booking.address, invoice_type="Wedding",
                                           cost_per_head=CurrencyConvert.pound_string(booking.costPerHead),
                                           number_of_guests=booking.noGuests,
-                                          band_name=booking.bandName, band_cost=CurrencyConvert.pound_string(booking.bandPrice),
-                                          number_of_days="N/A", guests_cost=CurrencyConvert.pound_string(booking.guestsCost()),
-                                          cost_per_day="N/A", sub_total=CurrencyConvert.pound_string(booking.grosstotal()),
-                                          VAT=CurrencyConvert.pound_string(booking.VAT()),
-                                          total=CurrencyConvert.pound_string(booking.netTotal()), file_name=load_file())
+                                          band_name=booking.bandName,
+                                          band_cost=CurrencyConvert.pound_string(booking.bandPrice),
+                                          number_of_days="N/A",
+                                          guests_cost=CurrencyConvert.pound_string(booking.guests_cost()),
+                                          cost_per_day="N/A",
+                                          sub_total=CurrencyConvert.pound_string(booking.gross_total()),
+                                          VAT=CurrencyConvert.pound_string(booking.vat()),
+                                          total=CurrencyConvert.pound_string(booking.net_total()), file_name=load_file())
         elif type(booking) == Party.Party:
-            return Events.Invoice.Invoice(address=booking.address, invoice_type="Party",
+            return Events.Invoice.invoice(address=booking.address, invoice_type="Party",
                                           cost_per_head=CurrencyConvert.pound_string(booking.costPerHead),
                                           number_of_guests=booking.noGuests,
-                                          band_name=booking.bandName, band_cost=CurrencyConvert.pound_string(booking.bandPrice),
-                                          number_of_days="N/A", guests_cost=CurrencyConvert.pound_string(booking.guestsCost()),
-                                          cost_per_day="N/A", sub_total=CurrencyConvert.pound_string(booking.grosstotal()),
-                                          VAT=CurrencyConvert.pound_string(booking.VAT()),
-                                          total=CurrencyConvert.pound_string(booking.netTotal()),
+                                          band_name=booking.bandName,
+                                          band_cost=CurrencyConvert.pound_string(booking.bandPrice),
+                                          number_of_days="N/A",
+                                          guests_cost=CurrencyConvert.pound_string(booking.guests_cost()),
+                                          cost_per_day="N/A",
+                                          sub_total=CurrencyConvert.pound_string(booking.gross_total()),
+                                          VAT=CurrencyConvert.pound_string(booking.vat()),
+                                          total=CurrencyConvert.pound_string(booking.net_total()),
                                           file_name=load_file())
         elif type(booking) == Conference.Conference:
-            return Events.Invoice.Invoice(address=booking.address, invoice_type="Conference",
+            return Events.Invoice.invoice(address=booking.address, invoice_type="Conference",
                                           cost_per_head=CurrencyConvert.pound_string(booking.costPerHead),
                                           number_of_guests=booking.noGuests,
                                           band_name="N/A", band_cost="N/A",
-                                          number_of_days=booking.noOfDays, guests_cost=CurrencyConvert.pound_string(booking.guestsCost()),
-                                          cost_per_day=CurrencyConvert.pound_string(booking.guestsCost()),
-                                          sub_total=CurrencyConvert.pound_string(booking.grosstotal()),
-                                          VAT=CurrencyConvert.pound_string(booking.VAT()),
-                                          total=CurrencyConvert.pound_string(booking.netTotal()), file_name=load_file())
+                                          number_of_days=booking.noOfDays,
+                                          guests_cost=CurrencyConvert.pound_string(booking.guests_cost()),
+                                          cost_per_day=CurrencyConvert.pound_string(booking.guests_cost()),
+                                          sub_total=CurrencyConvert.pound_string(booking.gross_total()),
+                                          VAT=CurrencyConvert.pound_string(booking.vat()),
+                                          total=CurrencyConvert.pound_string(booking.net_total()),
+                                          file_name=load_file())
     except:
         return DialogBoxes.select_row(self)
 
 
-# selects the first row on the treeview when form loads
+# selects the first row on the tree view when form loads
 def select_first_row_(self):
     child_id = self.treeview.get_children()
     if child_id:
@@ -492,7 +499,7 @@ def delete_data(self):
 
     except:
         print("please select a row first")
-        # displays a promt to select a row
+        # displays a prompt to select a row
         DialogBoxes.select_row(self.master2)
 
 
@@ -510,7 +517,7 @@ def is_row_selected_delete(self, master):
     if row_id != "":
         # asks user is there really want to delete or not
         DialogBoxes.Delete(self, master)
-    # if it is empty user will be promted to select a row
+    # if it is empty user will be prompted to select a row
     else:
-        # displays a promt to select a row
+        # displays a prompt to select a row
         DialogBoxes.select_row(self.master2)

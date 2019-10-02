@@ -2,27 +2,27 @@ from tkinter import messagebox
 
 
 # tests for empty entry boxes
-def stringEmpty(test):
-    validationfailed = False
+def string_empty(test):
+    validation_failed = False
     for strings in test:
+
         if strings == "" or strings == "Pick a room" or strings == "No Rooms Free" or str.upper(strings) == "PICK A BAND" or str.isspace(strings):
             validationfailed = True
-
-    return validationfailed
+    return validation_failed
 
 
 # only allows numbers to be entered into an entry box
-def digits_only(P):
-    if str.isdigit(P) or P == "":
+def digits_only(p):
+    if str.isdigit(p) or p == "":
         return True
     else:
         return False
 
 
 # only allows characters to be entered into an entry box
-def charOnly(C):
+def char_only(c):
     val_passed = True
-    for item in C:
+    for item in c:
         if str.isalpha(item) or str.isspace(item) or item == "":
             val_passed = True
         else:
@@ -45,7 +45,7 @@ def max_character_length_50(input_string, master):
     if len(input_string) > 50:
         messagebox.showinfo("Character limit Reached", "You have hit the maximum number of characters", parent=master)
         return False
-    if not charOnly(input_string):
+    if not char_only(input_string):
         return False
     return True
 
@@ -58,7 +58,7 @@ def max_character_length_150(input_string, master):
 
 
 def max_character_length_25_digits_only(input_string, master):
-    if input_string =="":
+    if input_string == "":
         return True
     if not digits_only(input_string):
         return False

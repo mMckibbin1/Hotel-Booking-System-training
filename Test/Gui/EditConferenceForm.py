@@ -9,7 +9,7 @@ from Gui import DialogBoxes
 
 class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
-    def __init__(self, master, booking, viewbookingself):
+    def __init__(self, master, booking, view_booking_self):
         super().__init__(master, booking)
 
         # Creation of wedding form set title, size ect..
@@ -17,41 +17,42 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         master.resizable(0, 0)
         master.config(background="#70ABAF")
 
-        self.viewbookingself = viewbookingself
+        self.view_booking_self = view_booking_self
         self.booking = booking
 
         def ch_box_sel():
             print(self.CheckVar1.get())
 
-        # defines options for dropdown boxes
+        # defines options for drop down boxes
 
         # Labels for Conference booking form
         self.lblSubheading.config(text="Please update any details that you want to change")
 
-        self.lblCompanyname = Label(master, text="Company Name", font=("arial", 10, "bold"), bg="#70ABAF")
-        self.lblCompanyname.grid(row=7,columnspan=2,pady=(25, 0),padx=(10, 10))
+        self.lblCompanyName = Label(master, text="Company Name", font=("arial", 10, "bold"), bg="#70ABAF")
+        self.lblCompanyName.grid(row=7, columnspan=2, pady=(25, 0), padx=(10, 10))
 
-        self.lblNoofDays = Label(master, text="Number of Days", font=("arial", 10, "bold"), bg="#70ABAF")
-        self.lblNoofDays.grid(row=8,columnspan=2, pady=(25, 0),padx=(10, 10))
+        self.lblNoOfDays = Label(master, text="Number of Days", font=("arial", 10, "bold"), bg="#70ABAF")
+        self.lblNoOfDays.grid(row=8, columnspan=2, pady=(25, 0), padx=(10, 10))
 
         self.lblProjectorReq = Label(master, text="Projector Required", font=("arial", 10, "bold"), bg="#70ABAF")
-        self.lblProjectorReq.grid(row=9, columnspan=2,pady=(25,0),padx=(10,10))
+        self.lblProjectorReq.grid(row=9, columnspan=2, pady=(25, 0), padx=(10, 10))
 
-        # Entry boxes, dropdowns and datepicker for conference form
+        # Entry boxes, drop downs and date picker for conference form
         self.EntCompanyName = Entry(master, font=("arial", 10), width=50)
-        self.CompanyNameVcmd = (self.EntCompanyName.register(lambda P: Validation.max_character_length_150(P, master)))
-        self.EntCompanyName.config(validate='key', validatecommand=(self.CompanyNameVcmd, '%P'))
+        self.CompanyName_VCMD = (self.EntCompanyName.register(lambda p: Validation.max_character_length_150(p, master)))
+        self.EntCompanyName.config(validate='key', validatecommand=(self.CompanyName_VCMD, '%P'))
 
         self.number_of_days = StringVar()
-        self.EntNoOfDays = Entry(master, font=("arial", 10), width=50,textvariable=self.number_of_days)
-        self.DaysVcmd = (self.EntNoOfDays.register(lambda P: Validation.max_size_31(P,master)))
-        self.EntNoOfDays.config(validate='key', validatecommand=(self.DaysVcmd, '%P'))
+        self.EntNoOfDays = Entry(master, font=("arial", 10), width=50, textvariable=self.number_of_days)
+        self.Days_VCMD = (self.EntNoOfDays.register(lambda p: Validation.max_size_31(p, master)))
+        self.EntNoOfDays.config(validate='key', validatecommand=(self.Days_VCMD, '%P'))
 
         # checkbox
         self.CheckVar1 = IntVar()
-        self.chxProjectorRequired = Checkbutton(master, text='', variable=self.CheckVar1, onvalue=True, offvalue=False, bg="#70ABAF", command=ch_box_sel)
+        self.chxProjectorRequired = Checkbutton(master, text='', variable=self.CheckVar1, onvalue=True, offvalue=False,
+                                                bg="#70ABAF", command=ch_box_sel)
 
-        # Entry boxes, dropdowns and datepicker for conference form being placed using a grid layout
+        # Entry boxes, drop downs and date picker for conference form being placed using a grid layout
         self.EntCompanyName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
         self.EntNoOfDays.grid(row=8, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
@@ -59,9 +60,9 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         self.chxProjectorRequired.grid(row=9, column=2, pady=(25, 0), padx=(0, 25))
         print(booking.dateOfBooking)
         # Buttons for Add and Cancel on the conference form
-        self.btnUpdateBooking.config(command=lambda: self.validation(booking)) # calls update ,destroy and message box
+        self.btnUpdateBooking.config(command=lambda: self.validation(booking))  # calls update ,destroy and message box
 
-        self.populateform_conference(self.booking)
+        self.populate_form_conference(self.booking)
 
         self.display_date.trace('w', lambda name, index, mode: self.conference_room_check())
         self.number_of_days.trace('w', lambda name, index, mode: self.conference_room_check())
@@ -87,7 +88,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         for value in rooms_free:
             self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
-    def populateform_conference(self, booking):
+    def populate_form_conference(self, booking):
         self.EntCompanyName.insert(0, booking.companyName)
         self.EntNoOfDays.insert(0, booking.noOfDays)
 
@@ -100,43 +101,41 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
 # validation
     def validation(self, booking):
-        valpassed = True
+        val_passed = True
 
-        if Validation.stringEmpty(self.savelist()):
-            valpassed = False
+        if Validation.string_empty(self.save_list()):
+            val_passed = False
             return messagebox.showinfo("Booking Failed",
                                        "All fields are required to be filled in.", parent=self.master)
 
-        elif dbHelper.con_date_conflict_update("conferenceTable", self.CalDateOfEvent.get(), self.EntNoOfDays.get(), self.eventRoomNo, booking.ID):
-            valpassed = False
+        elif dbHelper.con_date_conflict_update("conferenceTable", self.CalDateOfEvent.get(), self.EntNoOfDays.get(),
+                                               self.eventRoomNo, booking.ID):
+            val_passed = False
             return messagebox.showinfo('Booking Failed',
-                                       'Room is currently booked. Please select another room, or change the date of booking.', parent=self.master)
-        elif Validation.min_number([self.EntnumberOfguest.get(), self.EntNoOfDays.get()]):
-            valpassed = False
-            return messagebox.showinfo("Booking Failed", "Must have more than one guest.\nThe duration of the event must be at least one day.", parent=self.master)
+                                       'Room is currently booked.\n'
+                                       'Please select another room, or change the date of booking.', parent=self.master)
+        elif Validation.min_number([self.EntNumberOfGuest.get(), self.EntNoOfDays.get()]):
+            val_passed = False
+            return messagebox.showinfo("Booking Failed", "Must have more than one guest.\n"
+                                                         "The duration of the event must be at least one day.",
+                                       parent=self.master)
 
-        if valpassed:
-            Events.Conference.updateConference(self.EntnumberOfguest.get(),
-                                               self.EntnameOfContact.get(),
-                                               self.EntAddress.get(),
-                                               self.EntContactNumber.get(), self.om_room_val.get(),
-                                               self.display_date.get(), booking.dateOfBooking,
-                                               self.EntCompanyName.get(),
-                                               self.EntNoOfDays.get(),
-                                               self.CheckVar1.get(), booking.ID)
+        if val_passed:
+            Events.Conference.update_conference(self.EntNumberOfGuest.get(),
+                                                self.EntNameOfContact.get(),
+                                                self.EntAddress.get(),
+                                                self.EntContactNumber.get(), self.om_room_val.get(),
+                                                self.display_date.get(), booking.dateOfBooking,
+                                                self.EntCompanyName.get(),
+                                                self.EntNoOfDays.get(),
+                                                self.CheckVar1.get(), booking.ID)
 
-            DialogBoxes.updated(self, master=self.master, view_booking=self.viewbookingself)
+            DialogBoxes.updated(self, master=self.master, view_booking=self.view_booking_self)
             self.master.destroy()
 
-    def savelist(self):
-        self.validationTestList = []
-        self.validationTestList.append(self.EntnumberOfguest.get())
-        self.validationTestList.append(self.EntnameOfContact.get())
-        self.validationTestList.append(self.EntAddress.get())
-        self.validationTestList.append(self.EntContactNumber.get())
-        self.validationTestList.append(self.om_room_val.get())
-        self.validationTestList.append(self.display_date.get())
-        self.validationTestList.append(self.EntCompanyName.get())
-        self.validationTestList.append(self.EntNoOfDays.get())
-        return self.validationTestList
+    def save_list(self):
+        validationTestList = [self.EntNumberOfGuest.get(), self.EntNameOfContact.get(), self.EntAddress.get(),
+                              self.EntContactNumber.get(), self.om_room_val.get(), self.display_date.get(),
+                              self.EntCompanyName.get(), self.EntNoOfDays.get()]
+        return validationTestList
 
