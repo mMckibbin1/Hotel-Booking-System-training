@@ -1,10 +1,10 @@
+"""Party object used for Party bookings"""
+
 import Events.BaseEvent
 import datetime
 from Database import dbHelper
 
-"""
-Party object used for Party bookings
-"""
+
 
 
 class Party(Events.BaseEvent.BaseEventObj):

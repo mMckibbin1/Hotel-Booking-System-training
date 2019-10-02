@@ -1,3 +1,5 @@
+"""module contains class used to create the UI for the update Conference form"""
+
 from tkinter import *
 from tkinter import messagebox
 import Events.Conference

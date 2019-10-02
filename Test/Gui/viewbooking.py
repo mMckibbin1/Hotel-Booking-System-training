@@ -1,3 +1,5 @@
+"""module contains the class used to create the Ui for the view booking form"""
+
 from tkinter import *
 import tkinter as Tkinter
 import tkinter.ttk as ttk

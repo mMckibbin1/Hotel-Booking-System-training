@@ -1,3 +1,5 @@
+"""module contains the base class used to create the UI for the update forms used in the program"""
+
 import datetime
 from tkinter import *
 from tkinter import messagebox
@@ -110,6 +112,7 @@ class BaseEditEvent:
 
         self.populate_form(object)
 
+        # code to per-populate event room drop down when form loads
         self.room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
         self.room_option_menu_menu.delete(0, "end")
         self.om_room_val.set(object.eventRoomNo)
