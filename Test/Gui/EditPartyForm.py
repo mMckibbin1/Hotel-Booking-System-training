@@ -1,5 +1,4 @@
 from tkinter import messagebox
-
 import Gui.BaseEditForm
 from tkinter import *
 import Events.Party
@@ -88,7 +87,6 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
 
             DialogBoxes.updated(self, master=self.master,  view_booking=self.viewbookingself)
             self.master.destroy()
-
 
     def savelist(self):
         self.validationTestList = []

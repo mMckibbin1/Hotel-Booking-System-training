@@ -1,21 +1,13 @@
 from tkinter import *
 import tkinter as Tkinter
 import tkinter.ttk as ttk
-from Gui import DialogBoxes, viewbookinglogic
+from Gui import viewbookinglogic
 import Gui.viewbookinglogic
-
-from Database import dbHelper
-from Events import Wedding, Party, Conference
-from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
-from Gui.EditConferenceForm import EditConference
-from Gui.EditPartyForm import EditParty
-from Gui.EditWeddingForm import EditWedding
-
-
 
 
 class frmViewBooking(Tkinter.Frame):
     master2 = None
+
     def __init__(self, master):
         Tkinter.Frame.__init__(self, master)
         self.parent = master
@@ -86,7 +78,6 @@ class frmViewBooking(Tkinter.Frame):
         def on_leaveClear(e):
             self.btn_clear_date['background'] = "snow"
 
-
         # button update
         btnUpdate = Button(self.parent, text="Update Selected Booking", width=20, height=2, background="snow", font=("arial", 10),
                            command = lambda :Gui.viewbookinglogic.update_selected(self.master2, self.master))
@@ -107,7 +98,6 @@ class frmViewBooking(Tkinter.Frame):
         btnRefresh.grid(row=3, column=0, sticky="nw", pady=(0, 20), padx=(10, 0))
         btnRefresh.bind("<Enter>", on_enterRefresh)
         btnRefresh.bind("<Leave>", on_leaveRefresh)
-
 
         # LABELFRAMES #
         # labelframe for select date
@@ -285,12 +275,12 @@ class frmViewBooking(Tkinter.Frame):
         self.labelframe.grid_columnconfigure(0, weight=1)
         self.labelframe.grid_columnconfigure(3, weight=1)
 
-
         # labelframe for price breakdown
         self.Totallabelframe = LabelFrame(self.parent, text="Price Breakdown", width=324, height=100,
                                           background="#70ABAF", font=("arial", 9, "bold"))
         self.Totallabelframe.grid(row=1, column=7, columnspan=3, padx=(10, 20), pady=(0, 20))
-        #70ABAF # columns
+
+        # columns
         self.Totallabelframe.grid_columnconfigure(1, minsize=80)
         self.Totallabelframe.grid_columnconfigure(2, minsize=80)
         self.Totallabelframe.grid_columnconfigure(3, minsize=80)

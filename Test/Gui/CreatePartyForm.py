@@ -74,7 +74,6 @@ class bookParty(Gui.BaseCreateForm.BaseEvent):
             valpassed = False
             return messagebox.showinfo("Booking Failed", "Must have more than one guest.", parent=self.master)
 
-
         if valpassed:
             Events.Party.createParty(
                 self.EntnumberOfguest.get(),

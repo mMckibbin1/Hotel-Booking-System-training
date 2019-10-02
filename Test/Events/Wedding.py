@@ -1,11 +1,11 @@
 import Events.BaseEvent
 import datetime
 from Database import dbHelper
-from Gui import BaseCreateForm
-from tkinter.messagebox import *
+
 """
 Wedding object used for wedding bookings
 """
+
 
 class Wedding(Events.BaseEvent.BaseEventobj):
 

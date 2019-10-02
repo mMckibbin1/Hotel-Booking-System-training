@@ -1,9 +1,11 @@
 import Events.BaseEvent
 import datetime
 from Database import dbHelper
+
 """
 Party object used for Party bookings
 """
+
 
 class Party(Events.BaseEvent.BaseEventobj):
 
@@ -30,6 +32,7 @@ class Party(Events.BaseEvent.BaseEventobj):
     def netTotal(self):
         return self.grosstotal() + self.VAT()
 
+
 # method to take data from form and add additional required data in order to create object to save to database
 def createParty(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, BandName):
     ID = None
@@ -39,10 +42,10 @@ def createParty(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, D
                      BandName, BandPrice, ID)
     return dbHelper.insertParty(NewParty)
 
+
 # method to take data from form and update the selected booking
 def updateParty(noOfGuest, nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateofBooking, BandName, ID):
     BandPrice = 0
-
 
     editParty = Party(int(noOfGuest), nameOfContact, address, contactNo, eventRoomNumber, DateofEvent, dateofBooking, BandName, BandPrice, ID)
     dbHelper.updateParty(editParty)

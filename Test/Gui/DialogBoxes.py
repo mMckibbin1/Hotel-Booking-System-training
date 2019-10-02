@@ -1,7 +1,6 @@
 from tkinter.messagebox import *
 from Gui import viewbookinglogic
 from tkinter import messagebox
-import Gui.MainMenu
 
 
 # delete dialog box
@@ -39,6 +38,6 @@ def saved(master):
     messagebox.showinfo("Successful", "These details have been successfully saved!", parent=master)
 
 
-# promt for user to select a row
+# prompt for user to select a row
 def select_row(master):
     messagebox.showinfo("Nothing Selected", "Please Select a Row first!", parent=master)

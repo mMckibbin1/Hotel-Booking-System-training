@@ -5,7 +5,6 @@ import Validation
 from Gui import DialogBoxes
 from Database import dbHelper
 from tkinter import messagebox
-import datetime
 
 
 class bookConference(Gui.BaseCreateForm.BaseEvent):
@@ -34,8 +33,6 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         self.lblProjectorReq = Label(master, text="Projector Required", font=("arial", 10, "bold"), bg="#70ABAF")
         self.lblProjectorReq.grid(row=9, columnspan=2,pady=(25,0),padx=(10,10))
 
-
-
         # Entry boxes, dropdowns and datepicker for conference form
         self.EntCompanyName = Entry(master, font=("arial", 10), width=50)
         self.CompanyNameVcmd = (self.EntCompanyName.register(lambda P: Validation.max_character_length_150(P, master)))
@@ -46,9 +43,7 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         self.DaysVcmd = (self.EntNoOfDays.register(lambda P: Validation.max_size_31(P,master)))
         self.EntNoOfDays.config(validate='key', validatecommand=(self.DaysVcmd, '%P'))
 
-        # checkbox now works :)
         # checkbox
-
         self.CheckVar1 = IntVar()
         self.chxProjectorRequired = Checkbutton(master, text='', variable=self.CheckVar1, onvalue=True, offvalue=False,
                                                 bg="#70ABAF", command=ch_box_sel)
@@ -58,7 +53,6 @@ class bookConference(Gui.BaseCreateForm.BaseEvent):
         self.EntNoOfDays.grid(row=8, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
 
         # checkbox
-
         self.chxProjectorRequired.grid(row=9, column=2, pady=(25, 0), padx=(0, 25))
 
         # Button config to override the parent button config
