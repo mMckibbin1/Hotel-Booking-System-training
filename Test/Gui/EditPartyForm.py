@@ -24,7 +24,7 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
         self.lblSubheading.config(text="Please update any details that you want to change")
 
         self.lblBandName = Label(master, text="Band Name", font=("arial", 10, "bold"), bg="#70ABAF")
-        self.lblBandName.grid(row=7, columnspan=2,pady=(25, 0), padx=(10, 10))
+        self.lblBandName.grid(row=7, columnspan=2, pady=(25, 0), padx=(10, 10))
 
         # Entry boxes, drop downs and date picker for party form
         self.om_band_name = StringVar()
@@ -46,6 +46,7 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
             self.band_name_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_band_name.set(v))
 
     def band_name_check(self):
+        """ensures band cannot be double booked"""
         self.OpmBandName.config(state="normal")
 
         self.band_name_option_menu_menu = self.OpmBandName.children["menu"]
@@ -56,6 +57,7 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
                                                         command=lambda v=value: self.om_band_name.set(v))
 
     def party_room_check(self):
+        """ensures room cannot be double booked"""
         self.OpmEventRoomNumber.config(state="normal")
 
         self.room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
@@ -71,6 +73,7 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
             self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
     def validation(self, booking):
+        """checks validation is passed and calls a dialog box if it fails"""
         val_passed = True
 
         if Validation.string_empty(self.save_list()):
@@ -100,6 +103,7 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
             self.master.destroy()
 
     def save_list(self):
+        """saves entries to a list that is used for validation"""
         validation_test_list = [self.EntNumberOfGuest.get(), self.EntNameOfContact.get(), self.EntAddress.get(),
                                 self.EntContactNumber.get(), self.om_room_val.get(), self.display_date.get(),
                                 self.om_band_name.get()]

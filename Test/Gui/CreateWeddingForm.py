@@ -51,6 +51,7 @@ class BookWedding(Gui.BaseCreateForm.BaseEvent):
         self.display_date.trace('w', lambda name, index, mode: [self.wedding_room_check(), self.band_name_check()])
 
     def band_name_check(self):
+        """ensures band cannot be double booked"""
         self.OpmBandName.config(state="normal")
 
         band_name_option_menu_menu = self.OpmBandName.children["menu"]
@@ -60,6 +61,7 @@ class BookWedding(Gui.BaseCreateForm.BaseEvent):
             band_name_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_band_name.set(v))
 
     def wedding_room_check(self):
+        """ensures room cannot be double booked"""
         self.OpmEventRoomNumber.config(state="normal")
 
         room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
@@ -75,6 +77,7 @@ class BookWedding(Gui.BaseCreateForm.BaseEvent):
 
     # validation
     def validation(self):
+        """checks validation is passed and calls a dialog box if it fails"""
         val_passed = True
 
         if Validation.string_empty(self.save_list()):
@@ -108,6 +111,7 @@ class BookWedding(Gui.BaseCreateForm.BaseEvent):
             self.master.destroy()
 
     def save_list(self):
+        """saves entries to a list that is used for validation"""
         validation_test_list = [self.EntNumberOfGuest.get(), self.EntNameOfContact.get(), self.EntAddress.get(),
                                 self.EntContactNumber.get(), self.om_room_val.get(), self.display_date.get(),
                                 self.om_band_name.get(), self.EntBedroomReserved.get()]
