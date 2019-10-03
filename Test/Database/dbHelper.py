@@ -3,7 +3,7 @@
 import datetime
 import sqlite3
 from Events import Conference, Wedding, Party
-import constances
+import constants
 
 dbconn = sqlite3.connect('Database\events.db')
 
@@ -347,13 +347,13 @@ def rooms_in_use(event_type, date, number_of_days=1):
     available_rooms = []
 
     if event_type == "weddingTable":
-        room_options = constances.WEDDING_ROOM_OPTION
+        room_options = constants.WEDDING_ROOM_OPTION
         cursor.execute(wedding_party_query)
     elif event_type == "partyTable":
-        room_options = constances.PARTY_ROOM_OPTIONS
+        room_options = constants.PARTY_ROOM_OPTIONS
         cursor.execute(wedding_party_query)
     else:
-        room_options = constances.CONFERENCE_ROOM_OPTIONS
+        room_options = constants.CONFERENCE_ROOM_OPTIONS
         cursor.execute(conference_query)
 
     for row in cursor.fetchall():
@@ -388,13 +388,13 @@ def rooms_in_use_update(event_type, date, id, number_of_days=1):
     # room_options = []
 
     if event_type == "weddingTable":
-        room_options = constances.WEDDING_ROOM_OPTION
+        room_options = constants.WEDDING_ROOM_OPTION
         cursor.execute(wedding_party_query)
     elif event_type == "partyTable":
-        room_options = constances.PARTY_ROOM_OPTIONS
+        room_options = constants.PARTY_ROOM_OPTIONS
         cursor.execute(wedding_party_query)
     else:
-        room_options = constances.CONFERENCE_ROOM_OPTIONS
+        room_options = constants.CONFERENCE_ROOM_OPTIONS
         cursor.execute(conference_query)
 
     for row in cursor.fetchall():
@@ -420,7 +420,7 @@ def bands_in_use(date):
     unavailable_bands = []
     available_bands = []
 
-    room_options = constances.BAND_OPTIONS
+    room_options = constants.BAND_OPTIONS
 
     for query in query_list:
         cursor.execute(query)
@@ -455,7 +455,7 @@ def bands_in_use_update(event_type, date, id):
     unavailable_bands = []
     available_bands = []
 
-    room_options = constances.BAND_OPTIONS
+    room_options = constants.BAND_OPTIONS
 
     for query in query_list:
         cursor.execute(query)

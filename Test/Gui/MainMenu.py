@@ -1,11 +1,14 @@
 """Module contains class used to create main menu UI and functions used to open other forms from the main menu"""
 
 from tkinter import *
+from tkinter.messagebox import askyesno
+
 from Gui import viewbooking
 import Gui.CreateWeddingForm
 import Gui.CreatePartyForm
 import Gui.CreateConferenceForm
 import Gui.viewbooking
+from tkinter import messagebox
 
 
 # Functions to call various pop-ups
@@ -37,12 +40,19 @@ def call_conference_popup():
 
 
 def call_viewbookings_popup():
-    """function used to open viewbookings form form"""
+    """function used to open viewbookings form"""
     top = Toplevel()
     Gui.viewbooking.FrmViewBooking(top)
     top.grab_set()
     top.wait_window()
     top.destroy()
+
+
+def call_quit(self):
+    """function used to call quit message box"""
+    # dialog box pops up
+    if askyesno('Quit', 'Do you want to quit?', parent=self):
+        self.destroy()
 
 
 class MainMenu:
@@ -82,6 +92,13 @@ class MainMenu:
         def on_leave_view_bookings():
             btn_view_bookings['background'] = "medium aquamarine"
 
+        # button hover colour - quit
+        def on_enter_quit():
+            btn_quit['background'] = "aquamarine4"
+
+        def on_leave_quit():
+            btn_quit['background'] = "medium aquamarine"
+
         # adding UI elements to the form
         # Main menu Title
 
@@ -107,12 +124,17 @@ class MainMenu:
                                    width=30, height=4, bg="medium aquamarine", command=call_viewbookings_popup)
         btn_view_bookings.bind("<Enter>", lambda e: on_enter_view_bookings())
         btn_view_bookings.bind("<Leave>", lambda e: on_leave_view_bookings())
+        btn_quit = Button(self.main_menu, text="Quit", font=("arial", 12, "bold"),
+                          width=30, height=4, bg="medium aquamarine", command=lambda: call_quit(self.main_menu))
+        btn_quit.bind("<Enter>", lambda e: on_enter_quit())
+        btn_quit.bind("<Leave>", lambda e: on_leave_quit())
 
         # Main menu buttons being placed using grid layout
         btn_book_wedding.grid(row=2, column=0, pady=(25, 5))
         btn_book_party.grid(row=3, column=0, pady=(25, 5))
         btn_book_conference.grid(row=4, column=0, pady=(25, 5))
-        btn_view_bookings.grid(row=5, column=0, pady=(25, 25))
+        btn_view_bookings.grid(row=5, column=0, pady=(25, 5))
+        btn_quit.grid(row=6, column=0, pady=(25, 25))
 
         # calling the main menu loop
         self.main_menu.mainloop()
