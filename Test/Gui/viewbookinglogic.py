@@ -7,9 +7,10 @@ from Events import Wedding, Party, Conference
 from tkinter import *
 from Gui import DialogBoxes
 from tkinter import messagebox
-from addtionalWidgets import CalendarWidget, CurrencyConvert
+from addtionalWidgets import CalendarWidget
+import CurrencyConvert
 from Gui import EditPartyForm, EditWeddingForm, EditConferenceForm
-import Events.Invoice
+import Invoice.Invoice
 
 # global to store data from database so all functions can use it and reduce calls on the database
 data_list = []
@@ -204,7 +205,7 @@ def update_price_breakdown(self, booking):
         self.lblBandCost.config(text="Cost Per Day:")
 
         self.lblDisBandCost.config(text=CurrencyConvert.pound_string(booking.guests_cost()) + '   ( * ' +
-                                   str(booking.noOfDays) + " days)")
+                                        str(booking.noOfDays) + " days)")
     else:
         self.lblBandCost.config(text="Band Price")
         self.lblDisBandCost.config(text=CurrencyConvert.pound_string(booking.bandPrice))
@@ -364,7 +365,7 @@ def get_selected_db_entry(self):
         for booking_list in data_list:
             for booking in booking_list:
                 if types == "Wedding":
-                    if isinstance(booking, Events.Wedding.Wedding):
+                    if isinstance(booking, Wedding.Wedding):
                         if booking.ID == row_id:
                             return booking
                 elif types == "Party":
@@ -424,43 +425,43 @@ def invoice(self):
 
         # changes the labels depending on the ID and event type
         if type(booking) == Wedding.Wedding:
-            return Events.Invoice.invoice(address=booking.address, invoice_type="Wedding",
-                                          cost_per_head=CurrencyConvert.pound_string(booking.costPerHead),
-                                          number_of_guests=booking.noGuests,
-                                          band_name=booking.bandName,
-                                          band_cost=CurrencyConvert.pound_string(booking.bandPrice),
-                                          number_of_days="N/A",
-                                          guests_cost=CurrencyConvert.pound_string(booking.guests_cost()),
-                                          cost_per_day="N/A",
-                                          sub_total=CurrencyConvert.pound_string(booking.gross_total()),
-                                          VAT=CurrencyConvert.pound_string(booking.vat()),
-                                          total=CurrencyConvert.pound_string(booking.net_total()),
-                                          file_name=load_file())
+            return Invoice.Invoice.invoice(address=booking.address, invoice_type="Wedding",
+                                           cost_per_head=CurrencyConvert.pound_string(booking.costPerHead),
+                                           number_of_guests=booking.noGuests,
+                                           band_name=booking.bandName,
+                                           band_cost=CurrencyConvert.pound_string(booking.bandPrice),
+                                           number_of_days="N/A",
+                                           guests_cost=CurrencyConvert.pound_string(booking.guests_cost()),
+                                           cost_per_day="N/A",
+                                           sub_total=CurrencyConvert.pound_string(booking.gross_total()),
+                                           vat=CurrencyConvert.pound_string(booking.vat()),
+                                           total=CurrencyConvert.pound_string(booking.net_total()),
+                                           file_name=load_file())
         elif type(booking) == Party.Party:
-            return Events.Invoice.invoice(address=booking.address, invoice_type="Party",
-                                          cost_per_head=CurrencyConvert.pound_string(booking.costPerHead),
-                                          number_of_guests=booking.noGuests,
-                                          band_name=booking.bandName,
-                                          band_cost=CurrencyConvert.pound_string(booking.bandPrice),
-                                          number_of_days="N/A",
-                                          guests_cost=CurrencyConvert.pound_string(booking.guests_cost()),
-                                          cost_per_day="N/A",
-                                          sub_total=CurrencyConvert.pound_string(booking.gross_total()),
-                                          VAT=CurrencyConvert.pound_string(booking.vat()),
-                                          total=CurrencyConvert.pound_string(booking.net_total()),
-                                          file_name=load_file())
+            return Invoice.Invoice.invoice(address=booking.address, invoice_type="Party",
+                                           cost_per_head=CurrencyConvert.pound_string(booking.costPerHead),
+                                           number_of_guests=booking.noGuests,
+                                           band_name=booking.bandName,
+                                           band_cost=CurrencyConvert.pound_string(booking.bandPrice),
+                                           number_of_days="N/A",
+                                           guests_cost=CurrencyConvert.pound_string(booking.guests_cost()),
+                                           cost_per_day="N/A",
+                                           sub_total=CurrencyConvert.pound_string(booking.gross_total()),
+                                           vat=CurrencyConvert.pound_string(booking.vat()),
+                                           total=CurrencyConvert.pound_string(booking.net_total()),
+                                           file_name=load_file())
         elif type(booking) == Conference.Conference:
-            return Events.Invoice.invoice(address=booking.address, invoice_type="Conference",
-                                          cost_per_head=CurrencyConvert.pound_string(booking.costPerHead),
-                                          number_of_guests=booking.noGuests,
-                                          band_name="N/A", band_cost="N/A",
-                                          number_of_days=booking.noOfDays,
-                                          guests_cost=CurrencyConvert.pound_string(booking.guests_cost()),
-                                          cost_per_day=CurrencyConvert.pound_string(booking.guests_cost()),
-                                          sub_total=CurrencyConvert.pound_string(booking.gross_total()),
-                                          VAT=CurrencyConvert.pound_string(booking.vat()),
-                                          total=CurrencyConvert.pound_string(booking.net_total()),
-                                          file_name=load_file())
+            return Invoice.Invoice.invoice(address=booking.address, invoice_type="Conference",
+                                           cost_per_head=CurrencyConvert.pound_string(booking.costPerHead),
+                                           number_of_guests=booking.noGuests,
+                                           band_name="N/A", band_cost="N/A",
+                                           number_of_days=booking.noOfDays,
+                                           guests_cost=CurrencyConvert.pound_string(booking.guests_cost()),
+                                           cost_per_day=CurrencyConvert.pound_string(booking.guests_cost()),
+                                           sub_total=CurrencyConvert.pound_string(booking.gross_total()),
+                                           vat=CurrencyConvert.pound_string(booking.vat()),
+                                           total=CurrencyConvert.pound_string(booking.net_total()),
+                                           file_name=load_file())
     except Exception as e:
         print(e)
         return DialogBoxes.select_row(self)

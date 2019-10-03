@@ -31,11 +31,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="M:\GitHub\Hotel-Booking-System-training\Test" />
+      <recent name="M:\GitHub\Hotel-Booking-System-training\Test\Invoice" />
       <recent name="M:\GitHub\Hotel-Booking-System-training\Test\Invoice Template" />
       <recent name="M:\GitHub\Test30\Test\Gui" />
       <recent name="M:\GitHub\Test30\Test\addtionalWidgets" />
-      <recent name="M:\GitHub\Test30\Test\Database" />
-      <recent name="M:\GitHub\Test30\Test\Events" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -63,7 +63,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Events/Invoice.py" />
+      <option name="SCRIPT_NAME" value="M:\GitHub\Hotel-Booking-System-training\Test\Invoice\Invoice.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
