@@ -272,6 +272,9 @@ def search(self):
     """function that calls dbhelper functions to search db"""
     events_list = []
 
+    if self.checkVarConference.get() == "" and self.checkVarWedding.get() == "" and self.checkVarParty.get() == "":
+        return messagebox.showinfo("Bad search criteria","At least one event type must be chosen", parent=self)
+
     if self.checkVarWedding.get() != "":
         events_list.append(self.checkVarWedding.get())
     if self.checkVarParty.get() != "":
@@ -279,7 +282,13 @@ def search(self):
     if self.checkVarConference.get() != "":
         events_list.append(self.checkVarConference.get())
 
+    if self.EntStartDate.get() != "" and self.EntEndDate.get() != "":
+        if datetime.datetime.strptime(self.EntEndDate.get(), "%Y-%m-%d").date() < datetime.datetime.strptime(
+                self.EntStartDate.get(), "%Y-%m-%d").date():
+            return messagebox.showinfo("Bad search criteria", "End date must be greater than start date", parent=self)
+
     self.treeview.delete(*self.treeview.get_children())
+
     search_results_list = dbHelper.search(events_list, self.EntStartDate.get(), self.EntEndDate.get())
     if len(search_results_list) == 0:
         cal_income(self)
