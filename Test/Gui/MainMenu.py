@@ -10,41 +10,43 @@ import Gui.viewbooking
 
 # Functions to call various pop-ups
 def call_wedding_popup():
+    """function used to open create wedding form"""
     top = Toplevel()
-    ui = Gui.CreateWeddingForm.BookWedding(top)
+    Gui.CreateWeddingForm.BookWedding(top)
     top.grab_set()
     top.wait_window()
     top.destroy()
 
 
 def call_party_popup():
+    """function used to open create party form"""
     top = Toplevel()
-    ui = Gui.CreatePartyForm.BookParty(top)
+    Gui.CreatePartyForm.BookParty(top)
     top.grab_set()
     top.wait_window()
     top.destroy()
 
 
 def call_conference_popup():
+    """function used to open create conference form"""
     top = Toplevel()
-    ui = Gui.CreateConferenceForm.BookConference(top)
+    Gui.CreateConferenceForm.BookConference(top)
     top.grab_set()
     top.wait_window()
     top.destroy()
 
 
-def call_viewBookings_popup():
+def call_viewbookings_popup():
+    """function used to open viewbookings form form"""
     top = Toplevel()
-    ui = Gui.viewbooking.FrmViewBooking(top)
+    Gui.viewbooking.FrmViewBooking(top)
     top.grab_set()
     top.wait_window()
     top.destroy()
 
 
-##########################################       MAIN MENU      ###################################################
-
-# Main menu of application used to access all other forms
 class MainMenu:
+    """Main menu UI of application used to access all other forms in application"""
     def __init__(self):
         # creates form, removes maximise button on form, adds form title and adds background colour
         self.main_menu = Tk()
@@ -53,32 +55,32 @@ class MainMenu:
         self.main_menu.config(background="#70ABAF")
 
         # button hover colour - wedding
-        def on_enter_wedding(e):
-            btnBookWedding['background'] = "aquamarine4"
+        def on_enter_wedding():
+            btn_book_wedding['background'] = "aquamarine4"
 
-        def on_leave_wedding(e):
-            btnBookWedding['background'] = "medium aquamarine"
+        def on_leave_wedding():
+            btn_book_wedding['background'] = "medium aquamarine"
 
         # button hover colour - party
-        def on_enter_party(e):
-            btnBookParty['background'] = "aquamarine4"
+        def on_enter_party():
+            btn_book_party['background'] = "aquamarine4"
 
-        def on_leave_party(e):
-            btnBookParty['background'] = "medium aquamarine"
+        def on_leave_party():
+            btn_book_party['background'] = "medium aquamarine"
 
         # button hover colour - conference
-        def on_enter_conference(e):
-            btnBookConference['background'] = "aquamarine4"
+        def on_enter_conference():
+            btn_book_conference['background'] = "aquamarine4"
 
-        def on_leave_conference(e):
-            btnBookConference['background'] = "medium aquamarine"
+        def on_leave_conference():
+            btn_book_conference['background'] = "medium aquamarine"
 
         # button hover colour - view bookings
-        def on_enter_view_bookings(e):
-            btnViewBookings['background'] = "aquamarine4"
+        def on_enter_view_bookings():
+            btn_view_bookings['background'] = "aquamarine4"
 
-        def on_leave_view_bookings(e):
-            btnViewBookings['background'] = "medium aquamarine"
+        def on_leave_view_bookings():
+            btn_view_bookings['background'] = "medium aquamarine"
 
         # adding UI elements to the form
         # Main menu Title
@@ -89,28 +91,28 @@ class MainMenu:
             .grid(row=1, pady=(25, 0), padx=(10, 10))
 
         # Main menu buttons with styling that redirect to our other windows
-        btnBookWedding = Button(self.main_menu, text="Add Wedding Booking", font=("arial", 12, "bold"),
-                                width=30, height=4, bg="medium aquamarine", command=call_wedding_popup)
-        btnBookWedding.bind("<Enter>", on_enter_wedding)
-        btnBookWedding.bind("<Leave>", on_leave_wedding)
-        btnBookParty = Button(self.main_menu, text="Add Party Booking", font=("arial", 12, "bold"),
-                              width=30, height=4, bg="medium aquamarine", command=call_party_popup)
-        btnBookParty.bind("<Enter>", on_enter_party)
-        btnBookParty.bind("<Leave>", on_leave_party)
-        btnBookConference = Button(self.main_menu, text="Add Conference Booking", font=("arial", 12, "bold"),
-                                   width=30, height=4, bg="medium aquamarine", command=call_conference_popup)
-        btnBookConference.bind("<Enter>", on_enter_conference)
-        btnBookConference.bind("<Leave>", on_leave_conference)
-        btnViewBookings = Button(self.main_menu, text="View, edit and delete Bookings", font=("arial", 12, "bold"),
-                                 width=30, height=4, bg="medium aquamarine", command=call_viewBookings_popup)
-        btnViewBookings.bind("<Enter>", on_enter_view_bookings)
-        btnViewBookings.bind("<Leave>", on_leave_view_bookings)
+        btn_book_wedding = Button(self.main_menu, text="Add Wedding Booking", font=("arial", 12, "bold"),
+                                  width=30, height=4, bg="medium aquamarine", command=call_wedding_popup)
+        btn_book_wedding.bind("<Enter>", lambda e: on_enter_wedding())
+        btn_book_wedding.bind("<Leave>", lambda e: on_leave_wedding())
+        btn_book_party = Button(self.main_menu, text="Add Party Booking", font=("arial", 12, "bold"),
+                                width=30, height=4, bg="medium aquamarine", command=call_party_popup)
+        btn_book_party.bind("<Enter>", lambda e: on_enter_party())
+        btn_book_party.bind("<Leave>", lambda e: on_leave_party())
+        btn_book_conference = Button(self.main_menu, text="Add Conference Booking", font=("arial", 12, "bold"),
+                                     width=30, height=4, bg="medium aquamarine", command=call_conference_popup)
+        btn_book_conference.bind("<Enter>", lambda e: on_enter_conference())
+        btn_book_conference.bind("<Leave>", lambda e: on_leave_conference())
+        btn_view_bookings = Button(self.main_menu, text="View, edit and delete Bookings", font=("arial", 12, "bold"),
+                                   width=30, height=4, bg="medium aquamarine", command=call_viewbookings_popup)
+        btn_view_bookings.bind("<Enter>", lambda e: on_enter_view_bookings())
+        btn_view_bookings.bind("<Leave>", lambda e: on_leave_view_bookings())
 
         # Main menu buttons being placed using grid layout
-        btnBookWedding.grid(row=2, column=0, pady=(25, 5))
-        btnBookParty.grid(row=3, column=0, pady=(25, 5))
-        btnBookConference.grid(row=4, column=0, pady=(25, 5))
-        btnViewBookings.grid(row=5, column=0, pady=(25, 25))
+        btn_book_wedding.grid(row=2, column=0, pady=(25, 5))
+        btn_book_party.grid(row=3, column=0, pady=(25, 5))
+        btn_book_conference.grid(row=4, column=0, pady=(25, 5))
+        btn_view_bookings.grid(row=5, column=0, pady=(25, 25))
 
         # calling the main menu loop
         self.main_menu.mainloop()
