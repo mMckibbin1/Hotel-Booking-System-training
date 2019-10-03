@@ -101,5 +101,3 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
                                 self.EntContactNumber.get(), self.om_room_val.get(), self.display_date.get(),
                                 self.om_band_name.get()]
         return validation_test_list
-
-

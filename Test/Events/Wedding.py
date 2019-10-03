@@ -7,8 +7,6 @@ import datetime
 from Database import dbHelper
 
 
-
-
 class Wedding(Events.BaseEvent.BaseEventObj):
 
     bandPrice = 0

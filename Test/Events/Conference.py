@@ -6,8 +6,6 @@ import Events.BaseEvent
 from Database import dbHelper
 
 
-
-
 class Conference(Events.BaseEvent.BaseEventObj):
 
     def __init__(self, no_guests, name_of_contact, address, contact_no, event_room_no, date_of_event, date_of_booking,
@@ -20,9 +18,11 @@ class Conference(Events.BaseEvent.BaseEventObj):
         self.costPerHead = 20.0
 
     def guests_cost(self):
+        """function calculates the total cost for guests"""
         return self.costPerHead * self.noGuests
 
     def gross_total(self):
+        """"""
         return float(self.costPerHead * self.noGuests) * self.noOfDays
 
     def vat(self):

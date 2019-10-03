@@ -19,8 +19,8 @@ class BaseEventObj:
         self.ID = ID
 
 
-# method used to set band price depending on what band is selected by user
 def cal_band_price(band_name):
+    """method used to set band price depending on what band is selected by user"""
     if band_name == "Lil\' Febrezey":
         return 100
 

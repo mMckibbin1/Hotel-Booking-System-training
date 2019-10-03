@@ -5,8 +5,6 @@ import datetime
 from Database import dbHelper
 
 
-
-
 class Party(Events.BaseEvent.BaseEventObj):
 
     bandPrice = 0
