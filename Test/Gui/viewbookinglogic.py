@@ -15,52 +15,52 @@ import Events.Invoice
 data_list = []
 
 
-def call_update_wedding_popup(object, self, parent):
+def call_update_wedding_popup(booking, self, parent):
     """Opens update form for Wedding"""
     top = Toplevel()
-    EditWeddingForm.EditWedding(top, object, self)
+    EditWeddingForm.EditWedding(top, booking, self)
     top.grab_set()
     top.wait_window()
     top.destroy()
     parent.grab_set()
 
 
-def call_update_party_popup(object, self, parent):
+def call_update_party_popup(booking, self, parent):
     """Opens update form for Party"""
     top = Toplevel()
-    EditPartyForm.EditParty(top, object, self)
+    EditPartyForm.EditParty(top, booking, self)
     top.grab_set()
     top.wait_window()
     top.destroy()
     parent.grab_set()
 
 
-def call_update_conference_popup(object, self, parent):
+def call_update_conference_popup(booking, self, parent):
     """Opens update form for Conference"""
     top = Toplevel()
-    EditConferenceForm.EditConference(top, object, self)
+    EditConferenceForm.EditConference(top, booking, self)
     top.grab_set()
     top.wait_window()
     top.destroy()
     parent.grab_set()
 
 
-def details_label_change(self, event_type, object):
+def details_label_change(self, event_type, booking):
     """function to change the labels shown, depending on the event type selected in the tree view"""
     if event_type == 'Wedding':
         remove_all_labels(self)
-        add_wedding_labels(self, object)
-        update_price_breakdown(self, object)
+        add_wedding_labels(self, booking)
+        update_price_breakdown(self, booking)
 
     elif event_type == 'Party':
         remove_all_labels(self)
-        add_party_labels(self, object)
-        update_price_breakdown(self, object)
+        add_party_labels(self, booking)
+        update_price_breakdown(self, booking)
 
     elif event_type == 'Conference':
         remove_all_labels(self)
-        add_conference_labels(self, object)
-        update_price_breakdown(self, object)
+        add_conference_labels(self, booking)
+        update_price_breakdown(self, booking)
 
     else:
         remove_all_labels(self)
@@ -111,7 +111,7 @@ def remove_all_labels(self):
     self.lblDisTotal.grid_remove()
 
 
-def add_base_labels(self, object):
+def add_base_labels(self, booking):
     """adds the labels that are consistent throughout all event types"""
     self.lblNoOfGuests.grid()
     self.lblDisNoOfGuests.grid()
@@ -123,15 +123,15 @@ def add_base_labels(self, object):
     self.lblDisCostPerHead.grid()
 
     # additional info labels
-    self.lblDisNoOfGuests.config(text=object.noGuests)
-    self.lblDisAddress.config(text=object.address)
-    self.lblDisDateOfBooking.config(text=object.dateOfBooking)
-    self.lblDisCostPerHead.config(text=CurrencyConvert.pound_string(object.costPerHead))
+    self.lblDisNoOfGuests.config(text=booking.noGuests)
+    self.lblDisAddress.config(text=booking.address)
+    self.lblDisDateOfBooking.config(text=booking.dateOfBooking)
+    self.lblDisCostPerHead.config(text=CurrencyConvert.pound_string(booking.costPerHead))
 
 
-def add_wedding_labels(self, object):
+def add_wedding_labels(self, booking):
     """adds the labels that are used for weddings"""
-    add_base_labels(self, object)
+    add_base_labels(self, booking)
     self.lblBandName.grid()
     self.lblDisBandName.grid()
     self.lblBandPrice.grid()
@@ -140,27 +140,27 @@ def add_wedding_labels(self, object):
     self.lblDisNoOfBedsReserved.grid()
 
     # additional info labels
-    self.lblDisBandName.config(text=object.bandName)
-    self.lblDisBandPrice.config(text=CurrencyConvert.pound_string(object.bandPrice))
-    self.lblDisNoOfBedsReserved.config(text=object.noBedroomsReserved)
+    self.lblDisBandName.config(text=booking.bandName)
+    self.lblDisBandPrice.config(text=CurrencyConvert.pound_string(booking.bandPrice))
+    self.lblDisNoOfBedsReserved.config(text=booking.noBedroomsReserved)
 
 
-def add_party_labels(self, object):
+def add_party_labels(self, booking):
     """adds the labels that are used for parties"""
-    add_base_labels(self, object)
+    add_base_labels(self, booking)
     self.lblBandName.grid()
     self.lblDisBandName.grid()
     self.lblBandPrice.grid()
     self.lblDisBandPrice.grid()
 
     # additional info labels
-    self.lblDisBandName.config(text=object.bandName)
-    self.lblDisBandPrice.config(text=CurrencyConvert.pound_string(object.bandPrice))
+    self.lblDisBandName.config(text=booking.bandName)
+    self.lblDisBandPrice.config(text=CurrencyConvert.pound_string(booking.bandPrice))
 
 
-def add_conference_labels(self, object):
+def add_conference_labels(self, booking):
     """adds the labels that are used for conferences"""
-    add_base_labels(self, object)
+    add_base_labels(self, booking)
     self.lblCompanyName.grid()
     self.lblDisCompanyName.grid()
     self.lblNumberOfDays.grid()
@@ -169,16 +169,16 @@ def add_conference_labels(self, object):
     self.lblDisProjectorRequired.grid()
 
     # additional info labels
-    self.lblDisCompanyName.config(text=object.companyName)
-    self.lblDisNumberOfDays.config(text=object.noOfDays)
-    self.lblDisProjectorRequired.config(text=object.projectorRequired)
+    self.lblDisCompanyName.config(text=booking.companyName)
+    self.lblDisNumberOfDays.config(text=booking.noOfDays)
+    self.lblDisProjectorRequired.config(text=booking.projectorRequired)
 
 
-def update_price_breakdown(self, object):
+def update_price_breakdown(self, booking):
     """functions to allow the labels to change in the price breakdown labelframe"""
 
     # Label for guest price
-    self.lblDisGuestPrice.config(text=CurrencyConvert.pound_string(object.guests_cost()))
+    self.lblDisGuestPrice.config(text=CurrencyConvert.pound_string(booking.guests_cost()))
 
     self.lblGuestPrice.grid()
     self.lblDisGuestPrice.grid()
@@ -200,36 +200,35 @@ def update_price_breakdown(self, object):
     self.lblDisTotal.grid()
 
     # changes the labels if the event type is a conference
-    if type(object) == Conference.Conference:
+    if type(booking) == Conference.Conference:
         self.lblBandCost.config(text="Cost Per Day:")
 
-        self.lblDisBandCost.config(text=CurrencyConvert.pound_string(object.guests_cost()) + '   ( * ' +
-                                        str(object.noOfDays) + " days)")
+        self.lblDisBandCost.config(text=CurrencyConvert.pound_string(booking.guests_cost()) + '   ( * ' +
+                                   str(booking.noOfDays) + " days)")
     else:
         self.lblBandCost.config(text="Band Price")
-        self.lblDisBandCost.config(text=CurrencyConvert.pound_string(object.bandPrice))
+        self.lblDisBandCost.config(text=CurrencyConvert.pound_string(booking.bandPrice))
 
     # labels for totals
-    self.lblDisSubTotal.config(text=CurrencyConvert.pound_string(object.gross_total()))
-    self.lblDisVat.config(text=CurrencyConvert.pound_string(object.vat()))
-    self.lblDisTotal.config(text=CurrencyConvert.pound_string(object.net_total()))
+    self.lblDisSubTotal.config(text=CurrencyConvert.pound_string(booking.gross_total()))
+    self.lblDisVat.config(text=CurrencyConvert.pound_string(booking.vat()))
+    self.lblDisTotal.config(text=CurrencyConvert.pound_string(booking.net_total()))
 
 
-
-def calendar_popup(event, entry_field, master, root):
+def calendar_popup(entry_field, master, root):
     """function to display calendar widget for date of event"""
     child = Toplevel()
     child.title("Select A Date")
-    cal = CalendarWidget.Calendar(child, master.data)
+    CalendarWidget.Calendar(child, master.data)
     root.grab_release()
     child.grab_set()
     child.wait_window()
     child.grab_release()
     root.grab_set()
-    get_selected_date(master, event, entry_field)
+    get_selected_date(master, entry_field)
 
 
-def get_selected_date(self, event, entry_field):
+def get_selected_date(self, entry_field):
     """function to get the selected date from calendar widget and display it as a formatted string"""
 
     day = self.data.get("day_selected", "date error")
@@ -250,7 +249,6 @@ def get_selected_date(self, event, entry_field):
         self.display_end_date.set(format_date)
 
 
-
 def cal_income(master):
     """function that calculates the total income of selected booking in treeview"""
     total_income = 0.0
@@ -263,12 +261,10 @@ def cal_income(master):
         master.lblTotalIncome.config(text=CurrencyConvert.pound_string(total_income))
 
 
-
-def insert_data(self, ID, event_type, name_of_contact, contact_no, date_of_event, event_room_no, net_total):
+def insert_data(self, id_num, event_type, name_of_contact, contact_no, date_of_event, event_room_no, net_total):
     """function that adds data to treeview"""
-    self.treeview.insert('', 'end', text=ID,
+    self.treeview.insert('', 'end', text=id_num,
                          values=(event_type, name_of_contact, contact_no, date_of_event, event_room_no, net_total))
-
 
 
 def search(self):
@@ -289,48 +285,46 @@ def search(self):
         select_first_row_(self)
         return messagebox.showinfo('No Results',
                                    'No results found.', parent=self.master2)
-    for object in search_results_list:
-        if type(object) == Wedding.Wedding:
-            insert_data(self, object.ID, "Wedding", object.nameOfContact,
-                        object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                        CurrencyConvert.pound_string(object.net_total()))
-        elif type(object) == Party.Party:
-            insert_data(self, object.ID, "Party", object.nameOfContact,
-                        object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                        CurrencyConvert.pound_string(object.net_total()))
-        elif type(object) == Conference.Conference:
-            insert_data(self, object.ID, "Conference", object.nameOfContact,
-                        object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                        CurrencyConvert.pound_string(object.net_total()))
+    for booking in search_results_list:
+        if type(booking) == Wedding.Wedding:
+            insert_data(self, booking.ID, "Wedding", booking.nameOfContact,
+                        booking.contactNo, booking.dateOfEvent, booking.eventRoomNo,
+                        CurrencyConvert.pound_string(booking.net_total()))
+        elif type(booking) == Party.Party:
+            insert_data(self, booking.ID, "Party", booking.nameOfContact,
+                        booking.contactNo, booking.dateOfEvent, booking.eventRoomNo,
+                        CurrencyConvert.pound_string(booking.net_total()))
+        elif type(booking) == Conference.Conference:
+            insert_data(self, booking.ID, "Conference", booking.nameOfContact,
+                        booking.contactNo, booking.dateOfEvent, booking.eventRoomNo,
+                        CurrencyConvert.pound_string(booking.net_total()))
 
     cal_income(self)
     select_first_row_(self)
 
 
-
 def load_data(master):
-    """function to load the data from the database into the treeview and save the daata into a global list for other
+    """function to load the data from the database into the treeview and save the data into a global list for other
      functions to use"""
     data_base_list = dbHelper.read_all_from_db()
 
-    for list in data_base_list:
-        for object in list:
-            if type(object) == Wedding.Wedding:
-                insert_data(master, object.ID, "Wedding", object.nameOfContact,
-                            object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                            CurrencyConvert.pound_string(object.net_total()))
-            elif type(object) == Party.Party:
-                insert_data(master, object.ID, "Party", object.nameOfContact,
-                            object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                            CurrencyConvert.pound_string(object.net_total()))
-            elif type(object) == Conference.Conference:
-                insert_data(master, object.ID, "Conference", object.nameOfContact,
-                            object.contactNo, object.dateOfEvent, object.eventRoomNo,
-                            CurrencyConvert.pound_string(object.net_total()))
+    for booking_list in data_base_list:
+        for booking in booking_list:
+            if type(booking) == Wedding.Wedding:
+                insert_data(master, booking.ID, "Wedding", booking.nameOfContact,
+                            booking.contactNo, booking.dateOfEvent, booking.eventRoomNo,
+                            CurrencyConvert.pound_string(booking.net_total()))
+            elif type(booking) == Party.Party:
+                insert_data(master, booking.ID, "Party", booking.nameOfContact,
+                            booking.contactNo, booking.dateOfEvent, booking.eventRoomNo,
+                            CurrencyConvert.pound_string(booking.net_total()))
+            elif type(booking) == Conference.Conference:
+                insert_data(master, booking.ID, "Conference", booking.nameOfContact,
+                            booking.contactNo, booking.dateOfEvent, booking.eventRoomNo,
+                            CurrencyConvert.pound_string(booking.net_total()))
 
     global data_list
     data_list = data_base_list
-
 
 
 def clear_date(self):
@@ -347,47 +341,46 @@ def refresh_data(master):
     select_first_row_(master)
 
 
-
 def get_selected_db_entry(self):
     """function to return booking object for the selected row on treeview"""
     try:
         list_of_events = []
         global data_list
+        types = None
 
         # sets the current item as the highlighted row in the tree view
-        curItem = self.tree.focus()
+        cur_item = self.tree.focus()
 
         # sets the id
-        RowID = self.tree.item(curItem)['text']
+        row_id = self.tree.item(cur_item)['text']
 
         # adds the values in the tree view to a list
-        for value in self.tree.item(curItem)['values']:
+        for value in self.tree.item(cur_item)['values']:
             list_of_events.append(value)
 
             types = list_of_events[0]
 
         # changes the labels depending on the ID and event type
-        for list in data_list:
-            for object in list:
+        for booking_list in data_list:
+            for booking in booking_list:
                 if types == "Wedding":
-                    if isinstance(object, Events.Wedding.Wedding):
-                        if object.ID == RowID:
-                            return object
+                    if isinstance(booking, Events.Wedding.Wedding):
+                        if booking.ID == row_id:
+                            return booking
                 elif types == "Party":
-                    if type(object) == Party.Party:
-                        if object.ID == RowID:
-                            return object
+                    if type(booking) == Party.Party:
+                        if booking.ID == row_id:
+                            return booking
                 elif types == "Conference":
-                    if type(object) == Conference.Conference:
-                        if object.ID == RowID:
-                            return object
+                    if type(booking) == Conference.Conference:
+                        if booking.ID == row_id:
+                            return booking
     except Exception as e:
         print(e)
         raise
 
 
-
-def select_item(a, self):
+def select_item(self):
     """function that gets object from database that matches selects item from treeview"""
     # try except to make sure a row is selected
     try:
@@ -401,7 +394,6 @@ def select_item(a, self):
             return details_label_change(self, "Conference", booking)
     except Exception as e:
         print(e)
-
 
 
 def update_selected(self, parent):
@@ -495,43 +487,29 @@ def select_first_row_(self):
         remove_all_labels(self)
 
 
-
-def delete_data(self):
-    """delete data from treeview and database for selected event"""
-    # try except to check if a row is selected
+def is_row_selected_delete(self, master):
+    """function to check if a row is selected"""
     try:
         list_of_events = []
+        types = None
         cur_item = self.tree.focus()
         # sets the id to the id in the row
         row_id = self.tree.item(cur_item)['text']
 
         for value in self.tree.item(cur_item)['values']:
             list_of_events.append(value)
-            type = list_of_events[0]
+            types = list_of_events[0]
+        # if the row is not empty then the delete functions will be run
+        if row_id != "":
+            # asks user is there really want to delete or not
+            if DialogBoxes.delete(master):
+                dbHelper.deleteBooking(row_id, types)
+                messagebox.showinfo('Deleted', 'Booking Deleted', parent=master)
+                refresh_data(master=master)
 
-        dbHelper.deleteBooking(row_id, type)
-
+        # if it is empty user will be prompted to select a row
+        else:
+            # displays a prompt to select a row
+            DialogBoxes.select_row(self.master2)
     except Exception as e:
         print(e)
-        # displays a prompt to select a row
-        DialogBoxes.select_row(self.master2)
-
-
-def is_row_selected_delete(self, master):
-    """function to check if a row is selected"""
-    list_of_events = []
-    cur_item = self.tree.focus()
-    # sets the id to the id in the row
-    row_id = self.tree.item(cur_item)['text']
-
-    for value in self.tree.item(cur_item)['values']:
-        list_of_events.append(value)
-        type = list_of_events[0]
-    # if the row is not empty then the delete functions will be run
-    if row_id != "":
-        # asks user is there really want to delete or not
-        DialogBoxes.Delete(self, master)
-    # if it is empty user will be prompted to select a row
-    else:
-        # displays a prompt to select a row
-        DialogBoxes.select_row(self.master2)

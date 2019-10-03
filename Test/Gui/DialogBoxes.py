@@ -7,22 +7,33 @@ from tkinter import messagebox
 
 # delete dialog box
 # classes to display and accept response from a dialog box
-class Delete:
-    # dialog to confirm that user wants to delete booking from database
-    def __init__(self, vb_self, master):
+# class Delete:
+#     # dialog to confirm that user wants to delete booking from database
+#     def __init__(self, vb_self, master):
+#
+#         # dialog box pops up
+#         if askyesno('Delete', 'Do you want to delete this booking?', parent=master):
+#             return True
+#             # deletes booking
+#             viewbookinglogic.delete_data(vb_self)
+#             # informs user that booking is deleted
+#             showinfo('Deleted', 'Booking Deleted', parent=master)
+#             viewbookinglogic.refresh_data(master=master)
+#
+#         else:
+#             # informs user that booking is not deleted
+#             showinfo('Not Deleted', 'Booking Not Deleted', parent=master)
+#             return False
 
-        # dialog box pops up
-        if askyesno('Delete', 'Do you want to delete this booking?', parent=master):
-            # deletes booking
-            viewbookinglogic.delete_data(vb_self)
-            # informs user that booking is deleted
-            showinfo('Deleted', 'Booking Deleted', parent=master)
-            viewbookinglogic.refresh_data(master=master)
 
-        else:
-            # informs user that booking is not deleted
-            showinfo('Not Deleted', 'Booking Not Deleted', parent=master)
-
+def delete(master):
+    # dialog box pops up
+    if askyesno('Delete', 'Do you want to delete this booking?', parent=master):
+        return True
+    else:
+        # informs user that booking is not deleted
+        showinfo('Not Deleted', 'Booking Not Deleted', parent=master)
+        return False
 
 # updated dialog message box
 def updated(self, master, view_booking):

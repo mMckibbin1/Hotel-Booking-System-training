@@ -33,7 +33,7 @@ class FrmViewBooking(Tkinter.Frame):
         self.tree.heading('#4', text='Event Date')
         self.tree.heading('#5', text='Room Number')
         self.tree.heading('#6', text='Total Cost')
-        self.tree.bind('<ButtonRelease-1>', lambda e: Gui.viewbookinglogic.select_item(e, self))
+        self.tree.bind('<ButtonRelease-1>', lambda e: Gui.viewbookinglogic.select_item(self))
         self.tree.column('#0', width=100)  # column width auto size
         self.tree.column('#1', width=100)
         self.tree.column('#2', width=100)
@@ -132,7 +132,7 @@ class FrmViewBooking(Tkinter.Frame):
         self.EntStartDate = ttk.Entry(self.SelectLabelFrame, font=("arial", 10), width=30,
                                       textvariable=self.display_start_date, state="readonly")
         self.EntStartDate.grid(row=3, column=0, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
-        self.EntStartDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.calendar_popup(event, "EntStartDate",
+        self.EntStartDate.bind("<Button-1>", lambda event : Gui.viewbookinglogic.calendar_popup( "EntStartDate",
                                                                                                self.master2, master))
 
         ttk.Label(self.SelectLabelFrame, text="To", font=("arial", 10, "bold"),
@@ -142,7 +142,7 @@ class FrmViewBooking(Tkinter.Frame):
         self.EntEndDate = ttk.Entry(self.SelectLabelFrame, font=("arial", 10), width=30,
                                     textvariable=self.display_end_date, state="readonly")
         self.EntEndDate.grid(row=3, column=2, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
-        self.EntEndDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.calendar_popup(event, "EntEndDate",
+        self.EntEndDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.calendar_popup( "EntEndDate",
                                                                                              self.master2, master))
         self.data = {}
         self.btn_clear_date = Button(self.SelectLabelFrame, text="Clear Dates", width=13, height=2, background="snow",
