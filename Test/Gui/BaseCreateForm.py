@@ -82,7 +82,7 @@ class BaseEvent:
         self.display_date = StringVar()
         self.CalDateOfEvent = Entry(master, font=("arial", 10), width=50,
                                     textvariable=self.display_date, state="readonly")
-        self.CalDateOfEvent.bind("<Button-1>", lambda event: self.popup(event, master))
+        self.CalDateOfEvent.bind("<Button-1>", lambda event: self.popup(master))
         self.data = {}
 
         self.om_room_val = StringVar()
@@ -112,10 +112,10 @@ class BaseEvent:
         self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(50, 50), padx=(75, 25), sticky="ew")
         self.btnCloseForm.grid(row=10, column=3, columnspan=2, pady=(50, 50), padx=(75, 25), sticky="ew")
 
-    def popup(self, event, master):
+    def popup(self, master):
         """function to display calendar widget for date of event"""
         child = Toplevel()
-        cal = CalendarWidget.Calendar(child, self.data)
+        CalendarWidget.Calendar(child, self.data)
         master.grab_release()
         child.grab_set()
         child.wait_window()

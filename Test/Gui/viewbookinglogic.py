@@ -205,7 +205,7 @@ def update_price_breakdown(self, booking):
         self.lblBandCost.config(text="Cost Per Day:")
 
         self.lblDisBandCost.config(text=CurrencyConvert.pound_string(booking.guests_cost()) + '   ( * ' +
-                                        str(booking.noOfDays) + " days)")
+                                   str(booking.noOfDays) + " days)")
     else:
         self.lblBandCost.config(text="Band Price")
         self.lblDisBandCost.config(text=CurrencyConvert.pound_string(booking.bandPrice))

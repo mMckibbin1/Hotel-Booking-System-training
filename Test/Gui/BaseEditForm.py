@@ -14,7 +14,7 @@ class BaseEditEvent:
     """setting default values for eventRoom and BandName as empty strings"""
     eventRoomNo = ''
 
-    def __init__(self, master, object):
+    def __init__(self, master, booking):
         """Creation of wedding form set title, size ect..."""
         self.master = master
         self.master.title("Hotel Booking System - Base edit form")
@@ -84,7 +84,7 @@ class BaseEditEvent:
         self.display_date = StringVar()
         self.CalDateOfEvent = Entry(master, font=("arial", 10), width=50,
                                     textvariable=self.display_date, state="readonly")
-        self.CalDateOfEvent.bind("<Button-1>", lambda event: self.popup(event, master))
+        self.CalDateOfEvent.bind("<Button-1>", lambda event: self.popup(master))
         self.data = {}
 
         # Entry boxes, drop downs and date picker for edit form being placed using grid layout
@@ -110,32 +110,32 @@ class BaseEditEvent:
         self.btnUpdateBooking.grid(row=10, column=1, columnspan=1,  pady=(50, 50), padx=(75, 25), sticky="ew")
         self.btnCloseForm.grid(row=10, column=3, columnspan=2,  pady=(50, 50), padx=(75, 25), sticky="ew")
 
-        self.populate_form(object)
+        self.populate_form(booking)
 
         # code to per-populate event room drop down when form loads
         self.room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
         self.room_option_menu_menu.delete(0, "end")
-        self.om_room_val.set(object.eventRoomNo)
-        if type(object) == Wedding.Wedding:
+        self.om_room_val.set(booking.eventRoomNo)
+        if type(booking) == Wedding.Wedding:
             event_type = "weddingTable"
-            for value in dbHelper.rooms_in_use_update(event_type=event_type, id=object.ID,
+            for value in dbHelper.rooms_in_use_update(event_type=event_type, id=booking.ID,
                                                       date=self.display_date.get()):
                 self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
-        elif type(object) == Party.Party:
+        elif type(booking) == Party.Party:
             event_type = "partyTable"
-            for value in dbHelper.rooms_in_use_update(event_type=event_type, id=object.ID,
+            for value in dbHelper.rooms_in_use_update(event_type=event_type, id=booking.ID,
                                                       date=self.display_date.get()):
                 self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
-        elif type(object) == Conference.Conference:
+        elif type(booking) == Conference.Conference:
             event_type = "conferenceTable"
-            for value in dbHelper.rooms_in_use_update(event_type=event_type, id=object.ID,
-                                                      date=self.display_date.get(), number_of_days=object.noOfDays):
+            for value in dbHelper.rooms_in_use_update(event_type=event_type, id=booking.ID,
+                                                      date=self.display_date.get(), number_of_days=booking.noOfDays):
                 self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
-    def popup(self, event, master):
+    def popup(self, master):
         """function to display calendar widget for date of event"""
         child = Toplevel()
-        cal = CalendarWidget.Calendar(child, self.data)
+        CalendarWidget.Calendar(child, self.data)
         master.grab_release()
         child.grab_set()
         child.wait_window()
@@ -161,11 +161,11 @@ class BaseEditEvent:
         else:
             self.display_date.set(format_date)
 
-    def populate_form(self, object):
+    def populate_form(self, booking):
         """populates form with booking info for selected booking"""
-        self.EntNumberOfGuest.insert(0, object.noGuests)
-        self.EntNameOfContact.insert(0, object.nameOfContact)
-        self.EntAddress.insert(0, object.address)
-        self.EntContactNumber.insert(0, object.contactNo)
-        self.display_date.set(object.dateOfEvent)
-        self.om_room_val.set(object.eventRoomNo)
+        self.EntNumberOfGuest.insert(0, booking.noGuests)
+        self.EntNameOfContact.insert(0, booking.nameOfContact)
+        self.EntAddress.insert(0, booking.address)
+        self.EntContactNumber.insert(0, booking.contactNo)
+        self.display_date.set(booking.dateOfEvent)
+        self.om_room_val.set(booking.eventRoomNo)
