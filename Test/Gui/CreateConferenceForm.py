@@ -19,8 +19,8 @@ class BookConference(Gui.BaseCreateForm.BaseEvent):
         master.resizable(0, 0)
         master.config(background="#70ABAF")
 
-        # method to get value of checkbutton
         def ch_box_sel():
+            """method to get value of checkbutton"""
             print(self.CheckVar1.get())
 
         # Labels for Conference booking form
@@ -67,6 +67,7 @@ class BookConference(Gui.BaseCreateForm.BaseEvent):
         self.om_room_val.set("Pick a date and duration first")
 
     def conference_room_check(self):
+        """ensures rooms cannot be double booked"""
         if not self.number_of_days.get() or not self.display_date.get():
             self.om_room_val.set("Pick a date and duration first")
             self.OpmEventRoomNumber.config(state="disabled")
@@ -79,7 +80,7 @@ class BookConference(Gui.BaseCreateForm.BaseEvent):
         self.om_room_val.set("Pick a room")
 
         rooms_free = dbHelper.rooms_in_use("conferenceTable", self.display_date.get(), int(self.number_of_days.get()))
-        if len(rooms_free) <1:
+        if len(rooms_free) < 1:
             self.om_room_val.set("No Rooms Free")
             return
         for value in rooms_free:
@@ -87,6 +88,7 @@ class BookConference(Gui.BaseCreateForm.BaseEvent):
 
     # validation
     def validation(self):
+        """checks validation is passed and calls a dialog box if it fails"""
         val_passed = True
 
         if Validation.string_empty(self.save_list()):
@@ -105,6 +107,9 @@ class BookConference(Gui.BaseCreateForm.BaseEvent):
             return messagebox.showinfo("Booking Failed", "Must have more than one guest.\n"
                                                          "The duration of the event must be at least one day.",
                                        parent=self.master)
+        elif not Validation.contact_number_val(self.EntContactNumber.get(), self.EntContactNumber, self.master):
+            val_passed = False
+            return
 
         if val_passed:
             Events.Conference.create_conference(
@@ -122,6 +127,7 @@ class BookConference(Gui.BaseCreateForm.BaseEvent):
             self.master.destroy()
 
     def save_list(self):
+        """saves entries to a list that is used for validation"""
         validation_test_list = [self.EntNumberOfGuest.get(), self.EntNameOfContact.get(), self.EntAddress.get(),
                                 self.EntContactNumber.get(), self.om_room_val.get(), self.display_date.get(),
                                 self.EntCompanyName.get(), self.EntNoOfDays.get()]

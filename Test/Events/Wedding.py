@@ -22,21 +22,25 @@ class Wedding(Events.BaseEvent.BaseEventObj):
         self.bandPrice = Events.BaseEvent.cal_band_price(band_name)
 
     def guests_cost(self):
+        """calculates total guest cost"""
         return self.costPerHead * self.noGuests
 
     def vat(self):
+        """calculates vat"""
         return self.gross_total() / 5
 
     def gross_total(self):
+        """calculates gross total"""
         return float(self.costPerHead * self.noGuests) + self.bandPrice
 
     def net_total(self):
+        """calculates overall total"""
         return self.gross_total() + self.vat()
 
 
-# method to take data from form and add additional required data in order to create object to save to database
 def create_wedding(no_of_guest, name_of_contact, address, contact_no, event_room_number, date_of_event, band_name,
                    bedrooms_res):
+    """method to take data from form and add additional required data in order to create object to save to database"""
 
     ID = None
     band_price = 0
@@ -47,9 +51,9 @@ def create_wedding(no_of_guest, name_of_contact, address, contact_no, event_room
     return dbHelper.insertwedding(new_wedding)
 
 
-# method to take data from form and update the selected booking
 def update_wedding(no_of_guest, name_of_contact, address, contact_no, event_room_number, date_of_event, date_of_booking,
                    band_name, bedrooms_res, ID):
+    """method to take data from form and update the selected booking"""
 
     band_price = 0
 

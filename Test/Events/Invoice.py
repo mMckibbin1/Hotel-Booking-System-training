@@ -8,6 +8,8 @@ from addtionalWidgets import CurrencyConvert
 
 def invoice(address, invoice_type, cost_per_head, number_of_guests, band_name, band_cost, number_of_days,
             guests_cost, cost_per_day, sub_total, VAT, total, file_name):
+    """uses template to mail-merge an invoice"""
+
     try:
         template = "M:\GitHub\Hotel-Booking-System-training\Test\Invoice Template\invoiceTemplate.docx"
 

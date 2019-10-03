@@ -84,6 +84,9 @@ class EditParty(Gui.BaseEditForm.BaseEditEvent):
         elif Validation.min_number([self.EntNumberOfGuest.get()]):
             val_passed = False
             return messagebox.showinfo("Booking Failed", "Must have more than one guest.", parent=self.master)
+        elif not Validation.contact_number_val(self.EntContactNumber.get(), self.EntContactNumber, self.master):
+            val_passed = False
+            return
 
         if val_passed:
             Events.Party.update_party(self.EntNumberOfGuest.get(),

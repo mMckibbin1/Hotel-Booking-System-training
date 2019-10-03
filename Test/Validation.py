@@ -1,4 +1,4 @@
-from tkinter import messagebox
+from tkinter import messagebox, END
 
 
 # tests for empty entry boxes
@@ -6,7 +6,8 @@ def string_empty(test):
     validation_failed = False
     for strings in test:
 
-        if strings == "" or strings == "Pick a room" or strings == "No Rooms Free" or str.upper(strings) == "PICK A BAND" or str.isspace(strings):
+        if strings == "" or strings == "Pick a room" or strings == "No Rooms Free" \
+                or str.upper(strings) == "PICK A BAND" or str.isspace(strings):
             validationfailed = True
     return validation_failed
 
@@ -80,7 +81,6 @@ def max_size_200(input_string, master):
 
 
 def max_size_50(input_string, master):
-    print("testing")
     if input_string == "":
         return True
     if not digits_only(input_string):
@@ -106,14 +106,17 @@ def contact_number_val(input_string, entry_field, parent):
     if not digits_only(input_string):
         messagebox.showinfo("Error", "Contact Number can only contain digits", parent=parent)
         entry_field.focus()
+        entry_field.delete(0, END)
         return False
     elif len(input_string) > 25:
         messagebox.showinfo("Error", "Contact Number too long max input of 25", parent=parent)
         entry_field.focus()
+        entry_field.delete(0, END)
         return False
     elif len(input_string) < 4:
         messagebox.showinfo("Error", "Contact Number too short minimum input of 4", parent=parent)
         entry_field.focus()
+        entry_field.delete(0, END)
         return False
     else:
         return True

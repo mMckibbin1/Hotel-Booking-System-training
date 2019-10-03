@@ -105,6 +105,9 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
         elif Validation.min_number([self.EntNumberOfGuest.get()]):
             val_passed = False
             return messagebox.showinfo("Booking Failed", "Must have entered more than one guest.", parent=self.master)
+        elif not Validation.contact_number_val(self.EntContactNumber.get(), self.EntContactNumber, self.master):
+            val_passed = False
+            return
 
         if val_passed:
             Events.Wedding.update_wedding(self.EntNumberOfGuest.get(),

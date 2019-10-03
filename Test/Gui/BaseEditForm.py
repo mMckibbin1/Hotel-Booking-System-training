@@ -11,11 +11,11 @@ from Gui import DialogBoxes
 
 
 class BaseEditEvent:
-    # setting default values for eventRoom and BandName as empty strings
+    """setting default values for eventRoom and BandName as empty strings"""
     eventRoomNo = ''
 
     def __init__(self, master, object):
-        # Creation of wedding form set title, size ect..
+        """Creation of wedding form set title, size ect..."""
         self.master = master
         self.master.title("Hotel Booking System - Base edit form")
         self.master.resizable(0, 0)
@@ -23,16 +23,20 @@ class BaseEditEvent:
 
         # button hover colour - close update
         def on_enter_close_update(e):
+            """hover colour on enter"""
             self.btnCloseForm['background'] = "aquamarine4"
 
         def on_leave_close_update(e):
+            """hover colour on leave"""
             self.btnCloseForm['background'] = "medium aquamarine"
 
         # button hover colour - close update
         def on_enter_update(e):
+            """hover colour on enter"""
             self.btnUpdateBooking['background'] = "aquamarine4"
 
         def on_leave_update(e):
+            """hover colour on leave"""
             self.btnUpdateBooking['background'] = "medium aquamarine"
 
         # Labels for Wedding booking form
@@ -73,10 +77,6 @@ class BaseEditEvent:
         self.EntAddress.config(validate='key', validatecommand=(self.Address_VCMD, '%P'))
 
         self.EntContactNumber = Entry(master, font=("arial", 10), width=50)
-        self.Contact_VCMD = (self.EntContactNumber.register
-                             (lambda p: Validation.contact_number_val(p, self.EntContactNumber, master)))
-        self.EntContactNumber.config(validate='focusout', validatecommand=(self.Contact_VCMD, '%P'))
-
         self.om_room_val = StringVar()
         self.om_room_val.set("Please select a date first")
         self.OpmEventRoomNumber = OptionMenu(master, self.om_room_val, ())
@@ -132,8 +132,8 @@ class BaseEditEvent:
                                                       date=self.display_date.get(), number_of_days=object.noOfDays):
                 self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
-    # function to display calendar widget for date of event
     def popup(self, event, master):
+        """function to display calendar widget for date of event"""
         child = Toplevel()
         cal = CalendarWidget.Calendar(child, self.data)
         master.grab_release()
@@ -143,8 +143,8 @@ class BaseEditEvent:
         master.grab_set()
         self.get_selected_date(master)
 
-    # function to get the selected date from calendar widget and display it as a formatted string
     def get_selected_date(self, master):
+        """function to get the selected date from calendar widget and display it as a formatted string"""
         day = self.data.get("day_selected", "date error")
         month = self.data.get("month_selected", "date error")
         year = self.data.get("year_selected", "date error")
@@ -162,6 +162,7 @@ class BaseEditEvent:
             self.display_date.set(format_date)
 
     def populate_form(self, object):
+        """populates form with booking info for selected booking"""
         self.EntNumberOfGuest.insert(0, object.noGuests)
         self.EntNameOfContact.insert(0, object.nameOfContact)
         self.EntAddress.insert(0, object.address)

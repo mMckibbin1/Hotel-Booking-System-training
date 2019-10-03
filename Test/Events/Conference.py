@@ -22,20 +22,22 @@ class Conference(Events.BaseEvent.BaseEventObj):
         return self.costPerHead * self.noGuests
 
     def gross_total(self):
-        """"""
+        """function calculates the gross total"""
         return float(self.costPerHead * self.noGuests) * self.noOfDays
 
     def vat(self):
+        """function calculates the vat"""
         return self.gross_total() / 5
 
     def net_total(self):
+        """function calculates the overall total"""
         vat = self.gross_total() / 5
         return self.gross_total() + vat
 
 
-# method to take data from form and add additional required data in order to create object to save to database
 def create_conference(no_of_guest, name_of_contact, address, contact_no, event_room_number, date_of_event, company_name,
                       no_of_days, projector_required):
+    """method to take data from form and add additional required data in order to create object to save to database"""
 
     date_of_booking = datetime.datetime.now()
     ID = None
@@ -49,9 +51,9 @@ def create_conference(no_of_guest, name_of_contact, address, contact_no, event_r
     return dbHelper.insertConference(new_conference)
 
 
-# method to take data from form and update the selected booking
 def update_conference(no_of_guest, name_of_contact, address, contact_no, event_room_number, date_of_event,
                       date_of_booking, company_name, no_of_days, projector_required, ID):
+    """method to take data from form and update the selected booking"""
 
     if projector_required == True:
         projector_required = 1

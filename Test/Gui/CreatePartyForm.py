@@ -43,6 +43,7 @@ class BookParty(Gui.BaseCreateForm.BaseEvent):
         self.btnAddBooking.config(command=lambda: [self.validation()])
 
     def band_name_check(self):
+        """ """
         self.OpmBandName.config(state="normal")
 
         band_name_option_menu_menu = self.OpmBandName.children["menu"]
@@ -58,7 +59,7 @@ class BookParty(Gui.BaseCreateForm.BaseEvent):
         room_option_menu_menu.delete(0, "end")
         self.om_room_val.set("Pick a room")
         rooms_free = dbHelper.rooms_in_use("partyTable", self.display_date.get())
-        if len(rooms_free) <1:
+        if len(rooms_free) < 1:
             self.om_room_val.set("No Rooms Free")
             return
         for value in rooms_free:
@@ -80,6 +81,9 @@ class BookParty(Gui.BaseCreateForm.BaseEvent):
         elif Validation.min_number([self.EntNumberOfGuest.get()]):
             val_passed = False
             return messagebox.showinfo("Booking Failed", "Must have more than one guest.", parent=self.master)
+        elif not Validation.contact_number_val(self.EntContactNumber.get(), self.EntContactNumber, self.master):
+            val_passed = False
+            return
 
         if val_passed:
             Events.Party.create_party(

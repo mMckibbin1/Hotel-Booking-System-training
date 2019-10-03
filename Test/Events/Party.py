@@ -19,20 +19,24 @@ class Party(Events.BaseEvent.BaseEventObj):
         self.bandPrice = Events.BaseEvent.cal_band_price(band_name)
 
     def guests_cost(self):
+        """calculates the cost for guests"""
         return self.costPerHead * self.noGuests
 
     def vat(self):
+        """calculates the vat"""
         return self.gross_total() / 5
 
     def gross_total(self):
-        return float (self.costPerHead * self.noGuests) + self.bandPrice
+        """calculates the gross total"""
+        return float(self.costPerHead * self.noGuests) + self.bandPrice
 
     def net_total(self):
+        """calculates the overall total"""
         return self.gross_total() + self.vat()
 
 
-# method to take data from form and add additional required data in order to create object to save to database
 def create_party(no_of_guest, name_of_contact, address, contact_no, event_room_number, date_of_event, band_name):
+    """method to take data from form and add additional required data in order to create object to save to database"""
     ID = None
     band_price = 0
     date_of_booking = datetime.datetime.now()
@@ -41,9 +45,9 @@ def create_party(no_of_guest, name_of_contact, address, contact_no, event_room_n
     return dbHelper.insertParty(new_party)
 
 
-# method to take data from form and update the selected booking
 def update_party(no_of_guest, name_of_contact, address, contact_no, event_room_number, date_of_event, date_of_booking,
                  band_name, ID):
+    """method to take data from form and update the selected booking"""
 
     band_price = 0
 

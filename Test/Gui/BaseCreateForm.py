@@ -9,11 +9,11 @@ import Validation
 
 
 class BaseEvent:
-    # setting default values for eventRoom and BandName as empty strings
+    """setting default values for eventRoom and BandName as empty strings"""
     eventRoomNo = ''
 
     def __init__(self, master):
-        # Creation of wedding form set title, size ect..
+        """Creation of wedding form set title, size ect..."""
         self.master = master
         self.master.title("Hotel Booking System - Base booking form")
         self.master.resizable(0, 0)
@@ -21,16 +21,20 @@ class BaseEvent:
 
         # button hover colour - close
         def on_enter_close(e):
+            """hover colour on enter"""
             self.btnCloseForm['background'] = "aquamarine4"
 
         def on_leave_close(e):
+            """hover colour on leave"""
             self.btnCloseForm['background'] = "medium aquamarine"
 
         # button hover colour - add booking
         def on_enter_add_booking(e):
+            """hover colour on enter"""
             self.btnAddBooking['background'] = "aquamarine4"
 
         def on_leave_add_booking(e):
+            """hover colour on leave"""
             self.btnAddBooking['background'] = "medium aquamarine"
 
         # Labels for Wedding booking form
@@ -74,10 +78,6 @@ class BaseEvent:
         self.EntAddress.config(validate='key', validatecommand=(self.Add_VCMD, '%P'))
 
         self.EntContactNumber = Entry(master, font=("arial", 10), width=50)
-        # Validation
-        self.Contact_VCMD = (self.EntContactNumber.register
-                             (lambda p: Validation.contact_number_val(p, self.EntContactNumber, master)))
-        self.EntContactNumber.config(validate='focusout', validatecommand=(self.Contact_VCMD, '%P'))
 
         self.display_date = StringVar()
         self.CalDateOfEvent = Entry(master, font=("arial", 10), width=50,
@@ -112,8 +112,8 @@ class BaseEvent:
         self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(50, 50), padx=(75, 25), sticky="ew")
         self.btnCloseForm.grid(row=10, column=3, columnspan=2, pady=(50, 50), padx=(75, 25), sticky="ew")
 
-    # function to display calendar widget for date of event
     def popup(self, event, master):
+        """function to display calendar widget for date of event"""
         child = Toplevel()
         cal = CalendarWidget.Calendar(child, self.data)
         master.grab_release()
@@ -123,8 +123,8 @@ class BaseEvent:
         master.grab_set()
         self.get_selected_date(master)
 
-    # function to get the selected date from calendar widget and display it as a formatted string
     def get_selected_date(self, master):
+        """function to get the selected date from calendar widget and display it as a formatted string"""
         day = self.data.get("day_selected", "date error")
         month = self.data.get("month_selected", "date error")
         year = self.data.get("year_selected", "date error")

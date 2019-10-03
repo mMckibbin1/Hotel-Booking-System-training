@@ -60,7 +60,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
         # checkbox
         self.chxProjectorRequired.grid(row=9, column=2, pady=(25, 0), padx=(0, 25))
-        print(booking.dateOfBooking)
+
         # Buttons for Add and Cancel on the conference form
         self.btnUpdateBooking.config(command=lambda: self.validation(booking))  # calls update ,destroy and message box
 
@@ -121,6 +121,9 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
             return messagebox.showinfo("Booking Failed", "Must have more than one guest.\n"
                                                          "The duration of the event must be at least one day.",
                                        parent=self.master)
+        elif not Validation.contact_number_val(self.EntContactNumber.get(), self.EntContactNumber, self.master):
+            val_passed = False
+            return
 
         if val_passed:
             Events.Conference.update_conference(self.EntNumberOfGuest.get(),
