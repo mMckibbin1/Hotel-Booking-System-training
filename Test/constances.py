@@ -1,4 +1,4 @@
-#  This file contain constance's used in the program
+"""This file contain constance's used in the program"""
 
 WEDDING_ROOM_OPTION = ['H', 'I']
 PARTY_ROOM_OPTIONS = ['D', 'E', 'F', 'G']
