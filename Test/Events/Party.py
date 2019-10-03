@@ -23,7 +23,7 @@ class Party(Events.BaseEvent.BaseEventObj):
         return self.costPerHead * self.noGuests
 
     def vat(self):
-        """calculates the vat"""
+        """calculates the VAT"""
         return self.gross_total() / 5
 
     def gross_total(self):

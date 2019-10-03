@@ -53,31 +53,31 @@ class FrmViewBooking(Tkinter.Frame):
 
         # BUTTONS #
         # button hover colour - update
-        def on_enter_update(e):
+        def on_enter_update():
             btnUpdate['background'] = "snow2"  # "#F0F704"
 
-        def on_leave_update(e):
+        def on_leave_update():
             btnUpdate['background'] = "snow"
 
         # button hover colour - delete
-        def on_enter_delete(e):
+        def on_enter_delete():
             btnDelete['background'] = "tomato"
 
-        def on_leave_delete(e):
+        def on_leave_delete():
             btnDelete['background'] = "snow"
 
         # button hover colour - refresh
-        def on_enter_refresh(e):
+        def on_enter_refresh():
             btnRefresh['background'] = "snow2"  # "#42A2FF"
 
-        def on_leave_refresh(e):
+        def on_leave_refresh():
             btnRefresh['background'] = "snow"
 
         # button hover colour - clear
-        def on_enter_clear(e):
+        def on_enter_clear():
             self.btn_clear_date['background'] = "snow2"
 
-        def on_leave_clear(e):
+        def on_leave_clear():
             self.btn_clear_date['background'] = "snow"
 
         # button update
@@ -85,24 +85,24 @@ class FrmViewBooking(Tkinter.Frame):
                            font=("arial", 10),
                            command=lambda: Gui.viewbookinglogic.update_selected(self.master2, self.master))
         btnUpdate.grid(row=3, column=7, sticky="ne", pady=(0, 20))
-        btnUpdate.bind("<Enter>", on_enter_update)
-        btnUpdate.bind("<Leave>", on_leave_update)
+        btnUpdate.bind("<Enter>", lambda e: on_enter_update())
+        btnUpdate.bind("<Leave>", lambda e: on_leave_update())
 
         # button delete
         btnDelete = Button(self.parent, text="Delete Selected Booking", width=20, height=2, background="snow",
                            font=("arial", 10),
                            command=lambda: viewbookinglogic.is_row_selected_delete(self, self.master2))
         btnDelete.grid(row=3, column=8, sticky="ne", pady=(0, 20))
-        btnDelete.bind("<Enter>", on_enter_delete)
-        btnDelete.bind("<Leave>", on_leave_delete)
+        btnDelete.bind("<Enter>", lambda e: on_enter_delete())
+        btnDelete.bind("<Leave>", lambda e: on_leave_delete())
 
         # button refresh
         btnRefresh = Button(self.parent, text="Refresh table", width=13, height=2, background="snow",
                             font=("arial", 10),
                             command=lambda: Gui.viewbookinglogic.refresh_data(self.master2))
         btnRefresh.grid(row=3, column=0, sticky="nw", pady=(0, 20), padx=(10, 0))
-        btnRefresh.bind("<Enter>", on_enter_refresh)
-        btnRefresh.bind("<Leave>", on_leave_refresh)
+        btnRefresh.bind("<Enter>", lambda e: on_enter_refresh())
+        btnRefresh.bind("<Leave>", lambda e: on_leave_refresh())
 
         # LABELFRAMES #
         # labelframe for select date
@@ -132,7 +132,7 @@ class FrmViewBooking(Tkinter.Frame):
         self.EntStartDate = ttk.Entry(self.SelectLabelFrame, font=("arial", 10), width=30,
                                       textvariable=self.display_start_date, state="readonly")
         self.EntStartDate.grid(row=3, column=0, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
-        self.EntStartDate.bind("<Button-1>", lambda event : Gui.viewbookinglogic.calendar_popup( "EntStartDate",
+        self.EntStartDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.calendar_popup("EntStartDate",
                                                                                                self.master2, master))
 
         ttk.Label(self.SelectLabelFrame, text="To", font=("arial", 10, "bold"),
@@ -142,14 +142,14 @@ class FrmViewBooking(Tkinter.Frame):
         self.EntEndDate = ttk.Entry(self.SelectLabelFrame, font=("arial", 10), width=30,
                                     textvariable=self.display_end_date, state="readonly")
         self.EntEndDate.grid(row=3, column=2, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
-        self.EntEndDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.calendar_popup( "EntEndDate",
+        self.EntEndDate.bind("<Button-1>", lambda event: Gui.viewbookinglogic.calendar_popup("EntEndDate",
                                                                                              self.master2, master))
         self.data = {}
         self.btn_clear_date = Button(self.SelectLabelFrame, text="Clear Dates", width=13, height=2, background="snow",
                                      font=("arial", 10), command=lambda: Gui.viewbookinglogic.clear_date(self.master2))
         self.btn_clear_date.grid(row=4, column=0, sticky="ew", padx=10, columnspan=1, pady=(0, 20))
-        self.btn_clear_date.bind("<Enter>", on_enter_clear)
-        self.btn_clear_date.bind("<Leave>", on_leave_clear)
+        self.btn_clear_date.bind("<Enter>", lambda e: on_enter_clear())
+        self.btn_clear_date.bind("<Leave>", lambda e: on_leave_clear())
 
         # check boxes
 
@@ -175,17 +175,17 @@ class FrmViewBooking(Tkinter.Frame):
         self.CbxParties.select()
 
         # button hover colour - search
-        def on_enter_search(e):
+        def on_enter_search():
             btnSearchDate['background'] = "snow2"  # "#57FFA5"
 
-        def on_leave_search(e):
+        def on_leave_search():
             btnSearchDate['background'] = "snow"
 
         # button hover colour - main menu
-        def on_enter_main_menu(e):
+        def on_enter_main_menu():
             btn_main_menu['background'] = "snow2"  # "#57FFA5"
 
-        def on_leave_main_menu(e):
+        def on_leave_main_menu():
             btn_main_menu['background'] = "snow"
 
         # button search
@@ -193,14 +193,14 @@ class FrmViewBooking(Tkinter.Frame):
                                width=13, height=2, background="snow", font=("arial", 10),
                                command=lambda: Gui.viewbookinglogic.search(self.master2))
         btnSearchDate.grid(row=3, column=8, pady=(0, 20), padx=(8, 15))
-        btnSearchDate.bind("<Enter>", on_enter_search)
-        btnSearchDate.bind("<Leave>", on_leave_search)
+        btnSearchDate.bind("<Enter>", lambda e: on_enter_search())
+        btnSearchDate.bind("<Leave>", lambda e: on_leave_search())
 
         btn_main_menu = Button(self.SelectLabelFrame, text="Main Menu", width=13, height=2, background="snow",
                                font=("arial", 10), command=lambda: self.master.destroy())
         btn_main_menu.grid(row=4, column=8, pady=(0, 20), padx=(8, 15), sticky="WE")
-        btn_main_menu.bind("<Enter>", on_enter_main_menu)
-        btn_main_menu.bind("<Leave>", on_leave_main_menu)
+        btn_main_menu.bind("<Enter>", lambda e: on_enter_main_menu())
+        btn_main_menu.bind("<Leave>", lambda e: on_leave_main_menu())
 
         # labelframe for additional info box
         self.labelframe = LabelFrame(self.parent, text="Additional Information", width=324, height=167,
@@ -334,17 +334,17 @@ class FrmViewBooking(Tkinter.Frame):
         self.lblDisTotal.grid(row=4, column=2)
 
         # button hover colour - invoice
-        def on_enter_save_invoice(e):
+        def on_enter_save_invoice():
             self.btnInvoice['background'] = "snow2"
 
-        def on_leave_save_invoice(e):
+        def on_leave_save_invoice():
             self.btnInvoice['background'] = "snow"
 
         self.btnInvoice = Button(self.TotalLabelFrame, text="Save Invoice",
                                  command=lambda: Gui.viewbookinglogic.invoice(self.master2))
         self.btnInvoice.grid(row=3, column=3, rowspan=2, columnspan=2)
-        self.btnInvoice.bind("<Enter>", on_enter_save_invoice)
-        self.btnInvoice.bind("<Leave>", on_leave_save_invoice)
+        self.btnInvoice.bind("<Enter>", lambda e: on_enter_save_invoice())
+        self.btnInvoice.bind("<Leave>", lambda e: on_leave_save_invoice())
 
         # setting weight for rows and columns
         self.TotalLabelFrame.grid_rowconfigure(0, weight=1)

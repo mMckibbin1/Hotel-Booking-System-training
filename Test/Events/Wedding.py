@@ -26,7 +26,7 @@ class Wedding(Events.BaseEvent.BaseEventObj):
         return self.costPerHead * self.noGuests
 
     def vat(self):
-        """calculates vat"""
+        """calculates VAT"""
         return self.gross_total() / 5
 
     def gross_total(self):

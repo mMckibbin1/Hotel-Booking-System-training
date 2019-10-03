@@ -20,26 +20,26 @@ class BaseEvent:
         self.master.config(background="#70ABAF")
 
         # button hover colour - close
-        def on_enter_close(e):
+        def on_enter_close():
             """hover colour on enter"""
             self.btnCloseForm['background'] = "aquamarine4"
 
-        def on_leave_close(e):
+        def on_leave_close():
             """hover colour on leave"""
             self.btnCloseForm['background'] = "medium aquamarine"
 
         # button hover colour - add booking
-        def on_enter_add_booking(e):
+        def on_enter_add_booking():
             """hover colour on enter"""
             self.btnAddBooking['background'] = "aquamarine4"
 
-        def on_leave_add_booking(e):
+        def on_leave_add_booking():
             """hover colour on leave"""
             self.btnAddBooking['background'] = "medium aquamarine"
 
         # Labels for Wedding booking form
 
-        self.lblSubheading = Label(master,text="Please fill in the details for the wedding event you are booking",
+        self.lblSubheading = Label(master, text="Please fill in the details for the wedding event you are booking",
                                    font=("arial", 20, "bold", "underline"), bg="#70ABAF")
         self.lblSubheading.grid(row=0, pady=(35, 25), padx=(10, 10), columnspan=4)
 
@@ -102,12 +102,12 @@ class BaseEvent:
                                    width=30, height=3,
                                    # calls destroy and message box
                                    command=lambda: [DialogBoxes.not_saved(master), master.destroy()])
-        self.btnCloseForm.bind("<Enter>", on_enter_close)
-        self.btnCloseForm.bind("<Leave>", on_leave_close)
+        self.btnCloseForm.bind("<Enter>", lambda e: on_enter_close())
+        self.btnCloseForm.bind("<Leave>", lambda e: on_leave_close())
         self.btnAddBooking = Button(master, text="Add Booking", bg="medium aquamarine", font=("arial", 11, "bold"),
                                     width=30, height=3)
-        self.btnAddBooking.bind("<Enter>", on_enter_add_booking)
-        self.btnAddBooking.bind("<Leave>", on_leave_add_booking)
+        self.btnAddBooking.bind("<Enter>", lambda e: on_enter_add_booking())
+        self.btnAddBooking.bind("<Leave>", lambda e: on_leave_add_booking())
         # Buttons for Add and Cancel on the wedding form being placed using grid layout
         self.btnAddBooking.grid(row=10, column=1, columnspan=1, pady=(50, 50), padx=(75, 25), sticky="ew")
         self.btnCloseForm.grid(row=10, column=3, columnspan=2, pady=(50, 50), padx=(75, 25), sticky="ew")

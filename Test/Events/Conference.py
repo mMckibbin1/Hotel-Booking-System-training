@@ -26,7 +26,7 @@ class Conference(Events.BaseEvent.BaseEventObj):
         return float(self.costPerHead * self.noGuests) * self.noOfDays
 
     def vat(self):
-        """function calculates the vat"""
+        """function calculates the VAT"""
         return self.gross_total() / 5
 
     def net_total(self):

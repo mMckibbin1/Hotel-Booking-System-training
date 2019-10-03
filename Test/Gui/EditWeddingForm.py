@@ -59,38 +59,43 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
         self.band_name_option_menu_menu = self.OpmBandName.children["menu"]
         self.band_name_option_menu_menu.delete(0, "end")
         self.om_band_name.set(booking.bandName)
-        for value in dbHelper.bands_in_use_update("Wedding",self.display_date.get(), self.booking.ID):
+        for value in dbHelper.bands_in_use_update("Wedding", self.display_date.get(), self.booking.ID):
             self.band_name_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_band_name.set(v))
 
     def band_name_check(self):
+        """ensures band cannot be double booked"""
         self.OpmBandName.config(state="normal")
 
         self.band_name_option_menu_menu = self.OpmBandName.children["menu"]
         self.band_name_option_menu_menu.delete(0, "end")
         self.om_band_name.set("Pick a Band")
-        for value in dbHelper.bands_in_use_update("Wedding",self.display_date.get(), self.booking.ID):
+        for value in dbHelper.bands_in_use_update("Wedding", self.display_date.get(), self.booking.ID):
             self.band_name_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_band_name.set(v))
 
     def wedding_room_check(self):
+        """ensures room cannot be double booked"""
         self.OpmEventRoomNumber.config(state="normal")
 
         self.room_option_menu_menu = self.OpmEventRoomNumber.children["menu"]
         self.room_option_menu_menu.delete(0, "end")
         self.om_room_val.set("Pick a room")
 
-        rooms_free = dbHelper.rooms_in_use_update(event_type="weddingTable", id=self.booking.ID, date=self.display_date.get())
-        if len(rooms_free) <1:
+        rooms_free = dbHelper.rooms_in_use_update(event_type="weddingTable", id=self.booking.ID,
+                                                  date=self.display_date.get())
+        if len(rooms_free) < 1:
             self.om_room_val.set("No Rooms Free")
             return
-        for value in rooms_free :
+        for value in rooms_free:
             self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
     def populate_form_wedding(self, booking):
+        """populates form with booking info for selected booking"""
         self.om_band_name.set(booking.bandName)
         self.EntBedroomReserved.insert(0, booking.noBedroomsReserved)
 
 # validation
     def validation(self, booking):
+        """checks validation is passed and calls a dialog box if it fails"""
         val_passed = True
 
         if Validation.string_empty(self.save_list()):
@@ -123,6 +128,7 @@ class EditWedding(Gui.BaseEditForm.BaseEditEvent):
             self.master.destroy()
 
     def save_list(self):
+        """saves entries to a list that is used for validation"""
         validation_test_list = [self.EntNumberOfGuest.get(), self.EntNameOfContact.get(), self.EntAddress.get(),
                                 self.EntContactNumber.get(), self.display_date.get(), self.om_room_val.get(),
                                 self.om_band_name.get(), self.EntBedroomReserved.get()]

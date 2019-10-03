@@ -22,20 +22,20 @@ class BaseEditEvent:
         self.master.config(background="#70ABAF")
 
         # button hover colour - close update
-        def on_enter_close_update(e):
+        def on_enter_close_update():
             """hover colour on enter"""
             self.btnCloseForm['background'] = "aquamarine4"
 
-        def on_leave_close_update(e):
+        def on_leave_close_update():
             """hover colour on leave"""
             self.btnCloseForm['background'] = "medium aquamarine"
 
         # button hover colour - close update
-        def on_enter_update(e):
+        def on_enter_update():
             """hover colour on enter"""
             self.btnUpdateBooking['background'] = "aquamarine4"
 
-        def on_leave_update(e):
+        def on_leave_update():
             """hover colour on leave"""
             self.btnUpdateBooking['background'] = "medium aquamarine"
 
@@ -98,13 +98,13 @@ class BaseEditEvent:
         # Buttons for Add and Cancel on the base edit form
         self.btnUpdateBooking = Button(master, text="Update Booking", bg="medium aquamarine",
                                        font=("arial", 11, "bold"), width=30, height=3)
-        self.btnUpdateBooking.bind("<Enter>", on_enter_update)
-        self.btnUpdateBooking.bind("<Leave>", on_leave_update)
+        self.btnUpdateBooking.bind("<Enter>", lambda e: on_enter_update())
+        self.btnUpdateBooking.bind("<Leave>", lambda e: on_leave_update())
         self.btnCloseForm = Button(master, text="Cancel", bg="medium aquamarine", font=("arial", 11, "bold"), width=30,
                                    height=3, command=lambda: [DialogBoxes.not_saved(master),
                                                               master.destroy()])  # calls destroy and message box
-        self.btnCloseForm.bind("<Enter>", on_enter_close_update)
-        self.btnCloseForm.bind("<Leave>", on_leave_close_update)
+        self.btnCloseForm.bind("<Enter>", lambda e: on_enter_close_update())
+        self.btnCloseForm.bind("<Leave>", lambda e: on_leave_close_update())
 
         # Buttons for Add and Cancel on the base edit form being placed using grid layout
         self.btnUpdateBooking.grid(row=10, column=1, columnspan=1,  pady=(50, 50), padx=(75, 25), sticky="ew")

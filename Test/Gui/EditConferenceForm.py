@@ -22,9 +22,6 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         self.view_booking_self = view_booking_self
         self.booking = booking
 
-        def ch_box_sel():
-            print(self.CheckVar1.get())
-
         # defines options for drop down boxes
 
         # Labels for Conference booking form
@@ -52,7 +49,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         # checkbox
         self.CheckVar1 = IntVar()
         self.chxProjectorRequired = Checkbutton(master, text='', variable=self.CheckVar1, onvalue=True, offvalue=False,
-                                                bg="#70ABAF", command=ch_box_sel)
+                                                bg="#70ABAF")
 
         # Entry boxes, drop downs and date picker for conference form being placed using a grid layout
         self.EntCompanyName.grid(row=7, column=2, columnspan=2, pady=(25, 0), padx=(0, 25))
@@ -71,6 +68,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
     # functions
     def conference_room_check(self):
+        """ensures room cannot be double booked"""
         if not self.number_of_days.get() or not self.display_date.get():
             self.om_room_val.set("Pick a date and duration first")
             self.OpmEventRoomNumber.config(state="disabled")
@@ -82,7 +80,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
         self.room_option_menu_menu.delete(0, "end")
         self.om_room_val.set("Pick a room")
 
-        rooms_free = dbHelper.rooms_in_use_update("conferenceTable", self.display_date.get(),id=self.booking.ID,
+        rooms_free = dbHelper.rooms_in_use_update("conferenceTable", self.display_date.get(), id=self.booking.ID,
                                                   number_of_days=int(self.number_of_days.get()))
         if len(rooms_free) < 1:
             self.om_room_val.set("No Rooms Free")
@@ -91,6 +89,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
             self.room_option_menu_menu.add_command(label=value, command=lambda v=value: self.om_room_val.set(v))
 
     def populate_form_conference(self, booking):
+        """populates form with booking info from selected booking"""
         self.EntCompanyName.insert(0, booking.companyName)
         self.EntNoOfDays.insert(0, booking.noOfDays)
 
@@ -103,6 +102,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
 
 # validation
     def validation(self, booking):
+        """checks validation is passed and calls a dialog box if it fails"""
         val_passed = True
 
         if Validation.string_empty(self.save_list()):
@@ -139,6 +139,7 @@ class EditConference(Gui.BaseEditForm.BaseEditEvent):
             self.master.destroy()
 
     def save_list(self):
+        """saves entries to a list that is used for validation"""
         validationTestList = [self.EntNumberOfGuest.get(), self.EntNameOfContact.get(), self.EntAddress.get(),
                               self.EntContactNumber.get(), self.om_room_val.get(), self.display_date.get(),
                               self.EntCompanyName.get(), self.EntNoOfDays.get()]
