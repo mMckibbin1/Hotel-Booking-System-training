@@ -263,7 +263,7 @@ def cal_income(master):
 
 
 def number_of_rows(master):
-    """"""
+    """function to display the number of rows in the treeview on a label"""
     master.lbl_number_of_rows.config(text=len(master.treeview.get_children()))
 
 
@@ -278,7 +278,7 @@ def search(self):
     events_list = []
 
     if self.checkVarConference.get() == "" and self.checkVarWedding.get() == "" and self.checkVarParty.get() == "":
-        return messagebox.showinfo("Bad search criteria","At least one event type must be chosen", parent=self)
+        return messagebox.showinfo("Bad search criteria", "At least one event type must be chosen", parent=self)
 
     if self.checkVarWedding.get() != "":
         events_list.append(self.checkVarWedding.get())
