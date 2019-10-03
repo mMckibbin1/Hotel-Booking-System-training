@@ -285,7 +285,7 @@ def search(self):
     if self.EntStartDate.get() != "" and self.EntEndDate.get() != "":
         if datetime.datetime.strptime(self.EntEndDate.get(), "%Y-%m-%d").date() < datetime.datetime.strptime(
                 self.EntStartDate.get(), "%Y-%m-%d").date():
-            return messagebox.showinfo("Bad search criteria", "End date must be greater than start date", parent=self)
+            return messagebox.showinfo("Bad search criteria", "End date must fall after the start date.", parent=self)
 
     self.treeview.delete(*self.treeview.get_children())
 
