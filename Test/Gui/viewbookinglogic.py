@@ -262,6 +262,11 @@ def cal_income(master):
         master.lblTotalIncome.config(text=CurrencyConvert.pound_string(total_income))
 
 
+def number_of_rows(master):
+    """"""
+    master.lbl_number_of_rows.config(text=len(master.treeview.get_children()))
+
+
 def insert_data(self, id_num, event_type, name_of_contact, contact_no, date_of_event, event_room_no, net_total):
     """function that adds data to treeview"""
     self.treeview.insert('', 'end', text=id_num,
@@ -292,6 +297,7 @@ def search(self):
     search_results_list = dbHelper.search(events_list, self.EntStartDate.get(), self.EntEndDate.get())
     if len(search_results_list) == 0:
         cal_income(self)
+        number_of_rows(self)
         select_first_row_(self)
         return messagebox.showinfo('No Results',
                                    'No results found.', parent=self.master2)
@@ -310,6 +316,7 @@ def search(self):
                         CurrencyConvert.pound_string(booking.net_total()))
 
     cal_income(self)
+    number_of_rows(self)
     select_first_row_(self)
 
 
@@ -348,6 +355,7 @@ def refresh_data(master):
     master.treeview.delete(*master.treeview.get_children())
     load_data(master)
     cal_income(master)
+    number_of_rows(master)
     select_first_row_(master)
 
 

@@ -44,6 +44,15 @@ class FrmViewBooking(Tkinter.Frame):
         self.tree.grid(row=0, columnspan=7, sticky="nws", padx=10, pady=(20, 0), rowspan=2)
         self.treeview = self.tree
 
+        # Totol numbe of rows
+        Label(self.parent, text="Number of events:", font=("arial", 10, "bold"),
+              background="#70ABAF").grid(row=2, column=0, sticky=W, padx=(10,0),pady=(0, 2))
+
+        self.lbl_number_of_rows = Label(self.parent, text="0",font=("arial", 10, "bold"),
+                                        background="#70ABAF")
+        self.lbl_number_of_rows.grid(row=2, column=0,sticky=W, padx=(150, 10),
+                                                                   pady=(0, 2))
+
         #  Total income section below the tree view
         ttk.Label(self.parent, text="Total Income",
                   font=("arial", 10, "bold"), background="#70ABAF").grid(row=2, column=5, sticky="se", padx=(10, 10))
@@ -356,5 +365,6 @@ class FrmViewBooking(Tkinter.Frame):
         self.master2 = self
         Gui.viewbookinglogic.load_data(self.master2)
         Gui.viewbookinglogic.cal_income(self.master2)
+        Gui.viewbookinglogic.number_of_rows(self.master2)
         Gui.viewbookinglogic.remove_all_labels(self.master2)
         Gui.viewbookinglogic.select_first_row_(self.master2)
